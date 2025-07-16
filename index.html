@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster Statblock Template</title>
+    <link rel="stylesheet" href="https://use.typekit.net/dck6bem.css">
+    <style>
+        body {
+            font-family: "ff-scala-sans-pro", sans-serif;
+            margin: 0;
+            padding: 2rem;
+            font-size: 15px;
+            line-height: 18px;
+            font-variant-numeric: lining-nums;
+        }
+
+        :root {
+            --red: #5b160c;
+            --black: #000000;
+        }
+        .statblock {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            column-gap: 20px;
+            row-gap: 0;
+            background: rgb(245, 243, 238);
+            border: 1px solid rgb(212, 208, 206);
+            border-radius: 6px;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1rem;
+            color: var(--red);
+        }
+        .monster-title {
+            font-size: 2.2rem;
+            margin: 0 0 0.2em 0;
+            border-bottom: .5px solid var(--red);
+            font-size: 22px;
+            font-weight: 700;
+            text-transform: small-caps;
+            font-variant-caps: small-caps;
+            padding-bottom: 5px;
+        }
+    
+        .monster-meta {
+            font-style: italic;
+            color: rgb(104, 116, 123);
+            font-size: 15px;
+            grid-column: span 2;
+        }
+
+        .monster-title {
+            grid-column: span 2;
+        }
+        .monster-col {
+            display: block;
+            padding: 0;
+            gap: 0;
+        }
+
+        @media (max-width: 900px) {
+            .statblock {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .monster-title, .monster-meta {
+                grid-column: span 1;
+            }
+
+        }
+
+        .statblock a {
+            color: inherit;
+            text-decoration-color: rgb(71, 209, 140);
+        }
+
+
+        .statblock-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .statblock-list li {
+            margin-bottom: 7px;
+            font-size: 15px;
+            line-height: 18px;
+        }
+
+        .statblock-list li span:nth-of-type(2){
+            margin-left: 10px;
+        }
+
+        .monster-topstats .statblock-list li:first-of-type {
+            margin-top: 8px;
+        }
+
+        .monster-ability-scores {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 10px;
+            color: var(--red);
+            text-align: center;
+            font-size: 13px;
+            margin-bottom: 1em;
+        }
+        .monster-ability-scores1, .monster-ability-scores2 {
+            display: grid;
+            grid-template-areas: 
+                "blank blank mod save"
+                "str str-score str-mod str-save"
+                "dex dex-score dex-mod dex-save"
+                "con con-score con-mod con-save";
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+
+        .monster-ability-scores2 {
+            grid-template-areas: 
+                "blank blank mod save"
+                "int int-score int-mod int-save"
+                "wis wis-score wis-mod wis-save"
+                "cha cha-score cha-mod cha-save";
+        }
+
+        .monster-ability-scores1 > *, 
+        .monster-ability-scores2 > *{
+            padding: 2px;
+        }
+
+        .ability-label {
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ability-header {
+            color: rgb(104, 116, 123);
+            font-weight: bold;
+            text-align: center;
+            font-size: 8.9375px;
+            text-transform: uppercase;
+        }
+    
+        .str, .str-score, .dex, .dex-score, .con, .con-score {
+            background: rgb(237, 230, 217)
+        }
+
+        .int, .int-score, .wis, .wis-score, .cha, .cha-score{
+            background: rgb(216, 218, 209);
+        }
+
+        .str-mod, .str-save, .dex-mod, .dex-save, .con-mod, .con-save {
+           background: rgb(222, 212, 204); 
+        }
+
+        .int-mod, .int-save, .wis-mod, .wis-save, .cha-mod, .cha-save {
+            background: rgb(208, 202, 202);
+        }
+
+        .str { grid-area: str; }
+        .str-score { grid-area: str-score; }
+        .str-mod { grid-area: str-mod; }
+        .str-save { grid-area: str-save; }
+        .dex { grid-area: dex; }
+        .dex-score { grid-area: dex-score; }
+        .dex-mod { grid-area: dex-mod; }
+        .dex-save { grid-area: dex-save; }
+        .con { grid-area: con; }
+        .con-score { grid-area: con-score; }
+        .con-mod { grid-area: con-mod; }
+        .con-save { grid-area: con-save; }
+        .int { grid-area: int; }
+        .int-score { grid-area: int-score; }
+        .int-mod { grid-area: int-mod; }
+        .int-save { grid-area: int-save; }
+        .wis { grid-area: wis; }
+        .wis-score { grid-area: wis-score; }
+        .wis-mod { grid-area: wis-mod; }
+        .wis-save { grid-area: wis-save; }
+        .cha { grid-area: cha; }
+        .cha-score { grid-area: cha-score; }
+        .cha-mod { grid-area: cha-mod; }
+        .cha-save { grid-area: cha-save; }
+
+
+        .section-title {
+            text-transform: small-caps;
+            font-variant-caps: small-caps;
+            border-bottom: 0.5px solid var(--red);
+            margin-bottom: 13px;
+            margin-top: 25px;
+            font-size: 17px;
+        }
+
+        .trait, .action, .legendary, .bonus-action {
+            color: var(--black);
+        }
+
+        .statblock-content {
+            display: block;
+            padding: 0;
+            gap: 0;
+        }
+
+        .legendary-intro {
+            color: rgb(105, 102, 101);
+        }
+
+        .trait-title, .action-title, .legendary-title, .bonus-action-title {
+            font-weight: bold;
+            color: var(--black);
+        }
+        .skills, .resistances, .immunities, .senses, .languages, .challenge {
+            margin-bottom: 0.3em;
+        }
+        .trait, .action, .legendary, .legendary-intro, .bonus-action {
+            margin-bottom: 0.7em;
+        }
+   
+        .italic {
+            font-style: italic;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        
+       
+    </style>
+</head>
+<body>
+
+<div class="statblock">
+    <!-- Monster Name -->
+    <div class="monster-title">Tarrasque</div> 
+    <div class="monster-meta">Gargantuan Monstrosity (Titan), Unaligned</div>
+    <!-- Monster Initial Info -->
+    <div class="monster-col">
+        
+        <div class="monster-topstats">
+            <ul class="statblock-list">
+                <li><span class="bold">AC</span> 25 <span class="bold">Initiative</span> +18 (28)</li>
+                <li><span class="bold">HP</span> 697 (34d20 + 340)</li>
+                <li><span class="bold">Speed</span> 60 ft., burrow 40 ft., climb 60 ft.</li>
+            </ul>
+        </div>
+        <div class="monster-ability-scores">
+            <div class="monster-ability-scores1">
+                <div class="ability-header" style="grid-area: blank;"></div>
+                <div class="ability-header" style="grid-area: blank;"></div>
+                <div class="ability-header" style="grid-area: mod;">MOD</div>
+                <div class="ability-header" style="grid-area: save;">SAVE</div>
+
+                <div class="ability-label str">STR</div>
+                <div class="ability-score str-score">30</div>
+                <div class="ability-mod str-mod">+10</div>
+                <div class="ability-save str-save">+10</div>
+
+                <div class="ability-label dex">DEX</div>
+                <div class="ability-score dex-score">11</div>
+                <div class="ability-mod dex-mod">+0</div>
+                <div class="ability-save dex-save">+0</div>
+
+                <div class="ability-label con">CON</div>
+                <div class="ability-score con-score">30</div>
+                <div class="ability-mod con-mod">+10</div>
+                <div class="ability-save con-save">+10</div>
+            </div>  
+                <div class="monster-ability-scores2">
+                <div class="ability-header" style="grid-area: blank;"></div>
+                <div class="ability-header" style="grid-area: blank;"></div>
+                <div class="ability-header" style="grid-area: mod;">MOD</div>
+                <div class="ability-header" style="grid-area: save;">SAVE</div>
+
+                <div class="ability-label int">INT</div>
+                <div class="ability-score int-score">3</div>
+                <div class="ability-mod int-mod">-4</div>
+                <div class="ability-save int-save">+5</div>
+
+                <div class="ability-label wis">WIS</div>
+                <div class="ability-score wis-score">11</div>
+                <div class="ability-mod wis-mod">+0</div>
+                <div class="ability-save wis-save">+9</div>
+
+                <div class="ability-label cha">CHA</div>
+                <div class="ability-score cha-score">11</div>
+                <div class="ability-mod cha-mod">+0</div>
+                <div class="ability-save cha-save">+9</div>
+            </div>
+        </div>
+
+        <ul class="statblock-list">
+            <li><span class="bold">Skills</span> <a href="https://dndbeyond.com/sources/dnd/free-rules/playing-the-game#Skills">Perception</a> +9</li>
+            <li><span class="bold">Resistances</span> Bludgeoning, Piercing, Slashing</li>
+            <li><span class="bold">Immunities</span> Fire, Poison; 
+                <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#CharmedCondition">Charmed</a>, 
+                <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#DeafenedCondition">Deafened</a>, 
+                <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#FrightenedCondition">Frightened</a>, 
+                <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#ParalyzedCondition">Paralyzed</a>, 
+                <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#PoisonedCondition">Poisoned</a>
+            </li>
+            <li><span class="bold">Senses</span> <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#Blindsight">Blindsight</a> 120 ft., Passive Perception 19</li>
+            <li><span class="bold">Languages</span> --</li>
+            <li><span class="bold">CR</span> 30 (XP 155,000; PB +9)</li>
+        </ul>
+        
+        <div class="section-title">Traits</div>
+        <div class="trait"><span class="trait-title italic">Legendary Resistance (6/Day).</span> If the tarrasque fails a saving throw, it can choose to succeed instead.</div>
+        <div class="trait"><span class="trait-title italic">Magic Resistance.</span> The tarrasque has <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#Advantage">Advantage</a> on saving throws against spells and other magical effects.</div>
+        <div class="trait"><span class="trait-title italic">Reflective Carapace.</span> If the tarrasque is targeted by a <a href="https://www.dndbeyond.com/spells/2619022-magic-missile">Magic Missile</a> spell or a spell that requires a ranged attack roll, roll 1d6. On a 1–5, the tarrasque is unaffected. On a 6, the tarrasque is unaffected and reflects the spell, turning the caster into the target.</div>
+        <div class="trait"><span class="trait-title italic">Siege Monster.</span> The tarrasque deals double damage to objects and structures.</div>
+    
+        <div class="section-title">Actions</div>
+            <div class="action"><span class="action-title italic">Multiattack.</span> The tarrasque makes one Bite attack and three other attacks, using Claw or Tail in any combination.</div>
+            <div class="action"><span class="action-title italic">Bite.</span> <span classitalic">Melee Attack Roll:</span> +19, reach 15 ft. <span class="italic">Hit:</span> 36 (4d12 + 10) Piercing damage, and the target has the <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#GrappledCondition">Grappled</a> condition (escape DC 20). Until the grapple ends, the target has the <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#RestrainedCondition">Restrained</a> condition and can't teleport.</div>
+            <div class="action"><span class="action-title italic">Claw.</span> <span class="italic">Melee Attack Roll:</span> +19, reach 15 ft. <span class="italic">Hit:</span> 28 (4d8 + 10) Slashing damage.</div>
+    </div>
+
+    <div class="monster-col">
+        <div class="action"><span class="action-title italic">Tail.</span> <span class="italic">Melee Attack Roll:</span> +19, reach 30 ft. <span class="italic">Hit:</span> 23 (3d8 + 10) Bludgeoning damage. If the target is Huge or smaller, it has the <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#ProneCondition">Prone</a> condition.</div>
+        <div class="action"><span class="action-title italic">Thunderous Bellow (Recharge 5–6).</span> <span class="italic">Constitution Saving Throw:</span> DC 27, each creature and object not being worn or carried in a 150-foot cone. <span class="italic">Failure:</span> 78 (12d12) Thunder damage, and the target has the <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#DeafenedCondition">Deafened</a> and <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#FrightenedCondition">Frightened</a> conditions until the end of its next turn. <span class="italic">Success:</span> Half damage only.</div>
+        <div class="bonus-action"><span class="bonus-action-title italic">Swallow.</span> <span class="italic">Strength Saving Throw:</span> DC 27, one Large or smaller creature <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#GrappledCondition">Grappled</a> by the tarrasque (up to 6 creatures at a time). <span class="italic">Failure:</span> The target is swallowed, and the Grappled condition ends. A swallowed creature has the <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#BlindedCondition">Blinded</a> and <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#RestrainedCondition">Restrained</a> conditions, can't teleport, has <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#Cover">Total Cover</a> against attacks and effects outside the tarrasque, and takes 56 (16d6) Acid damage at the start of each of the tarrasque's turns.<br><br>If the tarrasque takes 60 damage or more on a single turn from a creature inside it, it must succeed on a DC 20 Constitution saving throw at the end of that turn or regurgitate all swallowed creatures, which fall in a space within 10 feet of the tarrasque and have the <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#ProneCondition">Prone</a> condition. If the tarrasque dies, any swallowed creature no longer has the <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#RestrainedCondition">Restrained</a> condition and can escape from the corpse using 20 feet of movement, exiting <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#ProneCondition">Prone</a>.</div>
+        <div class="section-title">Legendary Actions</div>
+        <div class="legendary-intro italic">Legendary Action Uses: 3. Immediately after another creature's turn, the tarrasque can expend a use to take one of the following actions. The tarrasque regains all expended uses at the start of its turn.</div>
+        <div class="legendary"><span class="legendary-title italic">Onslaught.</span> The tarrasque moves up to half its Speed, and it makes one Claw or Tail attack.</div>
+        <div class="legendary"><span class="legendary-title italic">World-Shaking Movement.</span> The tarrasque moves up to its Speed. At the end of this movement, the tarrasque creates an instantaneous shock wave in a 60-foot Emanation originating from itself. Creatures in that area lose <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#Concentration">Concentration</a> and, if Medium or smaller, have the <a href="https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary#ProneCondition">Prone</a> condition. The tarrasque can't take this action again until the start of its next turn.</div>
+    </div>
+</div>    
+        
+        
+</body>
+<script>
+  document.querySelectorAll('a[href^="http"]').forEach(function(link) {
+    link.setAttribute('target', '_blank');
+    link.setAttribute('rel', 'noopener noreferrer');
+  });
+
+</script>
+</html>
+
+
+
+    

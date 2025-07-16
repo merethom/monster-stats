@@ -1,0 +1,1806 @@
+[
+  {
+    "spell-name": "Acid Splash",
+    "url": "https://dndbeyond.com/spells/2618844-acid-splash"
+  },
+  {
+    "spell-name": "Aid",
+    "url": "https://dndbeyond.com/spells/2618845-aid"
+  },
+  {
+    "spell-name": "Alarm",
+    "url": "https://dndbeyond.com/spells/2619222-alarm"
+  },
+  {
+    "spell-name": "Alter Self",
+    "url": "https://dndbeyond.com/spells/2618846-alter-self"
+  },
+  {
+    "spell-name": "Animal Friendship",
+    "url": "https://dndbeyond.com/spells/2618847-animal-friendship"
+  },
+  {
+    "spell-name": "Animal Messenger",
+    "url": "https://dndbeyond.com/spells/2618850-animal-messenger"
+  },
+  {
+    "spell-name": "Animal Shapes",
+    "url": "https://dndbeyond.com/spells/2618851-animal-shapes"
+  },
+  {
+    "spell-name": "Animate Dead",
+    "url": "https://dndbeyond.com/spells/2618853-animate-dead"
+  },
+  {
+    "spell-name": "Animate Objects",
+    "url": "https://dndbeyond.com/spells/2618855-animate-objects"
+  },
+  {
+    "spell-name": "Antilife Shell",
+    "url": "https://dndbeyond.com/spells/2618856-antilife-shell"
+  },
+  {
+    "spell-name": "Antimagic Field",
+    "url": "https://dndbeyond.com/spells/2618860-antimagic-field"
+  },
+  {
+    "spell-name": "Dispel Magic",
+    "url": "https://dndbeyond.com/spells/2619103-dispel-magic"
+  },
+  {
+    "spell-name": "Antipathy/Sympathy",
+    "url": "https://dndbeyond.com/spells/2618862-antipathy-sympathy"
+  },
+  {
+    "spell-name": "Arcane Eye",
+    "url": "https://dndbeyond.com/spells/2618863-arcane-eye"
+  },
+  {
+    "spell-name": "Arcane Gate",
+    "url": "https://dndbeyond.com/spells/2618865-arcane-gate"
+  },
+  {
+    "spell-name": "Arcane Lock",
+    "url": "https://dndbeyond.com/spells/2618868-arcane-lock"
+  },
+  {
+    "spell-name": "Arcane Vigor",
+    "url": "https://dndbeyond.com/spells/2618831-arcane-vigor"
+  },
+  {
+    "spell-name": "Armor of Agathys",
+    "url": "https://dndbeyond.com/spells/2618870-armor-of-agathys"
+  },
+  {
+    "spell-name": "Arms of Hadar",
+    "url": "https://dndbeyond.com/spells/2618871-arms-of-hadar"
+  },
+  {
+    "spell-name": "Astral Projection",
+    "url": "https://dndbeyond.com/spells/2618878-astral-projection"
+  },
+  {
+    "spell-name": "Augury",
+    "url": "https://dndbeyond.com/spells/2618882-augury"
+  },
+  {
+    "spell-name": "Aura of Life",
+    "url": "https://dndbeyond.com/spells/2618884-aura-of-life"
+  },
+  {
+    "spell-name": "Aura of Purity",
+    "url": "https://dndbeyond.com/spells/2618888-aura-of-purity"
+  },
+  {
+    "spell-name": "Aura of Vitality",
+    "url": "https://dndbeyond.com/spells/2618891-aura-of-vitality"
+  },
+  {
+    "spell-name": "Awaken",
+    "url": "https://dndbeyond.com/spells/2618897-awaken"
+  },
+  {
+    "spell-name": "Bane",
+    "url": "https://dndbeyond.com/spells/2618900-bane"
+  },
+  {
+    "spell-name": "Banishing Smite",
+    "url": "https://dndbeyond.com/spells/2618904-banishing-smite"
+  },
+  {
+    "spell-name": "Banishment",
+    "url": "https://dndbeyond.com/spells/2618906-banishment"
+  },
+  {
+    "spell-name": "Barkskin",
+    "url": "https://dndbeyond.com/spells/2618907-barkskin"
+  },
+  {
+    "spell-name": "Beacon of Hope",
+    "url": "https://dndbeyond.com/spells/2618911-beacon-of-hope"
+  },
+  {
+    "spell-name": "Beast Sense",
+    "url": "https://dndbeyond.com/spells/2618914-beast-sense"
+  },
+  {
+    "spell-name": "Befuddlement",
+    "url": "https://dndbeyond.com/spells/2618832-befuddlement"
+  },
+  {
+    "spell-name": "Greater Restoration",
+    "url": "https://dndbeyond.com/spells/2618961-greater-restoration"
+  },
+  {
+    "spell-name": "Heal",
+    "url": "https://dndbeyond.com/spells/2618979-heal"
+  },
+  {
+    "spell-name": "Wish",
+    "url": "https://dndbeyond.com/spells/2619213-wish"
+  },
+  {
+    "spell-name": "Bestow Curse",
+    "url": "https://dndbeyond.com/spells/2618923-bestow-curse"
+  },
+  {
+    "spell-name": "Bigby’s Hand",
+    "url": "https://dndbeyond.com/spells/2618928-bigbys-hand"
+  },
+  {
+    "spell-name": "Blade Barrier",
+    "url": "https://dndbeyond.com/spells/2618929-blade-barrier"
+  },
+  {
+    "spell-name": "Blade Ward",
+    "url": "https://dndbeyond.com/spells/2618931-blade-ward"
+  },
+  {
+    "spell-name": "Bless",
+    "url": "https://dndbeyond.com/spells/2618933-bless"
+  },
+  {
+    "spell-name": "Blight",
+    "url": "https://dndbeyond.com/spells/2618934-blight"
+  },
+  {
+    "spell-name": "Blinding Smite",
+    "url": "https://dndbeyond.com/spells/2618936-blinding-smite"
+  },
+  {
+    "spell-name": "Blindness/Deafness",
+    "url": "https://dndbeyond.com/spells/2618938-blindness-deafness"
+  },
+  {
+    "spell-name": "Blink",
+    "url": "https://dndbeyond.com/spells/2618939-blink"
+  },
+  {
+    "spell-name": "Blur",
+    "url": "https://dndbeyond.com/spells/2618945-blur"
+  },
+  {
+    "spell-name": "Burning Hands",
+    "url": "https://dndbeyond.com/spells/2618946-burning-hands"
+  },
+  {
+    "spell-name": "Call Lightning",
+    "url": "https://dndbeyond.com/spells/2618949-call-lightning"
+  },
+  {
+    "spell-name": "Calm Emotions",
+    "url": "https://dndbeyond.com/spells/2618959-calm-emotions"
+  },
+  {
+    "spell-name": "Chain Lightning",
+    "url": "https://dndbeyond.com/spells/2618960-chain-lightning"
+  },
+  {
+    "spell-name": "Charm Monster",
+    "url": "https://dndbeyond.com/spells/2618963-charm-monster"
+  },
+  {
+    "spell-name": "Charm Person",
+    "url": "https://dndbeyond.com/spells/2618964-charm-person"
+  },
+  {
+    "spell-name": "Chill Touch",
+    "url": "https://dndbeyond.com/spells/2618965-chill-touch"
+  },
+  {
+    "spell-name": "Chromatic Orb",
+    "url": "https://dndbeyond.com/spells/2618966-chromatic-orb"
+  },
+  {
+    "spell-name": "Circle of Death",
+    "url": "https://dndbeyond.com/spells/2618969-circle-of-death"
+  },
+  {
+    "spell-name": "Circle of Power",
+    "url": "https://dndbeyond.com/spells/2618970-circle-of-power"
+  },
+  {
+    "spell-name": "Clairvoyance",
+    "url": "https://dndbeyond.com/spells/2618972-clairvoyance"
+  },
+  {
+    "spell-name": "See Invisibility",
+    "url": "https://dndbeyond.com/spells/2619011-see-invisibility"
+  },
+  {
+    "spell-name": "Clone",
+    "url": "https://dndbeyond.com/spells/2618973-clone"
+  },
+  {
+    "spell-name": "Cloudkill",
+    "url": "https://dndbeyond.com/spells/2618976-cloudkill"
+  },
+  {
+    "spell-name": "Gust of Wind",
+    "url": "https://dndbeyond.com/spells/2619137-gust-of-wind"
+  },
+  {
+    "spell-name": "Cloud of Daggers",
+    "url": "https://dndbeyond.com/spells/2618974-cloud-of-daggers"
+  },
+  {
+    "spell-name": "Color Spray",
+    "url": "https://dndbeyond.com/spells/2618978-color-spray"
+  },
+  {
+    "spell-name": "Command",
+    "url": "https://dndbeyond.com/spells/2618985-command"
+  },
+  {
+    "spell-name": "Commune",
+    "url": "https://dndbeyond.com/spells/2618987-commune"
+  },
+  {
+    "spell-name": "Commune with Nature",
+    "url": "https://dndbeyond.com/spells/2618989-commune-with-nature"
+  },
+  {
+    "spell-name": "Compelled Duel",
+    "url": "https://dndbeyond.com/spells/2618990-compelled-duel"
+  },
+  {
+    "spell-name": "Comprehend Languages",
+    "url": "https://dndbeyond.com/spells/2618993-comprehend-languages"
+  },
+  {
+    "spell-name": "Compulsion",
+    "url": "https://dndbeyond.com/spells/2619041-compulsion"
+  },
+  {
+    "spell-name": "Cone of Cold",
+    "url": "https://dndbeyond.com/spells/2619042-cone-of-cold"
+  },
+  {
+    "spell-name": "Confusion",
+    "url": "https://dndbeyond.com/spells/2619043-confusion"
+  },
+  {
+    "spell-name": "Conjure Animals",
+    "url": "https://dndbeyond.com/spells/2619044-conjure-animals"
+  },
+  {
+    "spell-name": "Conjure Barrage",
+    "url": "https://dndbeyond.com/spells/2619045-conjure-barrage"
+  },
+  {
+    "spell-name": "Conjure Celestial",
+    "url": "https://dndbeyond.com/spells/2619046-conjure-celestial"
+  },
+  {
+    "spell-name": "Conjure Elemental",
+    "url": "https://dndbeyond.com/spells/2619047-conjure-elemental"
+  },
+  {
+    "spell-name": "Conjure Fey",
+    "url": "https://dndbeyond.com/spells/2619048-conjure-fey"
+  },
+  {
+    "spell-name": "Conjure Minor Elementals",
+    "url": "https://dndbeyond.com/spells/2619049-conjure-minor-elementals"
+  },
+  {
+    "spell-name": "Conjure Volley",
+    "url": "https://dndbeyond.com/spells/2619050-conjure-volley"
+  },
+  {
+    "spell-name": "Conjure Woodland Beings",
+    "url": "https://dndbeyond.com/spells/2619051-conjure-woodland-beings"
+  },
+  {
+    "spell-name": "Contact Other Plane",
+    "url": "https://dndbeyond.com/spells/2619052-contact-other-plane"
+  },
+  {
+    "spell-name": "Greater Restoration",
+    "url": "https://dndbeyond.com/spells/2618961-greater-restoration"
+  },
+  {
+    "spell-name": "Contagion",
+    "url": "https://dndbeyond.com/spells/2619063-contagion"
+  },
+  {
+    "spell-name": "Contingency",
+    "url": "https://dndbeyond.com/spells/2619053-contingency"
+  },
+  {
+    "spell-name": "Water Breathing",
+    "url": "https://dndbeyond.com/spells/2619205-water-breathing"
+  },
+  {
+    "spell-name": "Continual Flame",
+    "url": "https://dndbeyond.com/spells/2619065-continual-flame"
+  },
+  {
+    "spell-name": "Control Water",
+    "url": "https://dndbeyond.com/spells/2619070-control-water"
+  },
+  {
+    "spell-name": "Control Weather",
+    "url": "https://dndbeyond.com/spells/2619054-control-weather"
+  },
+  {
+    "spell-name": "Cordon of Arrows",
+    "url": "https://dndbeyond.com/spells/2619055-cordon-of-arrows"
+  },
+  {
+    "spell-name": "Counterspell",
+    "url": "https://dndbeyond.com/spells/2619072-counterspell"
+  },
+  {
+    "spell-name": "Create Food and Water",
+    "url": "https://dndbeyond.com/spells/2619073-create-food-and-water"
+  },
+  {
+    "spell-name": "Create or Destroy Water",
+    "url": "https://dndbeyond.com/spells/2619074-create-or-destroy-water"
+  },
+  {
+    "spell-name": "Create Undead",
+    "url": "https://dndbeyond.com/spells/2619076-create-undead"
+  },
+  {
+    "spell-name": "Creation",
+    "url": "https://dndbeyond.com/spells/2619077-creation"
+  },
+  {
+    "spell-name": "Crown of Madness",
+    "url": "https://dndbeyond.com/spells/2619056-crown-of-madness"
+  },
+  {
+    "spell-name": "Crusader’s Mantle",
+    "url": "https://dndbeyond.com/spells/2619057-crusaders-mantle"
+  },
+  {
+    "spell-name": "Cure Wounds",
+    "url": "https://dndbeyond.com/spells/2619079-cure-wounds"
+  },
+  {
+    "spell-name": "Dancing Lights",
+    "url": "https://dndbeyond.com/spells/2619058-dancing-lights"
+  },
+  {
+    "spell-name": "Darkness",
+    "url": "https://dndbeyond.com/spells/2619080-darkness"
+  },
+  {
+    "spell-name": "Darkvision",
+    "url": "https://dndbeyond.com/spells/2619082-darkvision"
+  },
+  {
+    "spell-name": "Daylight",
+    "url": "https://dndbeyond.com/spells/2619083-daylight"
+  },
+  {
+    "spell-name": "Death Ward",
+    "url": "https://dndbeyond.com/spells/2619085-death-ward"
+  },
+  {
+    "spell-name": "Delayed Blast Fireball",
+    "url": "https://dndbeyond.com/spells/2619086-delayed-blast-fireball"
+  },
+  {
+    "spell-name": "Demiplane",
+    "url": "https://dndbeyond.com/spells/2619088-demiplane"
+  },
+  {
+    "spell-name": "Destructive Wave",
+    "url": "https://dndbeyond.com/spells/2619089-destructive-wave"
+  },
+  {
+    "spell-name": "Detect Evil and Good",
+    "url": "https://dndbeyond.com/spells/2619090-detect-evil-and-good"
+  },
+  {
+    "spell-name": "Hallow",
+    "url": "https://dndbeyond.com/spells/2619138-hallow"
+  },
+  {
+    "spell-name": "Detect Magic",
+    "url": "https://dndbeyond.com/spells/2619097-detect-magic"
+  },
+  {
+    "spell-name": "Detect Poison and Disease",
+    "url": "https://dndbeyond.com/spells/2619093-detect-poison-and-disease"
+  },
+  {
+    "spell-name": "Detect Thoughts",
+    "url": "https://dndbeyond.com/spells/2619099-detect-thoughts"
+  },
+  {
+    "spell-name": "Dimension Door",
+    "url": "https://dndbeyond.com/spells/2619100-dimension-door"
+  },
+  {
+    "spell-name": "Disguise Self",
+    "url": "https://dndbeyond.com/spells/2619102-disguise-self"
+  },
+  {
+    "spell-name": "Disintegrate",
+    "url": "https://dndbeyond.com/spells/2619094-disintegrate"
+  },
+  {
+    "spell-name": "Wall of Force",
+    "url": "https://dndbeyond.com/spells/2619194-wall-of-force"
+  },
+  {
+    "spell-name": "True Resurrection",
+    "url": "https://dndbeyond.com/spells/2619199-true-resurrection"
+  },
+  {
+    "spell-name": "Wish",
+    "url": "https://dndbeyond.com/spells/2619213-wish"
+  },
+  {
+    "spell-name": "Dispel Evil and Good",
+    "url": "https://dndbeyond.com/spells/2619096-dispel-evil-and-good"
+  },
+  {
+    "spell-name": "Dispel Magic",
+    "url": "https://dndbeyond.com/spells/2619103-dispel-magic"
+  },
+  {
+    "spell-name": "Dissonant Whispers",
+    "url": "https://dndbeyond.com/spells/2619104-dissonant-whispers"
+  },
+  {
+    "spell-name": "Divination",
+    "url": "https://dndbeyond.com/spells/2619140-divination"
+  },
+  {
+    "spell-name": "Divine Favor",
+    "url": "https://dndbeyond.com/spells/2619142-divine-favor"
+  },
+  {
+    "spell-name": "Divine Smite",
+    "url": "https://dndbeyond.com/spells/2618833-divine-smite"
+  },
+  {
+    "spell-name": "Divine Word",
+    "url": "https://dndbeyond.com/spells/2619144-divine-word"
+  },
+  {
+    "spell-name": "Wish",
+    "url": "https://dndbeyond.com/spells/2619213-wish"
+  },
+  {
+    "spell-name": "Dominate Beast",
+    "url": "https://dndbeyond.com/spells/2619146-dominate-beast"
+  },
+  {
+    "spell-name": "Dominate Monster",
+    "url": "https://dndbeyond.com/spells/2619147-dominate-monster"
+  },
+  {
+    "spell-name": "Dominate Person",
+    "url": "https://dndbeyond.com/spells/2619148-dominate-person"
+  },
+  {
+    "spell-name": "Dragon’s Breath",
+    "url": "https://dndbeyond.com/spells/2619150-dragons-breath"
+  },
+  {
+    "spell-name": "Drawmij’s Instant Summons",
+    "url": "https://dndbeyond.com/spells/2619154-drawmijs-instant-summons"
+  },
+  {
+    "spell-name": "Dream",
+    "url": "https://dndbeyond.com/spells/2619156-dream"
+  },
+  {
+    "spell-name": "Druidcraft",
+    "url": "https://dndbeyond.com/spells/2619158-druidcraft"
+  },
+  {
+    "spell-name": "Earthquake",
+    "url": "https://dndbeyond.com/spells/2619160-earthquake"
+  },
+  {
+    "spell-name": "Eldritch Blast",
+    "url": "https://dndbeyond.com/spells/2619161-eldritch-blast"
+  },
+  {
+    "spell-name": "Elementalism",
+    "url": "https://dndbeyond.com/spells/2618834-elementalism"
+  },
+  {
+    "spell-name": "Elemental Weapon",
+    "url": "https://dndbeyond.com/spells/2619164-elemental-weapon"
+  },
+  {
+    "spell-name": "Enhance Ability",
+    "url": "https://dndbeyond.com/spells/2619165-enhance-ability"
+  },
+  {
+    "spell-name": "Enlarge/Reduce",
+    "url": "https://dndbeyond.com/spells/2619170-enlarge-reduce"
+  },
+  {
+    "spell-name": "Ensnaring Strike",
+    "url": "https://dndbeyond.com/spells/2619172-ensnaring-strike"
+  },
+  {
+    "spell-name": "Entangle",
+    "url": "https://dndbeyond.com/spells/2619186-entangle"
+  },
+  {
+    "spell-name": "Enthrall",
+    "url": "https://dndbeyond.com/spells/2619192-enthrall"
+  },
+  {
+    "spell-name": "Etherealness",
+    "url": "https://dndbeyond.com/spells/2619193-etherealness"
+  },
+  {
+    "spell-name": "Evard’s Black Tentacles",
+    "url": "https://dndbeyond.com/spells/2619187-evards-black-tentacles"
+  },
+  {
+    "spell-name": "Expeditious Retreat",
+    "url": "https://dndbeyond.com/spells/2619189-expeditious-retreat"
+  },
+  {
+    "spell-name": "Eyebite",
+    "url": "https://dndbeyond.com/spells/2619191-eyebite"
+  },
+  {
+    "spell-name": "Fabricate",
+    "url": "https://dndbeyond.com/spells/2618848-fabricate"
+  },
+  {
+    "spell-name": "Faerie Fire",
+    "url": "https://dndbeyond.com/spells/2618858-faerie-fire"
+  },
+  {
+    "spell-name": "False Life",
+    "url": "https://dndbeyond.com/spells/2618866-false-life"
+  },
+  {
+    "spell-name": "Fear",
+    "url": "https://dndbeyond.com/spells/2618872-fear"
+  },
+  {
+    "spell-name": "Feather Fall",
+    "url": "https://dndbeyond.com/spells/2618874-feather-fall"
+  },
+  {
+    "spell-name": "Feign Death",
+    "url": "https://dndbeyond.com/spells/2618873-feign-death"
+  },
+  {
+    "spell-name": "Find Familiar",
+    "url": "https://dndbeyond.com/spells/2618877-find-familiar"
+  },
+  {
+    "spell-name": "Find Steed",
+    "url": "https://dndbeyond.com/spells/2618879-find-steed"
+  },
+  {
+    "spell-name": "Find the Path",
+    "url": "https://dndbeyond.com/spells/2618881-find-the-path"
+  },
+  {
+    "spell-name": "Find Traps",
+    "url": "https://dndbeyond.com/spells/2618883-find-traps"
+  },
+  {
+    "spell-name": "Alarm",
+    "url": "https://dndbeyond.com/spells/2619222-alarm"
+  },
+  {
+    "spell-name": "Glyph of Warding",
+    "url": "https://dndbeyond.com/spells/2618951-glyph-of-warding"
+  },
+  {
+    "spell-name": "Finger of Death",
+    "url": "https://dndbeyond.com/spells/2618885-finger-of-death"
+  },
+  {
+    "spell-name": "Fireball",
+    "url": "https://dndbeyond.com/spells/2618887-fireball"
+  },
+  {
+    "spell-name": "Fire Bolt",
+    "url": "https://dndbeyond.com/spells/2618890-fire-bolt"
+  },
+  {
+    "spell-name": "Fire Shield",
+    "url": "https://dndbeyond.com/spells/2618894-fire-shield"
+  },
+  {
+    "spell-name": "Fire Storm",
+    "url": "https://dndbeyond.com/spells/2618896-fire-storm"
+  },
+  {
+    "spell-name": "Flame Blade",
+    "url": "https://dndbeyond.com/spells/2618899-flame-blade"
+  },
+  {
+    "spell-name": "Flame Strike",
+    "url": "https://dndbeyond.com/spells/2618920-flame-strike"
+  },
+  {
+    "spell-name": "Flaming Sphere",
+    "url": "https://dndbeyond.com/spells/2618919-flaming-sphere"
+  },
+  {
+    "spell-name": "Flesh to Stone",
+    "url": "https://dndbeyond.com/spells/2618905-flesh-to-stone"
+  },
+  {
+    "spell-name": "Greater Restoration",
+    "url": "https://dndbeyond.com/spells/2618961-greater-restoration"
+  },
+  {
+    "spell-name": "Fly",
+    "url": "https://dndbeyond.com/spells/2618909-fly"
+  },
+  {
+    "spell-name": "Fog Cloud",
+    "url": "https://dndbeyond.com/spells/2618910-fog-cloud"
+  },
+  {
+    "spell-name": "Gust of Wind",
+    "url": "https://dndbeyond.com/spells/2619137-gust-of-wind"
+  },
+  {
+    "spell-name": "Forbiddance",
+    "url": "https://dndbeyond.com/spells/2618913-forbiddance"
+  },
+  {
+    "spell-name": "Gate",
+    "url": "https://dndbeyond.com/spells/2618932-gate"
+  },
+  {
+    "spell-name": "Plane Shift",
+    "url": "https://dndbeyond.com/spells/2618867-plane-shift"
+  },
+  {
+    "spell-name": "Forcecage",
+    "url": "https://dndbeyond.com/spells/2618916-forcecage"
+  },
+  {
+    "spell-name": "Dispel Magic",
+    "url": "https://dndbeyond.com/spells/2619103-dispel-magic"
+  },
+  {
+    "spell-name": "Foresight",
+    "url": "https://dndbeyond.com/spells/2618918-foresight"
+  },
+  {
+    "spell-name": "Fount of Moonlight",
+    "url": "https://dndbeyond.com/spells/2618835-fount-of-moonlight"
+  },
+  {
+    "spell-name": "Freedom of Movement",
+    "url": "https://dndbeyond.com/spells/2618921-freedom-of-movement"
+  },
+  {
+    "spell-name": "Friends",
+    "url": "https://dndbeyond.com/spells/2618924-friends"
+  },
+  {
+    "spell-name": "Gaseous Form",
+    "url": "https://dndbeyond.com/spells/2618927-gaseous-form"
+  },
+  {
+    "spell-name": "Gate",
+    "url": "https://dndbeyond.com/spells/2618932-gate"
+  },
+  {
+    "spell-name": "Geas",
+    "url": "https://dndbeyond.com/spells/2618940-geas"
+  },
+  {
+    "spell-name": "Remove Curse",
+    "url": "https://dndbeyond.com/spells/2618943-remove-curse"
+  },
+  {
+    "spell-name": "Greater Restoration",
+    "url": "https://dndbeyond.com/spells/2618961-greater-restoration"
+  },
+  {
+    "spell-name": "Wish",
+    "url": "https://dndbeyond.com/spells/2619213-wish"
+  },
+  {
+    "spell-name": "Gentle Repose",
+    "url": "https://dndbeyond.com/spells/2618942-gentle-repose"
+  },
+  {
+    "spell-name": "Raise Dead",
+    "url": "https://dndbeyond.com/spells/2618922-raise-dead"
+  },
+  {
+    "spell-name": "Giant Insect",
+    "url": "https://dndbeyond.com/spells/2618944-giant-insect"
+  },
+  {
+    "spell-name": "Glibness",
+    "url": "https://dndbeyond.com/spells/2618948-glibness"
+  },
+  {
+    "spell-name": "Globe of Invulnerability",
+    "url": "https://dndbeyond.com/spells/2618950-globe-of-invulnerability"
+  },
+  {
+    "spell-name": "Glyph of Warding",
+    "url": "https://dndbeyond.com/spells/2618951-glyph-of-warding"
+  },
+  {
+    "spell-name": "Goodberry",
+    "url": "https://dndbeyond.com/spells/2618952-goodberry"
+  },
+  {
+    "spell-name": "Grasping Vine",
+    "url": "https://dndbeyond.com/spells/2618955-grasping-vine"
+  },
+  {
+    "spell-name": "Grease",
+    "url": "https://dndbeyond.com/spells/2618957-grease"
+  },
+  {
+    "spell-name": "Greater Invisibility",
+    "url": "https://dndbeyond.com/spells/2618958-greater-invisibility"
+  },
+  {
+    "spell-name": "Greater Restoration",
+    "url": "https://dndbeyond.com/spells/2618961-greater-restoration"
+  },
+  {
+    "spell-name": "Guardian of Faith",
+    "url": "https://dndbeyond.com/spells/2619135-guardian-of-faith"
+  },
+  {
+    "spell-name": "Guards and Wards",
+    "url": "https://dndbeyond.com/spells/2618968-guards-and-wards"
+  },
+  {
+    "spell-name": "Dispel Magic",
+    "url": "https://dndbeyond.com/spells/2619103-dispel-magic"
+  },
+  {
+    "spell-name": "Arcane Lock",
+    "url": "https://dndbeyond.com/spells/2618868-arcane-lock"
+  },
+  {
+    "spell-name": "Web",
+    "url": "https://dndbeyond.com/spells/2619208-web"
+  },
+  {
+    "spell-name": "Dancing Lights",
+    "url": "https://dndbeyond.com/spells/2619058-dancing-lights"
+  },
+  {
+    "spell-name": "Magic Mouth",
+    "url": "https://dndbeyond.com/spells/2619023-magic-mouth"
+  },
+  {
+    "spell-name": "Stinking Cloud",
+    "url": "https://dndbeyond.com/spells/2619091-stinking-cloud"
+  },
+  {
+    "spell-name": "Gust of Wind",
+    "url": "https://dndbeyond.com/spells/2619137-gust-of-wind"
+  },
+  {
+    "spell-name": "Suggestion",
+    "url": "https://dndbeyond.com/spells/2619101-suggestion"
+  },
+  {
+    "spell-name": "Guidance",
+    "url": "https://dndbeyond.com/spells/2618971-guidance"
+  },
+  {
+    "spell-name": "Guiding Bolt",
+    "url": "https://dndbeyond.com/spells/2619136-guiding-bolt"
+  },
+  {
+    "spell-name": "Gust of Wind",
+    "url": "https://dndbeyond.com/spells/2619137-gust-of-wind"
+  },
+  {
+    "spell-name": "Hail of Thorns",
+    "url": "https://dndbeyond.com/spells/2618975-hail-of-thorns"
+  },
+  {
+    "spell-name": "Hallow",
+    "url": "https://dndbeyond.com/spells/2619138-hallow"
+  },
+  {
+    "spell-name": "Hallucinatory Terrain",
+    "url": "https://dndbeyond.com/spells/2619139-hallucinatory-terrain"
+  },
+  {
+    "spell-name": "Harm",
+    "url": "https://dndbeyond.com/spells/2618977-harm"
+  },
+  {
+    "spell-name": "Haste",
+    "url": "https://dndbeyond.com/spells/2619141-haste"
+  },
+  {
+    "spell-name": "Heal",
+    "url": "https://dndbeyond.com/spells/2618979-heal"
+  },
+  {
+    "spell-name": "Healing Word",
+    "url": "https://dndbeyond.com/spells/2619143-healing-word"
+  },
+  {
+    "spell-name": "Heat Metal",
+    "url": "https://dndbeyond.com/spells/2619145-heat-metal"
+  },
+  {
+    "spell-name": "Hellish Rebuke",
+    "url": "https://dndbeyond.com/spells/2619149-hellish-rebuke"
+  },
+  {
+    "spell-name": "Heroes’ Feast",
+    "url": "https://dndbeyond.com/spells/2618983-heroes-feast"
+  },
+  {
+    "spell-name": "Heroism",
+    "url": "https://dndbeyond.com/spells/2619151-heroism"
+  },
+  {
+    "spell-name": "Hex",
+    "url": "https://dndbeyond.com/spells/2618988-hex"
+  },
+  {
+    "spell-name": "Hold Monster",
+    "url": "https://dndbeyond.com/spells/2619152-hold-monster"
+  },
+  {
+    "spell-name": "Hold Person",
+    "url": "https://dndbeyond.com/spells/2619153-hold-person"
+  },
+  {
+    "spell-name": "Holy Aura",
+    "url": "https://dndbeyond.com/spells/2619155-holy-aura"
+  },
+  {
+    "spell-name": "Hunger of Hadar",
+    "url": "https://dndbeyond.com/spells/2619162-hunger-of-hadar"
+  },
+  {
+    "spell-name": "Hunter’s Mark",
+    "url": "https://dndbeyond.com/spells/2619166-hunters-mark"
+  },
+  {
+    "spell-name": "Hypnotic Pattern",
+    "url": "https://dndbeyond.com/spells/2619168-hypnotic-pattern"
+  },
+  {
+    "spell-name": "Ice Knife",
+    "url": "https://dndbeyond.com/spells/2619171-ice-knife"
+  },
+  {
+    "spell-name": "Ice Storm",
+    "url": "https://dndbeyond.com/spells/2619178-ice-storm"
+  },
+  {
+    "spell-name": "Identify",
+    "url": "https://dndbeyond.com/spells/2619180-identify"
+  },
+  {
+    "spell-name": "Illusory Script",
+    "url": "https://dndbeyond.com/spells/2619173-illusory-script"
+  },
+  {
+    "spell-name": "Imprisonment",
+    "url": "https://dndbeyond.com/spells/2619175-imprisonment"
+  },
+  {
+    "spell-name": "Dispel Magic",
+    "url": "https://dndbeyond.com/spells/2619103-dispel-magic"
+  },
+  {
+    "spell-name": "Incendiary Cloud",
+    "url": "https://dndbeyond.com/spells/2619177-incendiary-cloud"
+  },
+  {
+    "spell-name": "Gust of Wind",
+    "url": "https://dndbeyond.com/spells/2619137-gust-of-wind"
+  },
+  {
+    "spell-name": "Inflict Wounds",
+    "url": "https://dndbeyond.com/spells/2619181-inflict-wounds"
+  },
+  {
+    "spell-name": "Insect Plague",
+    "url": "https://dndbeyond.com/spells/2619183-insect-plague"
+  },
+  {
+    "spell-name": "Invisibility",
+    "url": "https://dndbeyond.com/spells/2619116-invisibility"
+  },
+  {
+    "spell-name": "Jallarzi’s Storm of Radiance",
+    "url": "https://dndbeyond.com/spells/2618836-jallarzis-storm-of-radiance"
+  },
+  {
+    "spell-name": "Jump",
+    "url": "https://dndbeyond.com/spells/2618991-jump"
+  },
+  {
+    "spell-name": "Knock",
+    "url": "https://dndbeyond.com/spells/2618992-knock"
+  },
+  {
+    "spell-name": "Arcane Lock",
+    "url": "https://dndbeyond.com/spells/2618868-arcane-lock"
+  },
+  {
+    "spell-name": "Legend Lore",
+    "url": "https://dndbeyond.com/spells/2619010-legend-lore"
+  },
+  {
+    "spell-name": "Leomund’s Secret Chest",
+    "url": "https://dndbeyond.com/spells/2619012-leomunds-secret-chest"
+  },
+  {
+    "spell-name": "Leomund’s Tiny Hut",
+    "url": "https://dndbeyond.com/spells/2619013-leomunds-tiny-hut"
+  },
+  {
+    "spell-name": "Lesser Restoration",
+    "url": "https://dndbeyond.com/spells/2619016-lesser-restoration"
+  },
+  {
+    "spell-name": "Levitate",
+    "url": "https://dndbeyond.com/spells/2618994-levitate"
+  },
+  {
+    "spell-name": "Light",
+    "url": "https://dndbeyond.com/spells/2618996-light"
+  },
+  {
+    "spell-name": "Lightning Arrow",
+    "url": "https://dndbeyond.com/spells/2618997-lightning-arrow"
+  },
+  {
+    "spell-name": "Lightning Bolt",
+    "url": "https://dndbeyond.com/spells/2618999-lightning-bolt"
+  },
+  {
+    "spell-name": "Locate Animals or Plants",
+    "url": "https://dndbeyond.com/spells/2619000-locate-animals-or-plants"
+  },
+  {
+    "spell-name": "Locate Creature",
+    "url": "https://dndbeyond.com/spells/2619001-locate-creature"
+  },
+  {
+    "spell-name": "Flesh to Stone",
+    "url": "https://dndbeyond.com/spells/2618905-flesh-to-stone"
+  },
+  {
+    "spell-name": "Polymorph",
+    "url": "https://dndbeyond.com/spells/2618876-polymorph"
+  },
+  {
+    "spell-name": "Locate Object",
+    "url": "https://dndbeyond.com/spells/2619002-locate-object"
+  },
+  {
+    "spell-name": "Longstrider",
+    "url": "https://dndbeyond.com/spells/2619004-longstrider"
+  },
+  {
+    "spell-name": "Mage Armor",
+    "url": "https://dndbeyond.com/spells/2619006-mage-armor"
+  },
+  {
+    "spell-name": "Mage Hand",
+    "url": "https://dndbeyond.com/spells/2619008-mage-hand"
+  },
+  {
+    "spell-name": "Magic Circle",
+    "url": "https://dndbeyond.com/spells/2619018-magic-circle"
+  },
+  {
+    "spell-name": "Magic Jar",
+    "url": "https://dndbeyond.com/spells/2619021-magic-jar"
+  },
+  {
+    "spell-name": "Protection from Evil and Good",
+    "url": "https://dndbeyond.com/spells/2618912-protection-from-evil-and-good"
+  },
+  {
+    "spell-name": "Magic Circle",
+    "url": "https://dndbeyond.com/spells/2619018-magic-circle"
+  },
+  {
+    "spell-name": "Magic Missile",
+    "url": "https://dndbeyond.com/spells/2619022-magic-missile"
+  },
+  {
+    "spell-name": "Magic Mouth",
+    "url": "https://dndbeyond.com/spells/2619023-magic-mouth"
+  },
+  {
+    "spell-name": "Magic Weapon",
+    "url": "https://dndbeyond.com/spells/2619024-magic-weapon"
+  },
+  {
+    "spell-name": "Major Image",
+    "url": "https://dndbeyond.com/spells/2619025-major-image"
+  },
+  {
+    "spell-name": "Mass Cure Wounds",
+    "url": "https://dndbeyond.com/spells/2619026-mass-cure-wounds"
+  },
+  {
+    "spell-name": "Mass Heal",
+    "url": "https://dndbeyond.com/spells/2619027-mass-heal"
+  },
+  {
+    "spell-name": "Mass Healing Word",
+    "url": "https://dndbeyond.com/spells/2619028-mass-healing-word"
+  },
+  {
+    "spell-name": "Mass Suggestion",
+    "url": "https://dndbeyond.com/spells/2619029-mass-suggestion"
+  },
+  {
+    "spell-name": "Maze",
+    "url": "https://dndbeyond.com/spells/2619030-maze"
+  },
+  {
+    "spell-name": "Meld into Stone",
+    "url": "https://dndbeyond.com/spells/2619031-meld-into-stone"
+  },
+  {
+    "spell-name": "Melf’s Acid Arrow",
+    "url": "https://dndbeyond.com/spells/2619032-melfs-acid-arrow"
+  },
+  {
+    "spell-name": "Mending",
+    "url": "https://dndbeyond.com/spells/2619033-mending"
+  },
+  {
+    "spell-name": "Message",
+    "url": "https://dndbeyond.com/spells/2619034-message"
+  },
+  {
+    "spell-name": "Meteor Swarm",
+    "url": "https://dndbeyond.com/spells/2619035-meteor-swarm"
+  },
+  {
+    "spell-name": "Mind Blank",
+    "url": "https://dndbeyond.com/spells/2619036-mind-blank"
+  },
+  {
+    "spell-name": "Wish",
+    "url": "https://dndbeyond.com/spells/2619213-wish"
+  },
+  {
+    "spell-name": "Mind Sliver",
+    "url": "https://dndbeyond.com/spells/2619037-mind-sliver"
+  },
+  {
+    "spell-name": "Mind Spike",
+    "url": "https://dndbeyond.com/spells/2619038-mind-spike"
+  },
+  {
+    "spell-name": "Minor Illusion",
+    "url": "https://dndbeyond.com/spells/2619039-minor-illusion"
+  },
+  {
+    "spell-name": "Mirage Arcane",
+    "url": "https://dndbeyond.com/spells/2619040-mirage-arcane"
+  },
+  {
+    "spell-name": "Mirror Image",
+    "url": "https://dndbeyond.com/spells/2619060-mirror-image"
+  },
+  {
+    "spell-name": "Mislead",
+    "url": "https://dndbeyond.com/spells/2619131-mislead"
+  },
+  {
+    "spell-name": "Misty Step",
+    "url": "https://dndbeyond.com/spells/2619133-misty-step"
+  },
+  {
+    "spell-name": "Modify Memory",
+    "url": "https://dndbeyond.com/spells/2619109-modify-memory"
+  },
+  {
+    "spell-name": "Remove Curse",
+    "url": "https://dndbeyond.com/spells/2618943-remove-curse"
+  },
+  {
+    "spell-name": "Greater Restoration",
+    "url": "https://dndbeyond.com/spells/2618961-greater-restoration"
+  },
+  {
+    "spell-name": "Moonbeam",
+    "url": "https://dndbeyond.com/spells/2619134-moonbeam"
+  },
+  {
+    "spell-name": "Polymorph",
+    "url": "https://dndbeyond.com/spells/2618876-polymorph"
+  },
+  {
+    "spell-name": "Mordenkainen’s Faithful Hound",
+    "url": "https://dndbeyond.com/spells/2619110-mordenkainens-faithful-hound"
+  },
+  {
+    "spell-name": "Mordenkainen’s Magnificent Mansion",
+    "url": "https://dndbeyond.com/spells/2619112-mordenkainens-magnificent-mansion"
+  },
+  {
+    "spell-name": "Mordenkainen’s Private Sanctum",
+    "url": "https://dndbeyond.com/spells/2619114-mordenkainens-private-sanctum"
+  },
+  {
+    "spell-name": "Mordenkainen’s Sword",
+    "url": "https://dndbeyond.com/spells/2619118-mordenkainens-sword"
+  },
+  {
+    "spell-name": "Move Earth",
+    "url": "https://dndbeyond.com/spells/2619120-move-earth"
+  },
+  {
+    "spell-name": "Nondetection",
+    "url": "https://dndbeyond.com/spells/2619122-nondetection"
+  },
+  {
+    "spell-name": "Nystul’s Magic Aura",
+    "url": "https://dndbeyond.com/spells/2619124-nystuls-magic-aura"
+  },
+  {
+    "spell-name": "Detect Magic",
+    "url": "https://dndbeyond.com/spells/2619097-detect-magic"
+  },
+  {
+    "spell-name": "Otiluke’s Freezing Sphere",
+    "url": "https://dndbeyond.com/spells/2619126-otilukes-freezing-sphere"
+  },
+  {
+    "spell-name": "Otiluke’s Resilient Sphere",
+    "url": "https://dndbeyond.com/spells/2619128-otilukes-resilient-sphere"
+  },
+  {
+    "spell-name": "Disintegrate",
+    "url": "https://dndbeyond.com/spells/2619094-disintegrate"
+  },
+  {
+    "spell-name": "Otto’s Irresistible Dance",
+    "url": "https://dndbeyond.com/spells/2619130-ottos-irresistible-dance"
+  },
+  {
+    "spell-name": "Passwall",
+    "url": "https://dndbeyond.com/spells/2618852-passwall"
+  },
+  {
+    "spell-name": "Pass without Trace",
+    "url": "https://dndbeyond.com/spells/2618849-pass-without-trace"
+  },
+  {
+    "spell-name": "Phantasmal Force",
+    "url": "https://dndbeyond.com/spells/2618854-phantasmal-force"
+  },
+  {
+    "spell-name": "Phantasmal Killer",
+    "url": "https://dndbeyond.com/spells/2618857-phantasmal-killer"
+  },
+  {
+    "spell-name": "Phantom Steed",
+    "url": "https://dndbeyond.com/spells/2618859-phantom-steed"
+  },
+  {
+    "spell-name": "Planar Ally",
+    "url": "https://dndbeyond.com/spells/2618861-planar-ally"
+  },
+  {
+    "spell-name": "Planar Binding",
+    "url": "https://dndbeyond.com/spells/2618864-planar-binding"
+  },
+  {
+    "spell-name": "Magic Circle",
+    "url": "https://dndbeyond.com/spells/2619018-magic-circle"
+  },
+  {
+    "spell-name": "Plane Shift",
+    "url": "https://dndbeyond.com/spells/2618867-plane-shift"
+  },
+  {
+    "spell-name": "Plant Growth",
+    "url": "https://dndbeyond.com/spells/2618869-plant-growth"
+  },
+  {
+    "spell-name": "Poison Spray",
+    "url": "https://dndbeyond.com/spells/2618875-poison-spray"
+  },
+  {
+    "spell-name": "Polymorph",
+    "url": "https://dndbeyond.com/spells/2618876-polymorph"
+  },
+  {
+    "spell-name": "Power Word Fortify",
+    "url": "https://dndbeyond.com/spells/2618837-power-word-fortify"
+  },
+  {
+    "spell-name": "Power Word Heal",
+    "url": "https://dndbeyond.com/spells/2618880-power-word-heal"
+  },
+  {
+    "spell-name": "Power Word Kill",
+    "url": "https://dndbeyond.com/spells/2618886-power-word-kill"
+  },
+  {
+    "spell-name": "Power Word Stun",
+    "url": "https://dndbeyond.com/spells/2618889-power-word-stun"
+  },
+  {
+    "spell-name": "Prayer of Healing",
+    "url": "https://dndbeyond.com/spells/2618892-prayer-of-healing"
+  },
+  {
+    "spell-name": "Prestidigitation",
+    "url": "https://dndbeyond.com/spells/2618893-prestidigitation"
+  },
+  {
+    "spell-name": "Prismatic Spray",
+    "url": "https://dndbeyond.com/spells/2618895-prismatic-spray"
+  },
+  {
+    "spell-name": "Greater Restoration",
+    "url": "https://dndbeyond.com/spells/2618961-greater-restoration"
+  },
+  {
+    "spell-name": "Prismatic Wall",
+    "url": "https://dndbeyond.com/spells/2618898-prismatic-wall"
+  },
+  {
+    "spell-name": "Antimagic Field",
+    "url": "https://dndbeyond.com/spells/2618860-antimagic-field"
+  },
+  {
+    "spell-name": "Dispel Magic",
+    "url": "https://dndbeyond.com/spells/2619103-dispel-magic"
+  },
+  {
+    "spell-name": "Gust of Wind",
+    "url": "https://dndbeyond.com/spells/2619137-gust-of-wind"
+  },
+  {
+    "spell-name": "Passwall",
+    "url": "https://dndbeyond.com/spells/2618852-passwall"
+  },
+  {
+    "spell-name": "Greater Restoration",
+    "url": "https://dndbeyond.com/spells/2618961-greater-restoration"
+  },
+  {
+    "spell-name": "Daylight",
+    "url": "https://dndbeyond.com/spells/2619083-daylight"
+  },
+  {
+    "spell-name": "Dispel Magic",
+    "url": "https://dndbeyond.com/spells/2619103-dispel-magic"
+  },
+  {
+    "spell-name": "Produce Flame",
+    "url": "https://dndbeyond.com/spells/2618901-produce-flame"
+  },
+  {
+    "spell-name": "Programmed Illusion",
+    "url": "https://dndbeyond.com/spells/2618902-programmed-illusion"
+  },
+  {
+    "spell-name": "Project Image",
+    "url": "https://dndbeyond.com/spells/2618903-project-image"
+  },
+  {
+    "spell-name": "Protection from Energy",
+    "url": "https://dndbeyond.com/spells/2618908-protection-from-energy"
+  },
+  {
+    "spell-name": "Protection from Evil and Good",
+    "url": "https://dndbeyond.com/spells/2618912-protection-from-evil-and-good"
+  },
+  {
+    "spell-name": "Protection from Poison",
+    "url": "https://dndbeyond.com/spells/2618915-protection-from-poison"
+  },
+  {
+    "spell-name": "Purify Food and Drink",
+    "url": "https://dndbeyond.com/spells/2618917-purify-food-and-drink"
+  },
+  {
+    "spell-name": "Raise Dead",
+    "url": "https://dndbeyond.com/spells/2618922-raise-dead"
+  },
+  {
+    "spell-name": "Rary’s Telepathic Bond",
+    "url": "https://dndbeyond.com/spells/2618925-rarys-telepathic-bond"
+  },
+  {
+    "spell-name": "Ray of Enfeeblement",
+    "url": "https://dndbeyond.com/spells/2618926-ray-of-enfeeblement"
+  },
+  {
+    "spell-name": "Ray of Frost",
+    "url": "https://dndbeyond.com/spells/2618930-ray-of-frost"
+  },
+  {
+    "spell-name": "Ray of Sickness",
+    "url": "https://dndbeyond.com/spells/2618935-ray-of-sickness"
+  },
+  {
+    "spell-name": "Regenerate",
+    "url": "https://dndbeyond.com/spells/2618937-regenerate"
+  },
+  {
+    "spell-name": "Reincarnate",
+    "url": "https://dndbeyond.com/spells/2618941-reincarnate"
+  },
+  {
+    "spell-name": "Remove Curse",
+    "url": "https://dndbeyond.com/spells/2618943-remove-curse"
+  },
+  {
+    "spell-name": "Resistance",
+    "url": "https://dndbeyond.com/spells/2618947-resistance"
+  },
+  {
+    "spell-name": "Resurrection",
+    "url": "https://dndbeyond.com/spells/2618953-resurrection"
+  },
+  {
+    "spell-name": "Reverse Gravity",
+    "url": "https://dndbeyond.com/spells/2618954-reverse-gravity"
+  },
+  {
+    "spell-name": "Revivify",
+    "url": "https://dndbeyond.com/spells/2618956-revivify"
+  },
+  {
+    "spell-name": "Rope Trick",
+    "url": "https://dndbeyond.com/spells/2618962-rope-trick"
+  },
+  {
+    "spell-name": "Sacred Flame",
+    "url": "https://dndbeyond.com/spells/2618967-sacred-flame"
+  },
+  {
+    "spell-name": "Sanctuary",
+    "url": "https://dndbeyond.com/spells/2619003-sanctuary"
+  },
+  {
+    "spell-name": "Scorching Ray",
+    "url": "https://dndbeyond.com/spells/2619005-scorching-ray"
+  },
+  {
+    "spell-name": "Scrying",
+    "url": "https://dndbeyond.com/spells/2619007-scrying"
+  },
+  {
+    "spell-name": "Searing Smite",
+    "url": "https://dndbeyond.com/spells/2619009-searing-smite"
+  },
+  {
+    "spell-name": "See Invisibility",
+    "url": "https://dndbeyond.com/spells/2619011-see-invisibility"
+  },
+  {
+    "spell-name": "Seeming",
+    "url": "https://dndbeyond.com/spells/2619014-seeming"
+  },
+  {
+    "spell-name": "Sending",
+    "url": "https://dndbeyond.com/spells/2619015-sending"
+  },
+  {
+    "spell-name": "Sequester",
+    "url": "https://dndbeyond.com/spells/2618980-sequester"
+  },
+  {
+    "spell-name": "Shapechange",
+    "url": "https://dndbeyond.com/spells/2618982-shapechange"
+  },
+  {
+    "spell-name": "Shatter",
+    "url": "https://dndbeyond.com/spells/2619017-shatter"
+  },
+  {
+    "spell-name": "Shield",
+    "url": "https://dndbeyond.com/spells/2619019-shield"
+  },
+  {
+    "spell-name": "Magic Missile",
+    "url": "https://dndbeyond.com/spells/2619022-magic-missile"
+  },
+  {
+    "spell-name": "Magic Missile",
+    "url": "https://dndbeyond.com/spells/2619022-magic-missile"
+  },
+  {
+    "spell-name": "Shield of Faith",
+    "url": "https://dndbeyond.com/spells/2619020-shield-of-faith"
+  },
+  {
+    "spell-name": "Shillelagh",
+    "url": "https://dndbeyond.com/spells/2618984-shillelagh"
+  },
+  {
+    "spell-name": "Shining Smite",
+    "url": "https://dndbeyond.com/spells/2618838-shining-smite"
+  },
+  {
+    "spell-name": "Shocking Grasp",
+    "url": "https://dndbeyond.com/spells/2618986-shocking-grasp"
+  },
+  {
+    "spell-name": "Silence",
+    "url": "https://dndbeyond.com/spells/2619061-silence"
+  },
+  {
+    "spell-name": "Silent Image",
+    "url": "https://dndbeyond.com/spells/2619062-silent-image"
+  },
+  {
+    "spell-name": "Simulacrum",
+    "url": "https://dndbeyond.com/spells/2618995-simulacrum"
+  },
+  {
+    "spell-name": "Sleep",
+    "url": "https://dndbeyond.com/spells/2619064-sleep"
+  },
+  {
+    "spell-name": "Sleet Storm",
+    "url": "https://dndbeyond.com/spells/2618998-sleet-storm"
+  },
+  {
+    "spell-name": "Slow",
+    "url": "https://dndbeyond.com/spells/2619066-slow"
+  },
+  {
+    "spell-name": "Sorcerous Burst",
+    "url": "https://dndbeyond.com/spells/2618839-sorcerous-burst"
+  },
+  {
+    "spell-name": "Spare the Dying",
+    "url": "https://dndbeyond.com/spells/2619067-spare-the-dying"
+  },
+  {
+    "spell-name": "Speak with Animals",
+    "url": "https://dndbeyond.com/spells/2619059-speak-with-animals"
+  },
+  {
+    "spell-name": "Speak with Dead",
+    "url": "https://dndbeyond.com/spells/2619068-speak-with-dead"
+  },
+  {
+    "spell-name": "Speak with Plants",
+    "url": "https://dndbeyond.com/spells/2619069-speak-with-plants"
+  },
+  {
+    "spell-name": "Spider Climb",
+    "url": "https://dndbeyond.com/spells/2619071-spider-climb"
+  },
+  {
+    "spell-name": "Spike Growth",
+    "url": "https://dndbeyond.com/spells/2619075-spike-growth"
+  },
+  {
+    "spell-name": "Spirit Guardians",
+    "url": "https://dndbeyond.com/spells/2619078-spirit-guardians"
+  },
+  {
+    "spell-name": "Spiritual Weapon",
+    "url": "https://dndbeyond.com/spells/2619081-spiritual-weapon"
+  },
+  {
+    "spell-name": "Staggering Smite",
+    "url": "https://dndbeyond.com/spells/2619084-staggering-smite"
+  },
+  {
+    "spell-name": "Starry Wisp",
+    "url": "https://dndbeyond.com/spells/2618840-starry-wisp"
+  },
+  {
+    "spell-name": "Steel Wind Strike",
+    "url": "https://dndbeyond.com/spells/2619087-steel-wind-strike"
+  },
+  {
+    "spell-name": "Stinking Cloud",
+    "url": "https://dndbeyond.com/spells/2619091-stinking-cloud"
+  },
+  {
+    "spell-name": "Gust of Wind",
+    "url": "https://dndbeyond.com/spells/2619137-gust-of-wind"
+  },
+  {
+    "spell-name": "Stone Shape",
+    "url": "https://dndbeyond.com/spells/2619092-stone-shape"
+  },
+  {
+    "spell-name": "Stoneskin",
+    "url": "https://dndbeyond.com/spells/2619095-stoneskin"
+  },
+  {
+    "spell-name": "Storm of Vengeance",
+    "url": "https://dndbeyond.com/spells/2619098-storm-of-vengeance"
+  },
+  {
+    "spell-name": "Suggestion",
+    "url": "https://dndbeyond.com/spells/2619101-suggestion"
+  },
+  {
+    "spell-name": "Summon Aberration",
+    "url": "https://dndbeyond.com/spells/2619105-summon-aberration"
+  },
+  {
+    "spell-name": "Summon Beast",
+    "url": "https://dndbeyond.com/spells/2619106-summon-beast"
+  },
+  {
+    "spell-name": "Summon Celestial",
+    "url": "https://dndbeyond.com/spells/2619108-summon-celestial"
+  },
+  {
+    "spell-name": "Summon Construct",
+    "url": "https://dndbeyond.com/spells/2619111-summon-construct"
+  },
+  {
+    "spell-name": "Summon Dragon",
+    "url": "https://dndbeyond.com/spells/2618843-summon-dragon"
+  },
+  {
+    "spell-name": "Summon Elemental",
+    "url": "https://dndbeyond.com/spells/2619113-summon-elemental"
+  },
+  {
+    "spell-name": "Summon Fey",
+    "url": "https://dndbeyond.com/spells/2619115-summon-fey"
+  },
+  {
+    "spell-name": "Summon Fiend",
+    "url": "https://dndbeyond.com/spells/2619117-summon-fiend"
+  },
+  {
+    "spell-name": "Summon Undead",
+    "url": "https://dndbeyond.com/spells/2619119-summon-undead"
+  },
+  {
+    "spell-name": "Sunbeam",
+    "url": "https://dndbeyond.com/spells/2619121-sunbeam"
+  },
+  {
+    "spell-name": "Sunburst",
+    "url": "https://dndbeyond.com/spells/2619123-sunburst"
+  },
+  {
+    "spell-name": "Swift Quiver",
+    "url": "https://dndbeyond.com/spells/2619125-swift-quiver"
+  },
+  {
+    "spell-name": "Symbol",
+    "url": "https://dndbeyond.com/spells/2619127-symbol"
+  },
+  {
+    "spell-name": "Synaptic Static",
+    "url": "https://dndbeyond.com/spells/2619129-synaptic-static"
+  },
+  {
+    "spell-name": "Tasha’s Bubbling Cauldron",
+    "url": "https://dndbeyond.com/spells/2618841-tashas-bubbling-cauldron"
+  },
+  {
+    "spell-name": "Tasha’s Hideous Laughter",
+    "url": "https://dndbeyond.com/spells/2619132-tashas-hideous-laughter"
+  },
+  {
+    "spell-name": "Telekinesis",
+    "url": "https://dndbeyond.com/spells/2619157-telekinesis"
+  },
+  {
+    "spell-name": "Telepathy",
+    "url": "https://dndbeyond.com/spells/2619159-telepathy"
+  },
+  {
+    "spell-name": "Teleport",
+    "url": "https://dndbeyond.com/spells/2619163-teleport"
+  },
+  {
+    "spell-name": "Teleportation Circle",
+    "url": "https://dndbeyond.com/spells/2619167-teleportation-circle"
+  },
+  {
+    "spell-name": "Tenser’s Floating Disk",
+    "url": "https://dndbeyond.com/spells/2619169-tensers-floating-disk"
+  },
+  {
+    "spell-name": "Thaumaturgy",
+    "url": "https://dndbeyond.com/spells/2619174-thaumaturgy"
+  },
+  {
+    "spell-name": "Thorn Whip",
+    "url": "https://dndbeyond.com/spells/2619176-thorn-whip"
+  },
+  {
+    "spell-name": "Thunderclap",
+    "url": "https://dndbeyond.com/spells/2619179-thunderclap"
+  },
+  {
+    "spell-name": "Thunderous Smite",
+    "url": "https://dndbeyond.com/spells/2619182-thunderous-smite"
+  },
+  {
+    "spell-name": "Thunderwave",
+    "url": "https://dndbeyond.com/spells/2619184-thunderwave"
+  },
+  {
+    "spell-name": "Time Stop",
+    "url": "https://dndbeyond.com/spells/2619185-time-stop"
+  },
+  {
+    "spell-name": "Toll the Dead",
+    "url": "https://dndbeyond.com/spells/2619188-toll-the-dead"
+  },
+  {
+    "spell-name": "Tongues",
+    "url": "https://dndbeyond.com/spells/2619190-tongues"
+  },
+  {
+    "spell-name": "Transport via Plants",
+    "url": "https://dndbeyond.com/spells/2619196-transport-via-plants"
+  },
+  {
+    "spell-name": "Tree Stride",
+    "url": "https://dndbeyond.com/spells/2619197-tree-stride"
+  },
+  {
+    "spell-name": "True Polymorph",
+    "url": "https://dndbeyond.com/spells/2619198-true-polymorph"
+  },
+  {
+    "spell-name": "True Resurrection",
+    "url": "https://dndbeyond.com/spells/2619199-true-resurrection"
+  },
+  {
+    "spell-name": "True Seeing",
+    "url": "https://dndbeyond.com/spells/2619201-true-seeing"
+  },
+  {
+    "spell-name": "True Strike",
+    "url": "https://dndbeyond.com/spells/2619204-true-strike"
+  },
+  {
+    "spell-name": "Tsunami",
+    "url": "https://dndbeyond.com/spells/2619206-tsunami"
+  },
+  {
+    "spell-name": "Unseen Servant",
+    "url": "https://dndbeyond.com/spells/2619209-unseen-servant"
+  },
+  {
+    "spell-name": "Vampiric Touch",
+    "url": "https://dndbeyond.com/spells/2619214-vampiric-touch"
+  },
+  {
+    "spell-name": "Vicious Mockery",
+    "url": "https://dndbeyond.com/spells/2619216-vicious-mockery"
+  },
+  {
+    "spell-name": "Vitriolic Sphere",
+    "url": "https://dndbeyond.com/spells/2619219-vitriolic-sphere"
+  },
+  {
+    "spell-name": "Wall of Fire",
+    "url": "https://dndbeyond.com/spells/2619107-wall-of-fire"
+  },
+  {
+    "spell-name": "Wall of Force",
+    "url": "https://dndbeyond.com/spells/2619194-wall-of-force"
+  },
+  {
+    "spell-name": "Dispel Magic",
+    "url": "https://dndbeyond.com/spells/2619103-dispel-magic"
+  },
+  {
+    "spell-name": "Disintegrate",
+    "url": "https://dndbeyond.com/spells/2619094-disintegrate"
+  },
+  {
+    "spell-name": "Wall of Ice",
+    "url": "https://dndbeyond.com/spells/2619195-wall-of-ice"
+  },
+  {
+    "spell-name": "Wall of Stone",
+    "url": "https://dndbeyond.com/spells/2619200-wall-of-stone"
+  },
+  {
+    "spell-name": "Wall of Thorns",
+    "url": "https://dndbeyond.com/spells/2619202-wall-of-thorns"
+  },
+  {
+    "spell-name": "Warding Bond",
+    "url": "https://dndbeyond.com/spells/2619203-warding-bond"
+  },
+  {
+    "spell-name": "Water Breathing",
+    "url": "https://dndbeyond.com/spells/2619205-water-breathing"
+  },
+  {
+    "spell-name": "Water Walk",
+    "url": "https://dndbeyond.com/spells/2619207-water-walk"
+  },
+  {
+    "spell-name": "Web",
+    "url": "https://dndbeyond.com/spells/2619208-web"
+  },
+  {
+    "spell-name": "Weird",
+    "url": "https://dndbeyond.com/spells/2619210-weird"
+  },
+  {
+    "spell-name": "Wind Walk",
+    "url": "https://dndbeyond.com/spells/2619211-wind-walk"
+  },
+  {
+    "spell-name": "Wind Wall",
+    "url": "https://dndbeyond.com/spells/2619212-wind-wall"
+  },
+  {
+    "spell-name": "Wish",
+    "url": "https://dndbeyond.com/spells/2619213-wish"
+  },
+  {
+    "spell-name": "Greater Restoration",
+    "url": "https://dndbeyond.com/spells/2618961-greater-restoration"
+  },
+  {
+    "spell-name": "Witch Bolt",
+    "url": "https://dndbeyond.com/spells/2619215-witch-bolt"
+  },
+  {
+    "spell-name": "Word of Radiance",
+    "url": "https://dndbeyond.com/spells/2619217-word-of-radiance"
+  },
+  {
+    "spell-name": "Word of Recall",
+    "url": "https://dndbeyond.com/spells/2619218-word-of-recall"
+  },
+  {
+    "spell-name": "Wrathful Smite",
+    "url": "https://dndbeyond.com/spells/2619220-wrathful-smite"
+  },
+  {
+    "spell-name": "Yolande’s Regal Presence",
+    "url": "https://dndbeyond.com/spells/2618842-yolandes-regal-presence"
+  },
+  {
+    "spell-name": "Zone of Truth",
+    "url": "https://dndbeyond.com/spells/2619221-zone-of-truth"
+  }
+]

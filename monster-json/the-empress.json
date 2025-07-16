@@ -1,0 +1,110 @@
+{
+    "name": "The Empress",
+    "meta": "Medium Aberration (Undead), Chaotic Evil",
+    "ac": "20 (Natural Armor)",
+    "initiative": "+3",
+    "hp": "187 (22d8 + 88)",
+    "speed": "30 ft., fly 30 ft. (hover)",
+    "abilities": {
+      "str": {
+        "score": 18,
+        "mod": "+4",
+        "save": ""
+      },
+      "dex": {
+        "score": 16,
+        "mod": "+3",
+        "save": ""
+      },
+      "con": {
+        "score": 26,
+        "mod": "+8",
+        "save": "+16"
+      },
+      "int": {
+        "score": 24,
+        "mod": "+7",
+        "save": "+15"
+      },
+      "wis": {
+        "score": 20,
+        "mod": "+5",
+        "save": "+13"
+      },
+      "cha": {
+        "score": 22,
+        "mod": "+6",
+        "save": ""
+      }
+    },
+    "skills": "Arcana +15, History +15, Insight +13, Perception +13",
+    "senses": "Truesight 120 ft., Passive Perception 23",
+    "languages": "Common, Deep Speech, Undercommon, Telepathy 120 ft.",
+    "cr": "15 (13,000 XP)",
+    "traits": [
+      {
+        "name": "Legendary Resistance (3/Day)",
+        "desc": "If the Empress fails a saving throw, it can choose to succeed instead."
+      },
+      {
+        "name": "Magic Resistance",
+        "desc": "The Empress has advantage on saving throws against Spells and other magical effects."
+      },
+      {
+        "name": "Rejuvenation",
+        "desc": "If it has a phylactery, a destroyed Empress gains a new body in 1d10 days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the phylactery."
+      },
+      {
+        "name": "Innate Spellcasting (Psionics)",
+        "desc": {
+          "intro": "The Empress's innate spellcasting ability is Intelligence (spell save DC 18). It can innately cast the following spells, requiring no components:",
+          "spells_by_frequency": [
+            {
+              "frequency": "At will",
+              "spells": [
+                { "name": "detect thoughts", "url_suffix": "", "notes": "" },
+                { "name": "levitate", "url_suffix": "", "notes": "" },
+                { "name": "telekinesis", "url_suffix": "", "notes": "" }
+              ]
+            },
+            {
+              "frequency": "3/day each",
+              "spells": [
+                { "name": "dominate monster", "url_suffix": "", "notes": "" },
+                { "name": "plane shift", "url_suffix": "", "notes": "(self only)" }
+              ],
+              "track_slots": 3
+            },
+            {
+              "frequency": "1/day each",
+              "spells": [
+                { "name": "feeblemind", "url_suffix": "", "notes": "" },
+                { "name": "dominate person", "url_suffix": "", "notes": "" }
+              ],
+              "track_slots": 1
+            }
+          ]
+        }
+      }
+    ],
+    "actions": [
+      {
+        "name": "Multiattack",
+        "desc": "The Empress makes two attacks: one Mind Tentacle and one Psionic Crush."
+      },
+      {
+        "name": "Mind Tentacle",
+        "desc": "Melee Weapon Attack: +14 to hit, reach 10 ft., one target. Hit: 19 (2d10 + 8) bludgeoning damage plus 14 (4d6) psychic damage. If the target is hit by two Mind Tentacle attacks in one turn, it must succeed on a DC 18 Intelligence saving throw or be Stunned until the end of its next turn."
+      },
+      {
+        "name": "Psionic Crush",
+        "desc": "Melee Spell Attack: +14 to hit, reach 10 ft., one target. Hit: 27 (6d8) force damage. This attack ignores temporary hit points."
+      },
+      {
+        "name": "Mind Blast (Recharge 5-6)",
+        "desc": "The Empress magically emits psychic energy in a 60-foot cone. Each creature in that area must make a DC 18 Intelligence saving throw. On a failed save, a creature takes 54 (12d8) psychic damage and is Stunned for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
+      }
+    ],
+    "reactions": [],
+    "bonus_actions": []
+  }

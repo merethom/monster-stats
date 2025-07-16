@@ -1,0 +1,156 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Monster Statblock Data",
+    "description": "Schema for defining custom monster statblock data.",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "The name of the monster."
+      },
+      "meta": {
+        "type": "string",
+        "description": "Meta information (e.g., size, type, alignment)."
+      },
+      "ac": {
+        "type": "string",
+        "description": "Armor Class, including any special conditions."
+      },
+      "initiative": {
+        "type": "string",
+        "description": "Initiative bonus or score."
+      },
+      "hp": {
+        "type": "string",
+        "description": "Hit Points, including hit die calculation."
+      },
+      "speed": {
+        "type": "string",
+        "description": "Movement speed."
+      },
+      "abilities": {
+        "type": "object",
+        "description": "Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma scores, modifiers, and saving throws.",
+        "properties": {
+          "str": { "$ref": "#/definitions/abilityScore" },
+          "dex": { "$ref": "#/definitions/abilityScore" },
+          "con": { "$ref": "#/definitions/abilityScore" },
+          "int": { "$ref": "#/definitions/abilityScore" },
+          "wis": { "$ref": "#/definitions/abilityScore" },
+          "cha": { "$ref": "#/definitions/abilityScore" }
+        },
+        "required": ["str", "dex", "con", "int", "wis", "cha"]
+      },
+      "skills": {
+        "type": "string",
+        "description": "Skills and their bonuses."
+      },
+      "senses": {
+        "type": "string",
+        "description": "Senses (e.g., Darkvision, Passive Perception)."
+      },
+      "languages": {
+        "type": "string",
+        "description": "Languages the monster knows."
+      },
+      "cr": {
+        "type": "string",
+        "description": "Challenge Rating and XP."
+      },
+      "traits": {
+        "type": "array",
+        "description": "An array of special traits the monster possesses.",
+        "items": { "$ref": "#/definitions/trait" }
+      },
+      "actions": {
+        "type": "array",
+        "description": "An array of actions the monster can take.",
+        "items": { "$ref": "#/definitions/action" }
+      },
+      "bonus_actions": {
+        "type": "array",
+        "description": "An array of bonus actions the monster can take.",
+        "items": { "$ref": "#/definitions/action" }
+      },
+      "reactions": {
+        "type": "array",
+        "description": "An array of reactions the monster can take.",
+        "items": { "$ref": "#/definitions/action" }
+      }
+    },
+    "required": ["name", "meta", "ac", "initiative", "hp", "speed", "abilities", "skills", "senses", "languages", "cr"],
+    "definitions": {
+      "abilityScore": {
+        "type": "object",
+        "properties": {
+          "score": { "type": "integer" },
+          "mod": { "type": "string" },
+          "save": { "type": "string" }
+        },
+        "required": ["score", "mod", "save"]
+      },
+      "trait": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "desc": {
+            "oneOf": [
+              { "type": "string" },
+              { "$ref": "#/definitions/spellcastingDescription" }
+            ]
+          },
+          "track_uses": {
+            "type": "integer",
+            "description": "Number of checkboxes for this trait, if applicable."
+          }
+        },
+        "required": ["name", "desc"]
+      },
+      "action": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "desc": { "type": "string" },
+          "track_uses": {
+            "type": "integer",
+            "description": "Number of checkboxes for this action, if applicable."
+          }
+        },
+        "required": ["name", "desc"]
+      },
+      "spellcastingDescription": {
+        "type": "object",
+        "properties": {
+          "intro": { "type": "string" },
+          "spells_by_frequency": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "frequency": { "type": "string" },
+                "spells": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "url_suffix": { "type": "string" },
+                      "notes": { "type": "string" }
+                    },
+                    "required": ["name", "url_suffix", "notes"]
+                  }
+                },
+                "track_slots": {
+                  "type": "integer",
+                  "description": "Number of spell slots for this frequency, if applicable."
+                }
+              },
+              "required": ["frequency", "spells"]
+            }
+          }
+        },
+        "required": ["intro", "spells_by_frequency"]
+      }
+    }
+  }
+  

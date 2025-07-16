@@ -1,0 +1,311 @@
+body {
+    font-family: "ff-scala-sans-pro", sans-serif;
+    margin: 0;
+    padding: 1rem;
+    font-size: 15px;
+    line-height: 18px;
+    font-variant-numeric: lining-nums;
+}
+
+:root {
+    --red: #5b160c;
+    --black: #000000;
+}
+.statblock {
+    display: grid;
+    grid-template-columns: 1fr; /* Changed to a single column */
+    grid-template-rows: auto auto;
+    column-gap: 0; /* Removed column gap */
+    row-gap: 0;
+    background: rgb(245, 243, 238);
+    border: 1px solid rgb(212, 208, 206);
+    border-radius: 6px;
+    padding: 1rem;
+    color: var(--red);
+}
+.monster-title {
+    font-size: 2.2rem;
+    margin: 0 0 0.2em 0;
+    border-bottom: .5px solid var(--red);
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: small-caps;
+    font-variant-caps: small-caps;
+    padding-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Style for the reset icon */
+.reset-icon {
+    font-size: 1.2em;
+    color: rgb(104, 116, 123);
+    cursor: pointer;
+    margin-left: 10px;
+    transition: color 0.2s ease-in-out;
+}
+
+.reset-icon:hover {
+    color: var(--red);
+}
+
+.monster-meta {
+    font-style: italic;
+    color: rgb(104, 116, 123);
+    font-size: 15px;
+    /* grid-column: span 2; Removed as it's now a single column */
+}
+
+.monster-col {
+    display: block;
+    padding: 0;
+    gap: 0;
+}
+
+@media (max-width: 900px) {
+    .statblock {
+        grid-template-columns: 1fr;
+        gap: 0;
+        margin: 0;
+    }
+    /* Removed specific media query rules for monster-title, monster-meta as they are now single column by default */
+    .monster-title {
+        justify-content: flex-start;
+    }
+    .reset-icon {
+        margin-left: auto;
+        font-size: 0.5rem;
+    }
+
+}
+
+.statblock a {
+    color: inherit;
+    text-decoration-color: rgb(71, 209, 140);
+}
+
+.statblock a.spell-tooltip {
+    text-decoration-color: rgb(112, 76, 217);
+}
+
+
+.statblock-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.statblock-list li {
+    margin-bottom: 7px;
+    font-size: 15px;
+    line-height: 18px;
+}
+
+.statblock-list li span:nth-of-type(2){
+    margin-left: 10px;
+}
+
+.monster-topstats .statblock-list li:first-of-type {
+    margin-top: 8px;
+}
+
+.monster-ability-scores {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Keep internal grid for abilities */
+    grid-gap: 10px;
+    color: var(--red);
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 1em;
+}
+.monster-ability-scores1, .monster-ability-scores2 {
+    display: grid;
+    grid-template-areas:
+        "blank blank mod save"
+        "str str-score str-mod str-save"
+        "dex dex-score dex-mod dex-save"
+        "con con-score con-mod con-save";
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.monster-ability-scores2 {
+    display: grid;
+    grid-template-areas:
+        "blank blank mod save"
+        "int int-score int-mod int-save"
+        "wis wis-score wis-mod wis-save"
+        "cha cha-score cha-mod cha-save";
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.monster-ability-scores1 > *,
+.monster-ability-scores2 > *{
+    padding: 2px;
+}
+
+.ability-label {
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ability-header {
+    color: rgb(104, 116, 123);
+    font-weight: bold;
+    text-align: center;
+    font-size: 8.9375px;
+    text-transform: uppercase;
+}
+
+.str, .str-score, .dex, .dex-score, .con, .con-score {
+    background: rgb(237, 230, 217)
+}
+
+.int, .int-score, .wis, .wis-score, .cha, .cha-score{
+    background: rgb(216, 218, 209);
+}
+
+.str-mod, .str-save, .dex-mod, .dex-save, .con-mod, .con-save {
+   background: rgb(222, 212, 204);
+}
+
+.int-mod, .int-save, .wis-mod, .wis-save, .cha-mod, .cha-save {
+    background: rgb(208, 202, 202);
+}
+
+.str { grid-area: str; }
+.str-score { grid-area: str-score; }
+.str-mod { grid-area: str-mod; }
+.str-save { grid-area: str-save; }
+.dex { grid-area: dex; }
+.dex-score { grid-area: dex-score; }
+.dex-mod { grid-area: dex-mod; }
+.dex-save { grid-area: dex-save; }
+.con { grid-area: con; }
+.con-score { grid-area: con-score; }
+.con-mod { grid-area: con-mod; }
+.con-save { grid-area: con-save; }
+.int { grid-area: int; }
+.int-score { grid-area: int-score; }
+.int-mod { grid-area: int-mod; }
+.int-save { grid-area: int-save; }
+.wis { grid-area: wis; }
+.wis-score { grid-area: wis-score; }
+.wis-mod { grid-area: wis-mod; }
+.wis-save { grid-area: wis-save; }
+.cha { grid-area: cha; }
+.cha-score { grid-area: cha-score; }
+.cha-mod { grid-area: cha-mod; }
+.cha-save { grid-area: cha-save; }
+
+
+.section-title {
+    text-transform: small-caps;
+    font-variant-caps: small-caps;
+    border-bottom: 0.5px solid var(--red);
+    margin-bottom: 13px;
+    margin-top: 25px;
+    font-size: 17px;
+}
+
+.trait, .action, .legendary, .bonus-action, .reaction {
+    color: var(--black);
+}
+
+.trait strong {
+    line-height: 1.8;
+}
+
+.statblock-content {
+    display: block;
+    padding: 0;
+    gap: 0;
+}
+
+.legendary-intro {
+    color: rgb(105, 102, 101);
+}
+
+.trait-title, .action-title, .legendary-title, .bonus-action-title, .reaction-title {
+    font-weight: bold;
+    color: var(--black);
+}
+.skills, .resistances, .immunities, .senses, .languages, .challenge, .gear {
+    margin-bottom: 0.3em;
+}
+.trait, .action, .legendary, .legendary-intro, .bonus-action, .reaction {
+    margin-bottom: 0.7em;
+}
+
+.italic {
+    font-style: italic;
+}
+.bold {
+    font-weight: bold;
+}
+
+/* Styles for resource tracking checkboxes */
+.resource-tracker {
+    display: inline-flex; /* Use flexbox for horizontal alignment */
+    vertical-align: middle; /* Align with text */
+}
+
+.resource-tracker input[type="checkbox"] {
+    -webkit-appearance: none; /* Hide default checkbox */
+    -moz-appearance: none;
+    appearance: none;
+    width: 12px; /* Size of the custom box */
+    height: 12px;
+    border: 1px solid var(--red); /* Border color */
+    border-radius: 4px; /* Square corners */
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    background-color: rgb(237, 230, 217); /* Light background */
+    transition: background-color 0.2s, border-color 0.2s;
+    flex-shrink: 0; /* Prevent shrinking in flex container */
+    margin: 0 2px;
+}
+
+
+.resource-tracker input[type="checkbox"]:checked {
+    border-color: var(--red);
+}
+
+/* Add a checkmark for visual feedback when checked */
+.resource-tracker input[type="checkbox"]:checked::after {
+    content: '●'; /* Checkmark symbol */
+    font-size: 16px; /* Size of the checkmark */
+    color: var(--red); /* Color of the checkmark */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    line-height: 1; /* Ensure vertical centering */
+}
+
+#reset-resources {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: var(--red);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+/* Style for the reset icon */
+.reset-icon {
+    font-size: 0.75em; /* Adjust size relative to title */
+    color: rgb(104, 116, 123); /* A subtle color */
+    cursor: pointer;
+    margin-left: 10px; /* Space from the title text */
+    transition: color 0.2s ease-in-out;
+}
+
+.reset-icon:hover {
+    color: var(--red); /* Highlight on hover */
+}

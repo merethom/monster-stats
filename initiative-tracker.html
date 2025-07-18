@@ -833,6 +833,7 @@
                         <div id="kebab-dropdown" class="kebab-dropdown">
                             <div class="kebab-dropdown-item" id="manage-party-btn"><i class="fas fa-users-cog"></i> Manage Party</div>
                             <div class="kebab-dropdown-item" id="load-encounter-btn"><i class="fas fa-book"></i> Load Encounter</div>
+                            <div class="kebab-dropdown-item" id="reset-tracker-btn"><i class="fas fa-undo"></i> Reset Tracker</div>
                         </div>
                     </div>
                 </div>
@@ -849,9 +850,9 @@
             </div>
 
             <div class="turn-controls">
-                <button id="reset-tracker-btn" class="control-btn secondary">Reset</button>
-                <button id="begin-combat-btn" class="control-btn primary">Begin Combat</button>
                 <button id="undo-turn-btn" class="control-btn secondary" style="display: none;">Undo</button>
+                <div style="flex-grow: 1;"></div>
+                <button id="begin-combat-btn" class="control-btn primary">Begin Combat</button>
                 <button id="next-turn-btn" class="control-btn primary" style="display: none;">Next</button>
             </div>
         </div>
@@ -1565,9 +1566,25 @@
                 activeCombatantIdForMenu = parseInt(combatantItem.dataset.id);
                 hideAllOverlaysAndMenus();
 
-                combatantContextMenu.style.left = `${event.clientX}px`;
-                combatantContextMenu.style.top = `${event.clientY}px`;
-                combatantContextMenu.style.display = 'flex';
+                const menu = combatantContextMenu;
+                menu.style.display = 'flex';
+                const menuWidth = menu.offsetWidth;
+                const menuHeight = menu.offsetHeight;
+                const windowWidth = window.innerWidth;
+                const windowHeight = window.innerHeight;
+
+                let left = event.clientX;
+                let top = event.clientY;
+
+                if (left + menuWidth > windowWidth) {
+                    left = windowWidth - menuWidth - 5;
+                }
+                if (top + menuHeight > windowHeight) {
+                    top = windowHeight - menuHeight - 5;
+                }
+                
+                menu.style.left = `${left}px`;
+                menu.style.top = `${top}px`;
             }
 
             // Attach click listener to context menu items
@@ -1772,7 +1789,7 @@
                         newCombatantsData.forEach(c => {
                             const quantity = c.quantity || 1;
                             for (let i = 0; i < quantity; i++) {
-                                const name = quantity > 1 ? `${c.name} ${i + 1}` : c.name;
+                                const name = quantity > 1 ? `${c.name} ${i + 1}` : name;
                                 combatants.push(new Combatant(null, name, c.initiative, c.hp, c.hp, c.ac));
                             }
                         });
@@ -1806,6 +1823,7 @@
 
             // --- Add from Party Modal Logic ---
             addFromPartyBtn.addEventListener('click', () => {
+                addCombatantModal.classList.remove('visible');
                 const savedParty = JSON.parse(localStorage.getItem(PARTY_STORAGE_KEY));
                 if (!savedParty) return;
 

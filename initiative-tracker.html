@@ -1,0 +1,391 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to handle opening external links in new tabs
+    document.querySelectorAll('a[href^="http"]').forEach(function(link) {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+    });
+
+    // --- Checkbox Persistence Logic ---
+
+    const STORAGE_KEY_PREFIX = 'monster_statblock_checkbox_'; // Prefix for localStorage keys
+
+    // Function to save checkbox state
+    function saveCheckboxState(checkbox) {
+        localStorage.setItem(STORAGE_KEY_PREFIX + checkbox.id, checkbox.checked);
+    }
+
+    // Function to load checkbox state
+    function loadCheckboxState() {
+        document.querySelectorAll('.resource-tracker input[type="checkbox"]').forEach(function(checkbox) {
+            const savedState = localStorage.getItem(STORAGE_KEY_PREFIX + checkbox.id);
+            if (savedState !== null) {
+                checkbox.checked = (savedState === 'true'); // Convert string to boolean
+            }
+        });
+    }
+
+    // Function to reset all checkboxes and clear local storage
+    function resetCheckboxes() {
+        showCustomConfirm(
+            'Are you sure you want to reset all resource trackers for this monster?',
+            true, // isConfirm: true
+            "Reset Resources"
+        ).then(confirmed => {
+            if (confirmed) {
+                document.querySelectorAll('.resource-tracker input[type="checkbox"]').forEach(function(checkbox) {
+                    checkbox.checked = false; // Uncheck
+                    localStorage.removeItem(STORAGE_KEY_PREFIX + checkbox.id); // Remove from storage
+                });
+                // Show an informational modal after reset
+                showCustomConfirm('All resource trackers have been reset!', false, "Reset Complete");
+            }
+        });
+    }
+
+    // Helper function to create resource tracker checkboxes
+    function createResourceTrackers(idPrefix, count, type = 'default') {
+        let trackerHtml = `<div class="resource-tracker resource-tracker-${type}">`;
+        for (let i = 1; i <= count; i++) {
+            const checkboxId = `${idPrefix}-${i}`; // Unique ID for each checkbox
+            trackerHtml += `<input type="checkbox" id="${checkboxId}" name="${idPrefix}-uses"><label for="${checkboxId}"></label>`;
+        }
+        trackerHtml += '</div>';
+        return trackerHtml;
+    }
+
+    // Helper function to format descriptions by adding spell links
+    function formatDescriptionWithSpellLinks(description, spellUrlMap) {
+        let formattedDesc = description;
+        // Iterate over the spellUrlMap to find and replace spell names
+        for (const [spellNameLower, spellUrl] of spellUrlMap.entries()) {
+            // Create a regex for the spell name, ensuring whole word match (\\b) and case-insensitive (i)
+            // Escape special characters in the spell name for regex safety
+            const escapedSpellName = spellNameLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`\\b(${escapedSpellName})\\b`, 'gi');
+
+            formattedDesc = formattedDesc.replace(regex, (match) => {
+                // Preserve the original casing of the matched text
+                return `<a class="tooltip-hover spell-tooltip" href="${spellUrl}">${match}</a>`;
+            });
+        }
+        return formattedDesc;
+    }
+
+    // --- Custom Confirmation Modal Functions ---
+    let customConfirmModal = document.getElementById('custom-confirm-modal');
+    if (!customConfirmModal) {
+        customConfirmModal = document.createElement('div');
+        customConfirmModal.id = 'custom-confirm-modal';
+        customConfirmModal.classList.add('modal-overlay');
+        customConfirmModal.innerHTML = `
+            <div class="modal-content">
+                <h3 id="modal-title">Confirm Action</h3>
+                <p id="modal-message">Are you sure?</p>
+                <div class="modal-buttons">
+                    <button id="confirm-yes" class="confirm-yes">Yes</button>
+                    <button id="confirm-no" class="confirm-no">No</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(customConfirmModal);
+    }
+    
+    const confirmYesBtn = customConfirmModal.querySelector('#confirm-yes');
+    const confirmNoBtn = customConfirmModal.querySelector('#confirm-no');
+
+    let modalPromiseResolve;
+
+    function showCustomConfirm(message, isConfirm = true, title = "Confirm Action") {
+        customConfirmModal.querySelector('#modal-title').textContent = title;
+        customConfirmModal.querySelector('#modal-message').textContent = message;
+        customConfirmModal.classList.add('visible');
+
+        confirmYesBtn.classList.remove('confirm-ok');
+        confirmYesBtn.classList.add('confirm-yes');
+        confirmYesBtn.textContent = 'Yes';
+        confirmNoBtn.style.display = '';
+
+        if (!isConfirm) {
+            confirmNoBtn.style.display = 'none';
+            confirmYesBtn.textContent = 'OK';
+            confirmYesBtn.classList.remove('confirm-yes');
+            confirmYesBtn.classList.add('confirm-ok');
+        }
+
+        return new Promise(resolve => {
+            modalPromiseResolve = resolve;
+        });
+    }
+
+    function handleModalButtonClick(event) {
+        const target = event.target;
+        if (!modalPromiseResolve) return;
+
+        if (target.id === 'confirm-yes') {
+            if (confirmNoBtn.style.display === 'none') {
+                modalPromiseResolve(true);
+            } else {
+                modalPromiseResolve(true);
+            }
+        } else if (target.id === 'confirm-no') {
+            modalPromiseResolve(false);
+        }
+        
+        customConfirmModal.classList.remove('visible');
+        modalPromiseResolve = null;
+    }
+
+    confirmYesBtn.addEventListener('click', handleModalButtonClick);
+    confirmNoBtn.addEventListener('click', handleModalButtonClick);
+
+    // Function to render the monster statblock from JSON data
+    async function renderStatblock(monsterData, spellUrlMap) {
+        const statblockContainer = document.getElementById('monster-statblock-container');
+        if (!statblockContainer) {
+            console.error('Statblock container not found!');
+            return;
+        }
+
+        statblockContainer.innerHTML = '';
+        document.title = `${monsterData.name} Statblock`;
+
+        const getSaveValue = (ability) => {
+            return ability.save === "" ? ability.mod : ability.save;
+        };
+
+        let contentHtml = `
+            <div class="monster-title">
+                ${monsterData.name}
+                <i id="reset-resources-icon" class="fas fa-sync-alt reset-icon" title="Reset All Resources"></i>
+            </div>
+            <div class="monster-meta">${monsterData.meta}</div>
+            <div class="monster-col">
+                <div class="monster-topstats">
+                    <ul class="statblock-list">
+                        <li><span class="bold">AC</span> ${monsterData.ac} <span class="bold">Initiative</span> ${monsterData.initiative}</li>
+                        <li><span class="bold">HP</span> ${monsterData.hp}</li>
+                        <li><span class="bold">Speed</span> ${monsterData.speed}</li>
+                    </ul>
+                </div>
+                <div class="monster-ability-scores">
+                    <div class="monster-ability-scores1">
+                        <div class="ability-header" style="grid-area: blank;"></div>
+                        <div class="ability-header" style="grid-area: blank;"></div>
+                        <div class="ability-header" style="grid-area: mod;">MOD</div>
+                        <div class="ability-header" style="grid-area: save;">SAVE</div>
+                        <div class="ability-label str">STR</div>
+                        <div class="ability-score str-score">${monsterData.abilities.str.score}</div>
+                        <div class="ability-mod str-mod">${monsterData.abilities.str.mod}</div>
+                        <div class="ability-save str-save">${getSaveValue(monsterData.abilities.str)}</div>
+                        <div class="ability-label dex">DEX</div>
+                        <div class="ability-score dex-score">${monsterData.abilities.dex.score}</div>
+                        <div class="ability-mod dex-mod">${monsterData.abilities.dex.mod}</div>
+                        <div class="ability-save dex-save">${getSaveValue(monsterData.abilities.dex)}</div>
+                        <div class="ability-label con">CON</div>
+                        <div class="ability-score con-score">${monsterData.abilities.con.score}</div>
+                        <div class="ability-mod con-mod">${monsterData.abilities.con.mod}</div>
+                        <div class="ability-save con-save">${getSaveValue(monsterData.abilities.con)}</div>
+                    </div>
+                    <div class="monster-ability-scores2">
+                        <div class="ability-header" style="grid-area: blank;"></div>
+                        <div class="ability-header" style="grid-area: blank;"></div>
+                        <div class="ability-header" style="grid-area: mod;">MOD</div>
+                        <div class="ability-header" style="grid-area: save;">SAVE</div>
+                        <div class="ability-label int">INT</div>
+                        <div class="ability-score int-score">${monsterData.abilities.int.score}</div>
+                        <div class="ability-mod int-mod">${monsterData.abilities.int.mod}</div>
+                        <div class="ability-save int-save">${getSaveValue(monsterData.abilities.int)}</div>
+                        <div class="ability-label wis">WIS</div>
+                        <div class="ability-score wis-score">${monsterData.abilities.wis.score}</div>
+                        <div class="ability-mod wis-mod">${monsterData.abilities.wis.mod}</div>
+                        <div class="ability-save wis-save">${getSaveValue(monsterData.abilities.wis)}</div>
+                        <div class="ability-label cha">CHA</div>
+                        <div class="ability-score cha-score">${monsterData.abilities.cha.score}</div>
+                        <div class="ability-mod cha-mod">${monsterData.abilities.cha.mod}</div>
+                        <div class="ability-save cha-save">${getSaveValue(monsterData.abilities.cha)}</div>
+                    </div>
+                </div>
+                <ul class="statblock-list">
+                    <li><span class="bold">Skills</span> ${monsterData.skills}</li>
+                    <li><span class="bold">Senses</span> ${monsterData.senses}</li>
+                    <li><span class="bold">Languages</span> ${monsterData.languages}</li>
+                    <li><span class="bold">CR</span> ${monsterData.cr}</li>
+                </ul>
+                <div class="section-title">Traits</div>
+        `;
+
+        // Render Traits
+        if (monsterData.traits && monsterData.traits.length > 0) {
+            monsterData.traits.forEach(trait => {
+                contentHtml += `<div class="trait"><span class="trait-title italic">${trait.name}.</span> `;
+                
+                // Handle Legendary Resistance
+                if (trait.name.includes('Legendary Resistance')) {
+                    const match = trait.name.match(/\((\d+)\/Day\)/);
+                    if (match && match[1]) {
+                        const count = parseInt(match[1]);
+                        contentHtml += `${trait.desc} ${createResourceTrackers('legendary-resistance', count, 'legendary')}`;
+                    } else {
+                        contentHtml += trait.desc; // Render description if no count found
+                    }
+                } 
+                // Handle Innate Spellcasting
+                else if (typeof trait.desc === 'object' && trait.desc.intro && trait.desc.spells_by_frequency) {
+                    contentHtml += `${trait.desc.intro}<br><br>`;
+                    trait.desc.spells_by_frequency.forEach(freqBlock => {
+                        contentHtml += `<strong>${freqBlock.frequency}</strong>`;
+                        
+                        // Check if the frequency string indicates "per spell" uses (e.g., "X/day each")
+                        const isPerSpellTracking = freqBlock.frequency.toLowerCase().includes('each');
+
+                        if (!isPerSpellTracking && freqBlock.track_slots) {
+                            // If it's a shared slot pool, add trackers for the block
+                            const idPrefix = `spell-slots-${freqBlock.frequency.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+                            contentHtml += createResourceTrackers(idPrefix, freqBlock.track_slots, 'spell');
+                        }
+                        contentHtml += `: `; // Always add colon after frequency
+
+                        const spellsHtml = freqBlock.spells.map(spell => {
+                            const spellUrl = spellUrlMap.get(spell.name.toLowerCase()) || `https://www.dndbeyond.com/spells/${spell.url_suffix}`;
+                            let spellEntry = `<a class="tooltip-hover spell-tooltip" href="${spellUrl}">${spell.name}</a>${spell.notes}`;
+
+                            // If it's "per spell" tracking, add trackers after each spell
+                            if (isPerSpellTracking && freqBlock.track_slots) {
+                                const spellIdPrefix = `spell-uses-${freqBlock.frequency.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${spell.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+                                spellEntry += createResourceTrackers(spellIdPrefix, freqBlock.track_slots, 'spell');
+                            }
+                            return spellEntry;
+                        }).join(', ');
+                        contentHtml += `${spellsHtml}<br>`;
+                    });
+                }
+                // Handle other general traits
+                else if (typeof trait.desc === 'string') {
+                    let formattedDesc = formatDescriptionWithSpellLinks(trait.desc, spellUrlMap);
+                    contentHtml += formattedDesc;
+                    if (trait.track_uses) { // For any other trait that might have track_uses
+                        contentHtml += createResourceTrackers(trait.name.toLowerCase().replace(/[^a-z0-9]/g, '-'), trait.track_uses);
+                    }
+                }
+                contentHtml += `</div>`;
+            });
+        }
+
+        // Render Actions
+        if (monsterData.actions && monsterData.actions.length > 0) {
+            contentHtml += `<div class="section-title">Actions</div>`;
+            monsterData.actions.forEach(action => {
+                contentHtml += `<div class="action"><span class="action-title italic">${action.name}.</span> `;
+                let formattedDesc = formatDescriptionWithSpellLinks(action.desc, spellUrlMap);
+                formattedDesc = formattedDesc.replace(/(Melee Weapon Attack:|Ranged Weapon Attack:|Hit:|Failure:)/g, '<em>$1</em>');
+                contentHtml += `${formattedDesc}`;
+                if (action.track_uses && !action.name.includes('(Recharge')) {
+                    contentHtml += createResourceTrackers(action.name.toLowerCase().replace(/[^a-z0-9]/g, '-'), action.track_uses);
+                }
+                contentHtml += `</div>`;
+            });
+        }
+
+        // Render Bonus Actions
+        if (monsterData.bonus_actions && monsterData.bonus_actions.length > 0) {
+            contentHtml += `<div class="section-title">Bonus Actions</div>`;
+            monsterData.bonus_actions.forEach(bonusAction => {
+                contentHtml += `<div class="bonus-action"><span class="bonus-action-title italic">${bonusAction.name}.</span> `;
+                let formattedDesc = formatDescriptionWithSpellLinks(bonusAction.desc, spellUrlMap);
+                formattedDesc = formattedDesc.replace(/(Melee Weapon Attack:|Ranged Weapon Attack:|Hit:|Failure:)/g, '<em>$1</em>');
+                contentHtml += `${formattedDesc}`;
+                if (bonusAction.track_uses) {
+                    contentHtml += createResourceTrackers(bonusAction.name.toLowerCase().replace(/[^a-z0-9]/g, '-'), bonusAction.track_uses);
+                }
+                contentHtml += `</div>`;
+            });
+        }
+
+        // Render Reactions
+        if (monsterData.reactions && monsterData.reactions.length > 0) {
+            contentHtml += `<div class="section-title">Reactions</div>`;
+            monsterData.reactions.forEach(reaction => {
+                contentHtml += `<div class="reaction"><span class="reaction-title italic">${reaction.name}.</span> `;
+                let formattedDesc = formatDescriptionWithSpellLinks(reaction.desc, spellUrlMap);
+                formattedDesc = formattedDesc.replace(/(Melee Weapon Attack:|Ranged Weapon Attack:|Hit:|Failure:)/g, '<em>$1</em>');
+                contentHtml += `${formattedDesc}`;
+                if (reaction.track_uses) {
+                    contentHtml += createResourceTrackers(reaction.name.toLowerCase().replace(/[^a-z0-9]/g, '-'), reaction.track_uses);
+                }
+                contentHtml += `</div>`;
+            });
+        }
+
+        contentHtml += `</div>`; // Close the single monster-col div
+
+        statblockContainer.innerHTML = contentHtml;
+
+        // Re-attach event listeners after HTML is rendered
+        document.querySelectorAll('a[href^="http"]').forEach(function(link) {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+        });
+
+        // Re-attach persistence listeners to newly created checkboxes
+        document.querySelectorAll('.resource-tracker input[type="checkbox"]').forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                saveCheckboxState(this);
+            });
+        });
+
+        // Re-attach event listener to the reset icon
+        const resetIcon = document.getElementById('reset-resources-icon');
+        const trackers = statblockContainer.querySelectorAll('.resource-tracker'); // Find all trackers in the rendered content
+
+        if (resetIcon) {
+            if (trackers.length === 0) {
+                resetIcon.style.display = 'none'; // Hide if no trackers
+            } else {
+                resetIcon.style.display = ''; // Ensure visible if trackers exist
+            }
+            resetIcon.addEventListener('click', resetCheckboxes);
+        }
+
+        // Load states for the newly rendered checkboxes
+        loadCheckboxState();
+    }
+
+    let spellUrlMap = new Map(); // Declare spellUrlMap here
+
+    // --- Main execution ---
+    // Fetch monster data and render the statblock
+    async function initStatblock() {
+        try {
+            // Fetch the spell URLs JSON first
+            const spellUrlsResponse = await fetch('2024-spell-urls.json'); // Direct fetch to filename
+            const spellUrlsData = await spellUrlsResponse.json();
+
+            // Populate the spellUrlMap for quick lookups, converting spell names to lowercase
+            spellUrlsData.forEach(spell => {
+                spellUrlMap.set(spell["spell-name"].toLowerCase(), spell.url);
+            });
+
+            // Get the monster JSON file path from the data-monster-src attribute
+            const statblockContainer = document.getElementById('monster-statblock-container');
+            const monsterJsonPath = statblockContainer.dataset.monsterSrc; // Use data-monster-src
+
+            if (!monsterJsonPath) {
+                console.error('No data-monster-src attribute found on #monster-statblock-container. Cannot load monster data.');
+                statblockContainer.innerHTML = '<p style="color: var(--red);">Error: Monster data source not specified.</p>';
+                return;
+            }
+
+            const monsterResponse = await fetch(monsterJsonPath); // Direct fetch to filename
+            const monsterData = await monsterResponse.json();
+
+            await renderStatblock(monsterData, spellUrlMap); // Pass spellUrlMap to renderStatblock
+        } catch (error) {
+            console.error('Error loading or rendering monster data:', error);
+            const statblockContainer = document.getElementById('monster-statblock-container');
+            statblockContainer.innerHTML = '<p style="color: var(--red);">Error loading monster data. Please check the JSON file and console for details.</p>';
+        }
+    }
+
+    // Initialize the statblock rendering
+    initStatblock();
+});

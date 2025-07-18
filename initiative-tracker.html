@@ -156,6 +156,9 @@
             margin-right: 8px;
             color: var(--mid-grey);
         }
+        .kebab-dropdown-item.mobile-only {
+            display: none;
+        }
 
 
         /* --- Initiative List (Existing) --- */
@@ -807,7 +810,6 @@
             .combat-tracker-panel, .summary-panel {
                 min-width: unset;
                 max-width: unset;
-                width: 100%;
             }
 
             .input-section {
@@ -816,6 +818,24 @@
 
             .add-btn {
                 grid-column: span 1;
+            }
+
+
+            .main-content-wrapper {
+                padding: 0;
+            }
+
+            /* .panel-header h2 #encounter-title-display, */
+            .panel-header h2 #tracker-info {
+                font-size: 12px !important;
+                font-style: italic;
+            }
+
+            #header-add-combatant-btn {
+                display: none;
+            }
+            .kebab-dropdown-item.mobile-only {
+                display: block;
             }
 
         }
@@ -831,6 +851,7 @@
                     <div class="kebab-menu">
                         <button id="kebab-btn" class="kebab-btn"><i class="fas fa-ellipsis-v"></i></button>
                         <div id="kebab-dropdown" class="kebab-dropdown">
+                            <div class="kebab-dropdown-item mobile-only" id="kebab-add-combatant-btn"><i class="fas fa-plus"></i> Add Combatant</div>
                             <div class="kebab-dropdown-item" id="manage-party-btn"><i class="fas fa-users-cog"></i> Manage Party</div>
                             <div class="kebab-dropdown-item" id="load-encounter-btn"><i class="fas fa-book"></i> Load Encounter</div>
                             <div class="kebab-dropdown-item" id="reset-tracker-btn"><i class="fas fa-undo"></i> Reset Tracker</div>
@@ -994,6 +1015,7 @@
             // Kebab menu
             const kebabBtn = document.getElementById('kebab-btn');
             const kebabDropdown = document.getElementById('kebab-dropdown');
+            const kebabAddCombatantBtn = document.getElementById('kebab-add-combatant-btn');
 
             // Shared Overlay elements
             const hpOverlay = document.getElementById('hp-adjustment-overlay');
@@ -1789,7 +1811,7 @@
                         newCombatantsData.forEach(c => {
                             const quantity = c.quantity || 1;
                             for (let i = 0; i < quantity; i++) {
-                                const name = quantity > 1 ? `${c.name} ${i + 1}` : name;
+                                const name = quantity > 1 ? `${c.name} ${i + 1}` : c.name;
                                 combatants.push(new Combatant(null, name, c.initiative, c.hp, c.hp, c.ac));
                             }
                         });
@@ -1862,6 +1884,10 @@
             kebabBtn.addEventListener('click', (event) => {
                 event.stopPropagation(); // Prevent the global click listener from immediately closing it
                 kebabDropdown.classList.toggle('visible');
+            });
+            kebabAddCombatantBtn.addEventListener('click', () => {
+                addCombatantModal.classList.add('visible');
+                kebabDropdown.classList.remove('visible');
             });
 
 

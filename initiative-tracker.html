@@ -1,391 +1,1855 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Function to handle opening external links in new tabs
-    document.querySelectorAll('a[href^="http"]').forEach(function(link) {
-        link.setAttribute('target', '_blank');
-        link.setAttribute('rel', 'noopener noreferrer');
-    });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Combat Tracker V2.4</title>
+    <link rel="stylesheet" href="https://use.typekit.net/dck6bem.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://use.typekit.net/dck6bem.css">
 
-    // --- Checkbox Persistence Logic ---
-
-    const STORAGE_KEY_PREFIX = 'monster_statblock_checkbox_'; // Prefix for localStorage keys
-
-    // Function to save checkbox state
-    function saveCheckboxState(checkbox) {
-        localStorage.setItem(STORAGE_KEY_PREFIX + checkbox.id, checkbox.checked);
-    }
-
-    // Function to load checkbox state
-    function loadCheckboxState() {
-        document.querySelectorAll('.resource-tracker input[type="checkbox"]').forEach(function(checkbox) {
-            const savedState = localStorage.getItem(STORAGE_KEY_PREFIX + checkbox.id);
-            if (savedState !== null) {
-                checkbox.checked = (savedState === 'true'); // Convert string to boolean
-            }
-        });
-    }
-
-    // Function to reset all checkboxes and clear local storage
-    function resetCheckboxes() {
-        showCustomConfirm(
-            'Are you sure you want to reset all resource trackers for this monster?',
-            true, // isConfirm: true
-            "Reset Resources"
-        ).then(confirmed => {
-            if (confirmed) {
-                document.querySelectorAll('.resource-tracker input[type="checkbox"]').forEach(function(checkbox) {
-                    checkbox.checked = false; // Uncheck
-                    localStorage.removeItem(STORAGE_KEY_PREFIX + checkbox.id); // Remove from storage
-                });
-                // Show an informational modal after reset
-                showCustomConfirm('All resource trackers have been reset!', false, "Reset Complete");
-            }
-        });
-    }
-
-    // Helper function to create resource tracker checkboxes
-    function createResourceTrackers(idPrefix, count, type = 'default') {
-        let trackerHtml = `<div class="resource-tracker resource-tracker-${type}">`;
-        for (let i = 1; i <= count; i++) {
-            const checkboxId = `${idPrefix}-${i}`; // Unique ID for each checkbox
-            trackerHtml += `<input type="checkbox" id="${checkboxId}" name="${idPrefix}-uses"><label for="${checkboxId}"></label>`;
-        }
-        trackerHtml += '</div>';
-        return trackerHtml;
-    }
-
-    // Helper function to format descriptions by adding spell links
-    function formatDescriptionWithSpellLinks(description, spellUrlMap) {
-        let formattedDesc = description;
-        // Iterate over the spellUrlMap to find and replace spell names
-        for (const [spellNameLower, spellUrl] of spellUrlMap.entries()) {
-            // Create a regex for the spell name, ensuring whole word match (\\b) and case-insensitive (i)
-            // Escape special characters in the spell name for regex safety
-            const escapedSpellName = spellNameLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const regex = new RegExp(`\\b(${escapedSpellName})\\b`, 'gi');
-
-            formattedDesc = formattedDesc.replace(regex, (match) => {
-                // Preserve the original casing of the matched text
-                return `<a class="tooltip-hover spell-tooltip" href="${spellUrl}">${match}</a>`;
-            });
-        }
-        return formattedDesc;
-    }
-
-    // --- Custom Confirmation Modal Functions ---
-    let customConfirmModal = document.getElementById('custom-confirm-modal');
-    if (!customConfirmModal) {
-        customConfirmModal = document.createElement('div');
-        customConfirmModal.id = 'custom-confirm-modal';
-        customConfirmModal.classList.add('modal-overlay');
-        customConfirmModal.innerHTML = `
-            <div class="modal-content">
-                <h3 id="modal-title">Confirm Action</h3>
-                <p id="modal-message">Are you sure?</p>
-                <div class="modal-buttons">
-                    <button id="confirm-yes" class="confirm-yes">Yes</button>
-                    <button id="confirm-no" class="confirm-no">No</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(customConfirmModal);
-    }
-    
-    const confirmYesBtn = customConfirmModal.querySelector('#confirm-yes');
-    const confirmNoBtn = customConfirmModal.querySelector('#confirm-no');
-
-    let modalPromiseResolve;
-
-    function showCustomConfirm(message, isConfirm = true, title = "Confirm Action") {
-        customConfirmModal.querySelector('#modal-title').textContent = title;
-        customConfirmModal.querySelector('#modal-message').textContent = message;
-        customConfirmModal.classList.add('visible');
-
-        confirmYesBtn.classList.remove('confirm-ok');
-        confirmYesBtn.classList.add('confirm-yes');
-        confirmYesBtn.textContent = 'Yes';
-        confirmNoBtn.style.display = '';
-
-        if (!isConfirm) {
-            confirmNoBtn.style.display = 'none';
-            confirmYesBtn.textContent = 'OK';
-            confirmYesBtn.classList.remove('confirm-yes');
-            confirmYesBtn.classList.add('confirm-ok');
+    <style>
+        /* New variables from user provided CSS */
+        :root {
+            --grey: #D8E1E8;
+            --light-grey: #D8E1E8; /* Keeping this consistent with --grey for now */
+            --mid-grey: #647079;
+            --white: #FFFFFF;
+            /* Existing dark theme colors */
+            --dark-bg: #1e2024;
+            --dark-panel-bg: #2a2d32;
+            --dark-border: #3a3d42;
+            --light-text: #e0e0e0;
+            --subtle-text: #a0a0a0;
+            --active-orange: #ff9800;
+            --blue-primary: #1B9AF0;
+            --blue-primary-hover: #0F8DE3;
+            --green-heal: #04C797;
+            --green-heal-hover: #34E1B8;
+            --red-damage: #BC0F0E;
+            --red-damage-hover: #D54F4F;
+            --grey-button: #6c757d;
+            --grey-button-hover: #5a6268;
         }
 
-        return new Promise(resolve => {
-            modalPromiseResolve = resolve;
-        });
-    }
+        body {
+            font-family: "ff-scala-sans-pro", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #EBF1F5; 
+            color: var(--dark-bg);
+            font-size: 14px;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    function handleModalButtonClick(event) {
-        const target = event.target;
-        if (!modalPromiseResolve) return;
+        /* --- Main Content Layout (Existing) --- */
+        .main-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
 
-        if (target.id === 'confirm-yes') {
-            if (confirmNoBtn.style.display === 'none') {
-                modalPromiseResolve(true);
-            } else {
-                modalPromiseResolve(true);
-            }
-        } else if (target.id === 'confirm-no') {
-            modalPromiseResolve(false);
+        .combat-tracker-panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+            flex: 2;
+            min-width: 400px;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        /* --- Panel Header (Existing) --- */
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--grey);
+            position: relative;
+        }
+
+        .panel-header h2 {
+            font-size: 18px;
+            color: var(--dark-bg);
+            margin: 0;
+        }
+
+        .panel-header h2 span {
+            color: var(--mid-grey);
+            font-weight: normal;
         }
         
-        customConfirmModal.classList.remove('visible');
-        modalPromiseResolve = null;
-    }
-
-    confirmYesBtn.addEventListener('click', handleModalButtonClick);
-    confirmNoBtn.addEventListener('click', handleModalButtonClick);
-
-    // Function to render the monster statblock from JSON data
-    async function renderStatblock(monsterData, spellUrlMap) {
-        const statblockContainer = document.getElementById('monster-statblock-container');
-        if (!statblockContainer) {
-            console.error('Statblock container not found!');
-            return;
+        .header-controls {
+            display: flex;
+            align-items: center;
         }
 
-        statblockContainer.innerHTML = '';
-        document.title = `${monsterData.name} Statblock`;
+        .header-btn {
+            background-color: var(--blue-primary);
+            color: var(--white);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            margin-left: 10px;
+            transition: background-color 0.2s ease;
+            font-family: inherit;
+        }
+        .header-btn:hover {
+            background-color: var(--blue-primary-hover);
+        }
+        .header-btn:disabled {
+            background-color: var(--mid-grey);
+            cursor: not-allowed;
+        }
+        .header-btn i {
+            margin-right: 5px;
+        }
 
-        const getSaveValue = (ability) => {
-            return ability.save === "" ? ability.mod : ability.save;
-        };
+        /* --- Kebab Menu Styles --- */
+        .kebab-menu {
+            position: relative;
+        }
+        .kebab-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 5px 10px;
+            color: var(--mid-grey);
+        }
+        .kebab-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 1002;
+            min-width: 160px;
+            padding: 5px 0;
+        }
+        .kebab-dropdown.visible {
+            display: block;
+        }
+        .kebab-dropdown-item {
+            padding: 8px 15px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .kebab-dropdown-item:hover {
+            background-color: var(--grey);
+        }
+        .kebab-dropdown-item i {
+            margin-right: 8px;
+            color: var(--mid-grey);
+        }
 
-        let contentHtml = `
-            <div class="monster-title">
-                ${monsterData.name}
-                <i id="reset-resources-icon" class="fas fa-sync-alt reset-icon" title="Reset All Resources"></i>
+
+        /* --- Initiative List (Existing) --- */
+        .initiative-list-container {
+            flex: 1;
+            background-color: white;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #initiative-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* --- NEW COMBATANT BAR STYLES (FROM USER) --- */
+        .combatant {
+            background: var(--white);
+            border: solid 1px var(--grey);
+            border-radius: 6px;
+            display: flex;
+            align-items: start;
+            justify-content:space-between; 
+            line-height: 1.1;
+            height: 60px;
+            font-family: "ff-scala-sans-pro", sans-serif;
+            font-variant-numeric: lining-nums;
+            margin-bottom: 8px; /* Added spacing between combatants */
+            position: relative; /* For overlays */
+            border: solid 2px var(--light-grey);
+        }
+
+        .hp-overlay .hp-input-overlay:focus-visible, 
+        .hp-overlay .hp-input-overlay:focus,
+        input.enter-initiative-order:focus-visible,
+        input.enter-initiative-order:focus,
+        input.current:focus-visible,
+        input.current:focus {
+            border-color: var(--blue-primary);
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .combatant.active-turn {
+            border-color: var(--blue-primary); /* Blue border for active turn */
+            border-width: 2px;
+        }
+
+        .initiative-order {
+            display: flex;
+            flex-direction: column; /* To stack number and line */
+            align-items: center;
+            justify-content: center;
+            background: var(--grey);
+            width: 60px;
+            padding: 15px 5px; /* Adjusted vertical padding */
+            border-radius: 3px 0 0 3px;
+            position: relative; /* For the line */
+        }
+
+        .initiative-order .number-wrapper {
+            position: relative; /* For the line */
+            display: flex; /* To center input */
+            justify-content: center;
+            align-items: center;
+            height: 100%; /* Take full height */
+            width: 100%;
+        }
+
+        .initiative-order .number-wrapper::after {
+            content: "";
+            position: absolute;
+            width: 27px;
+            border-bottom: 2px solid var(--light-grey); /* Reverted to light-grey */
+            bottom: 5px; /* Position from bottom */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Adjust for exact centering */
+            z-index: 100;
+        }
+        
+        input.enter-initiative-order {
+            border-radius: 6px;
+            border: solid 2px transparent;
+            box-sizing: border-box;
+            height: 30px;
+            width: 35px;
+            text-align: center; /* Center align text */
+            font-size: 18px;
+            font-family: "ff-scala-sans-pro", sans-serif;
+            font-variant-numeric: lining-nums;
+            font-weight: 700;
+            background-color: var(--white);
+            color: #1e2024; /* Dark text for input */
+            -moz-appearance: textfield; /* Firefox */
+        }
+        /* Hide spin buttons for WebKit browsers (Chrome, Safari) */
+        input.enter-initiative-order::-webkit-outer-spin-button,
+        input.enter-initiative-order::-webkit-inner-spin-button,
+        input.hp-input-overlay::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        input.current {
+            border: solid 2px transparent;
+            box-sizing: border-box;
+            height: 30px;
+            width: 41px;
+            text-align: center; /* Center align text */
+            font-size: 18px;
+            font-family: "ff-scala-sans-pro", sans-serif;
+            font-variant-numeric: lining-nums;
+            font-weight: 700;
+            border-radius: 6px;
+            background-color: var(--white);
+            color: #1e2024; /* Dark text for input */
+            /* Hide spin buttons */
+            -moz-appearance: textfield; /* Firefox */
+        }
+        /* Hide spin buttons for WebKit browsers (Chrome, Safari) */
+        input.current::-webkit-outer-spin-button,
+        input.current::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* NEW: HP Color Cues */
+        input.current.hp-low {
+            color: #D98B4C;
+        }
+        input.current.hp-critical {
+            color: var(--red-damage);
+        }
+
+        /* Wrapper for HP input to hold the pseudo-element underline */
+        .hp-number-wrapper {
+            position: relative;
+        }
+
+        /* Underline style for HP input, matching initiative */
+        .hp-number-wrapper::after {
+            content: "";
+            position: absolute;
+            width: 27px;
+            border-bottom: 2px solid var(--light-grey);
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+
+        .combatant .info {
+            flex-grow: 1;
+            display: flex; /* Use flexbox for simpler layout */
+            flex-direction: column; /* Stack name and AC/Conditions vertically */
+            justify-content: center; /* Center content vertically */
+            padding: 0 12px;
+            color: var(--dark-bg);
+            height: 100%;
+        }
+
+        .info .name {
+            font-size: 18px;
+            font-weight: 700;
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow */
+            text-overflow: ellipsis; /* Add ellipsis if text overflows */
+            margin-bottom: 5px; /* Space between name and AC/conditions */
+        }
+
+        .info .ac-and-conditions {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between AC and conditions */
+            flex-wrap: wrap; /* Allow conditions to wrap if many */
+        }
+
+        .info .armor-class {
+            font-size: 14px;
+            color: var(--mid-grey);
+            white-space: nowrap;
+        }
+
+        .info .condition {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            /* No justify-content: flex-end here, as it's part of the flow with AC */
+        }
+
+        .info .condition .active-conditions-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            font-size: 0.8em;
+        }
+
+        .info .condition .active-conditions-display .condition-item {
+            background-color: var(--green-heal);
+            color: var(--white);
+            padding: 3px 6px 2px 6px; /* keep this padding for visual balance */
+            border-radius: 3px;
+            font-weight: 700;
+            white-space: nowrap;
+            display: inline-flex; /* To align text and 'x' */
+            align-items: center;
+            gap: 3px;
+            cursor: pointer; /* Indicate clickable */
+        }
+
+        .info .condition .active-conditions-display .remove-condition-btn {
+            color: var(--white); /* Color of the 'x' */
+            font-size: 0.9em;
+            margin-left: 2px;
+            transition: color 0.2s ease;
+            /* No direct cursor property here, as parent span handles click */
+        }
+
+        .info .condition .active-conditions-display .condition-item:hover .remove-condition-btn {
+            color: var(--dark-border);
+        }
+
+
+        .combatant .hp {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--grey);
+            border-radius: 0 3px 3px 0;
+            padding: 0 17px 0 18px; /* Adjusted vertical padding */
+            position: relative;
+            cursor: pointer;
+            gap: 5px;
+            height: 100%;
+        }
+        
+        /* NEW: Styles for divider and max HP as requested */
+        .hp .divider {
+            font-size: 10px;
+            text-align: center;
+            padding: 0 5px;
+            color: var(--mid-grey);
+            font-weight: 700;
+        }
+
+        .hp .max {
+            font-size: 18px;
+            font-family: "ff-scala-sans-pro", sans-serif;
+            font-variant-numeric: lining-nums;
+            font-weight: 700;
+            color: var(--dark-bg);
+        }
+
+        .hp.active .current {
+            border-color: var(--blue-primary);
+        }
+        
+        /* NEW: Container for Max and Temp HP */
+        .hp-max-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.1;
+        }
+
+        /* NEW: Style for Temp HP display */
+        .temp-hp-display {
+            color: var(--blue-primary-hover);
+            background: white;
+            padding: 1px 2px 0;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 3px;
+        }
+
+        /* Style for hidden HP section */
+        .combatant .hp.hidden {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+
+        .hp-overlay {
+            gap: 0;
+            position: fixed; /* UPDATED */
+            background-color: white;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 5000;
+            display: none;
+            flex-direction: column;
+            width: 150px;
+        }
+
+        .conditions-overlay {
+            gap: 2px;
+            position: fixed; /* UPDATED */
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(5, auto);
+            background-color: white;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none;
+            width: 300px;
+        }
+    
+        .hp-overlay.visible {
+            display: flex;
+        }
+
+        .conditions-overlay.visible {
+            display: grid;
+        }
+      
+        .condition-checkbox-group {
+            display: flex;
+            align-items: center;
+            color: var(--mid-grey); /* UPDATED */
+            white-space: nowrap;
+            font-size: 12px;
+            font-family: "ff-scala-sans-pro", sans-serif;
+        }
+
+        /* UPDATED: Custom checkbox styles */
+        .condition-checkbox-group input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background-color: var(--grey);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+            margin-right: 5px;
+        }
+
+        .condition-checkbox-group input[type="checkbox"]:checked {
+            background-color: var(--blue-primary);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* HP Overlay Specific Styles */
+        .hp-overlay .hp-controls-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+        }
+
+        .hp-overlay .hp-input-overlay {
+            flex: none;
+            border-radius: 6px;
+            background-color: #F6F8FA;
+            color: var(--dark-bg);
+            text-align: center;
+            font-size: 20px;
+            font-family: "ff-scala-sans-pro", sans-serif;
+            font-variant-numeric: lining-nums;
+            font-weight: 700;
+            border: solid 2px transparent;
+            box-sizing: border-box;
+            width: 100%;
+            height: 40px;
+            padding: 0;
+        }
+        
+        /* Explicitly style the placeholder to be opaque */
+        .hp-overlay .hp-input-overlay::placeholder {
+            color: var(--mid-grey);
+            opacity: 1; 
+        }
+
+        .hp-overlay .hp-action-btn-overlay {
+            padding: 10px 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+            font-size: 12px;
+            font-family: "ff-scala-sans-pro", sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .hp-overlay .hp-action-btn-overlay.heal-btn {
+            background-color: var(--green-heal);
+            color: var(--white);
+        }
+        .hp-overlay .hp-action-btn-overlay.heal-btn:hover {
+            background-color: var(--green-heal-hover);
+        }
+        .hp-overlay .hp-action-btn-overlay.damage-btn {
+            background-color: var(--red-damage);
+            color: var(--white);
+        }
+        .hp-overlay .hp-action-btn-overlay.damage-btn:hover {
+            background-color: var(--red-damage-hover);
+        }
+
+        /* NEW: Style for disabled buttons */
+        .hp-overlay .hp-action-btn-overlay.disabled-btn {
+            background-color: #CED9E0;
+            color: #7F909D;
+            cursor: not-allowed;
+        }
+        .hp-overlay .hp-action-btn-overlay.disabled-btn:hover {
+            background-color: #CED9E0;
+            color: #7F909D
+        }
+
+        .hp-overlay .temp-hp-label {
+            font-size: 13px;
+            text-align: left;
+            color: var(--subtle-text);
+            white-space: nowrap;
+            margin-top: 12px;
+        }
+
+        /* --- Turn Controls (Existing) --- */
+        .turn-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--grey);
+            margin-top: auto;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+            font-family: inherit; /* UPDATED */
+        }
+
+        .control-btn.primary {
+            background-color: var(--blue-primary);
+            color: var(--white);
+        }
+
+        .control-btn.primary:hover {
+            background-color: var(--blue-primary-hover);
+        }
+
+        .control-btn.secondary {
+            background-color: var(--grey);
+            color: var(--dark-bg);
+        }
+
+        .control-btn.secondary:hover {
+            background-color: #cdd6dc;
+        }
+
+        /* --- Custom Modal Styles (Existing) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5001; /* High z-index */
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: left;
+            max-width: 400px;
+            width: 90%;
+            color: var(--dark-bg);
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+            color: var(--dark-bg);
+        }
+
+        .modal-content p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: var(--mid-grey);
+        }
+        
+        .modal-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .modal-form-grid .full-width {
+            grid-column: 1 / -1;
+        }
+        .modal-form-grid label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .modal-form-grid input,
+        .modal-form-grid textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--grey);
+            border-radius: 5px;
+            background-color: #F6F8FA;
+            color: var(--dark-bg);
+            font-size: 14px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        .modal-form-grid textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        #saved-party-list, #current-saved-party {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--grey);
+            border-radius: 5px;
+            padding: 10px;
+        }
+        #current-saved-party {
+            margin-bottom: 15px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+            font-family: inherit; /* UPDATED */
+        }
+
+        .modal-buttons .confirm-yes {
+            background-color: var(--blue-primary);
+            color: var(--white);
+        }
+
+        .modal-buttons .confirm-yes:hover {
+            background-color: var(--blue-primary-hover);
+        }
+
+        .modal-buttons .confirm-no {
+            background-color: var(--grey);
+            color: var(--dark-bg);
+        }
+
+        .modal-buttons .confirm-no:hover {
+            background-color: #cdd6dc;
+        }
+
+        /* --- Context Menu Styles --- */
+        .context-menu {
+            position: fixed;
+            background-color: var(--white);
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 5002; /* Higher than modal overlay */
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            padding: 5px 0;
+            min-width: 150px;
+        }
+
+        .context-menu-item {
+            padding: 8px 15px;
+            color: var(--dark-bg);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .context-menu-item:hover {
+            background-color: var(--grey);
+        }
+
+        .context-menu-item i {
+            margin-right: 8px;
+            color: var(--mid-grey);
+        }
+        
+        #initial-add-prompt {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100%;
+            color: var(--mid-grey);
+            text-align: center;
+        }
+        #initial-add-prompt button {
+            margin-top: 10px;
+        }
+
+        /* --- Responsive Adjustments (Adapted for new combatant structure) --- */
+        @media (max-width: 768px) {
+            .main-content-wrapper {
+                flex-direction: column;
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .combat-tracker-panel, .summary-panel {
+                min-width: unset;
+                max-width: unset;
+                width: 100%;
+            }
+
+            .input-section {
+                grid-template-columns: 1fr;
+            }
+
+            .add-btn {
+                grid-column: span 1;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content-wrapper">
+        <div class="combat-tracker-panel">
+            <div class="panel-header">
+                <h2><span id="encounter-title-display">Combat Tracker</span> <span id="tracker-info">(No Combat in Progress)</span></h2>
+                <div class="header-controls">
+                    <button id="header-add-combatant-btn" class="header-btn"><i class="fas fa-plus"></i> Add Combatant</button>
+                    <div class="kebab-menu">
+                        <button id="kebab-btn" class="kebab-btn"><i class="fas fa-ellipsis-v"></i></button>
+                        <div id="kebab-dropdown" class="kebab-dropdown">
+                            <div class="kebab-dropdown-item" id="manage-party-btn"><i class="fas fa-users-cog"></i> Manage Party</div>
+                            <div class="kebab-dropdown-item" id="load-encounter-btn"><i class="fas fa-book"></i> Load Encounter</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="monster-meta">${monsterData.meta}</div>
-            <div class="monster-col">
-                <div class="monster-topstats">
-                    <ul class="statblock-list">
-                        <li><span class="bold">AC</span> ${monsterData.ac} <span class="bold">Initiative</span> ${monsterData.initiative}</li>
-                        <li><span class="bold">HP</span> ${monsterData.hp}</li>
-                        <li><span class="bold">Speed</span> ${monsterData.speed}</li>
+
+            <div class="initiative-list-container">
+                <div id="initial-add-prompt">
+                    <h3>The battlefield is empty.</h3>
+                    <p>Add some combatants to get started.</p>
+                    <button id="initial-add-btn" class="control-btn primary">Add Combatants</button>
+                </div>
+                <ul id="initiative-list">
                     </ul>
-                </div>
-                <div class="monster-ability-scores">
-                    <div class="monster-ability-scores1">
-                        <div class="ability-header" style="grid-area: blank;"></div>
-                        <div class="ability-header" style="grid-area: blank;"></div>
-                        <div class="ability-header" style="grid-area: mod;">MOD</div>
-                        <div class="ability-header" style="grid-area: save;">SAVE</div>
-                        <div class="ability-label str">STR</div>
-                        <div class="ability-score str-score">${monsterData.abilities.str.score}</div>
-                        <div class="ability-mod str-mod">${monsterData.abilities.str.mod}</div>
-                        <div class="ability-save str-save">${getSaveValue(monsterData.abilities.str)}</div>
-                        <div class="ability-label dex">DEX</div>
-                        <div class="ability-score dex-score">${monsterData.abilities.dex.score}</div>
-                        <div class="ability-mod dex-mod">${monsterData.abilities.dex.mod}</div>
-                        <div class="ability-save dex-save">${getSaveValue(monsterData.abilities.dex)}</div>
-                        <div class="ability-label con">CON</div>
-                        <div class="ability-score con-score">${monsterData.abilities.con.score}</div>
-                        <div class="ability-mod con-mod">${monsterData.abilities.con.mod}</div>
-                        <div class="ability-save con-save">${getSaveValue(monsterData.abilities.con)}</div>
-                    </div>
-                    <div class="monster-ability-scores2">
-                        <div class="ability-header" style="grid-area: blank;"></div>
-                        <div class="ability-header" style="grid-area: blank;"></div>
-                        <div class="ability-header" style="grid-area: mod;">MOD</div>
-                        <div class="ability-header" style="grid-area: save;">SAVE</div>
-                        <div class="ability-label int">INT</div>
-                        <div class="ability-score int-score">${monsterData.abilities.int.score}</div>
-                        <div class="ability-mod int-mod">${monsterData.abilities.int.mod}</div>
-                        <div class="ability-save int-save">${getSaveValue(monsterData.abilities.int)}</div>
-                        <div class="ability-label wis">WIS</div>
-                        <div class="ability-score wis-score">${monsterData.abilities.wis.score}</div>
-                        <div class="ability-mod wis-mod">${monsterData.abilities.wis.mod}</div>
-                        <div class="ability-save wis-save">${getSaveValue(monsterData.abilities.wis)}</div>
-                        <div class="ability-label cha">CHA</div>
-                        <div class="ability-score cha-score">${monsterData.abilities.cha.score}</div>
-                        <div class="ability-mod cha-mod">${monsterData.abilities.cha.mod}</div>
-                        <div class="ability-save cha-save">${getSaveValue(monsterData.abilities.cha)}</div>
-                    </div>
-                </div>
-                <ul class="statblock-list">
-                    <li><span class="bold">Skills</span> ${monsterData.skills}</li>
-                    <li><span class="bold">Senses</span> ${monsterData.senses}</li>
-                    <li><span class="bold">Languages</span> ${monsterData.languages}</li>
-                    <li><span class="bold">CR</span> ${monsterData.cr}</li>
-                </ul>
-                <div class="section-title">Traits</div>
-        `;
+            </div>
 
-        // Render Traits
-        if (monsterData.traits && monsterData.traits.length > 0) {
-            monsterData.traits.forEach(trait => {
-                contentHtml += `<div class="trait"><span class="trait-title italic">${trait.name}.</span> `;
-                
-                // Handle Legendary Resistance
-                if (trait.name.includes('Legendary Resistance')) {
-                    const match = trait.name.match(/\((\d+)\/Day\)/);
-                    if (match && match[1]) {
-                        const count = parseInt(match[1]);
-                        contentHtml += `${trait.desc} ${createResourceTrackers('legendary-resistance', count, 'legendary')}`;
-                    } else {
-                        contentHtml += trait.desc; // Render description if no count found
+            <div class="turn-controls">
+                <button id="reset-tracker-btn" class="control-btn secondary">Reset</button>
+                <button id="begin-combat-btn" class="control-btn primary">Begin Combat</button>
+                <button id="undo-turn-btn" class="control-btn secondary" style="display: none;">Undo</button>
+                <button id="next-turn-btn" class="control-btn primary" style="display: none;">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-combatant-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Add Combatant(s)</h3>
+            <div class="modal-form-grid">
+                <div class="full-width">
+                    <label for="modal-combatant-name">Name</label>
+                    <input type="text" id="modal-combatant-name" placeholder="e.g., Goblin">
+                </div>
+                <div>
+                    <label for="modal-current-hp">HP</label>
+                    <input type="number" id="modal-current-hp" placeholder="e.g., 7">
+                </div>
+                <div>
+                    <label for="modal-ac-input">AC</label>
+                    <input type="number" id="modal-ac-input" placeholder="e.g., 15">
+                </div>
+                <div>
+                    <label for="modal-rolled-initiative">Initiative</label>
+                    <input type="number" id="modal-rolled-initiative" placeholder="Optional">
+                </div>
+                <div>
+                    <label for="modal-quantity">Quantity</label>
+                    <input type="number" id="modal-quantity" value="1" min="1">
+                </div>
+            </div>
+             <div class="modal-buttons">
+                 <button id="add-from-party-btn" class="confirm-yes" disabled><i class="fas fa-user-plus"></i> Add from Party</button>
+                <button id="modal-cancel-btn" class="confirm-no">Cancel</button>
+                <button id="modal-confirm-add-btn" class="confirm-yes">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-from-party-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Add from Saved Party</h3>
+            <div id="saved-party-list">
+                </div>
+            <div class="modal-buttons">
+                <button id="party-modal-cancel-btn" class="confirm-no">Cancel</button>
+                <button id="party-modal-add-btn" class="confirm-yes">Add Selected</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="manage-party-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Manage Party</h3>
+            <p>Load a party file to save it for future use. This will overwrite any currently saved party.</p>
+            <div id="current-saved-party"></div>
+            <div class="modal-buttons">
+                <button id="manage-party-cancel-btn" class="confirm-no">Close</button>
+                <button id="manage-party-load-btn" class="confirm-yes">Load Party File</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-confirm-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="modal-title">Confirm Action</h3>
+            <p id="modal-message">Are you sure?</p>
+            <div class="modal-buttons">
+                <button id="confirm-yes" class="confirm-yes">Yes</button>
+                <button id="confirm-no" class="confirm-no">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="combatant-context-menu" class="context-menu">
+        <div class="context-menu-item" data-action="adjust-hp"><i class="fas fa-heart"></i> Adjust HP</div>
+        <div class="context-menu-item" data-action="add-condition"><i class="fas fa-plus-square"></i> Add Condition</div>
+        <div class="context-menu-item" data-action="duplicate-combatant"><i class="fas fa-copy"></i> Duplicate</div>
+        <div class="context-menu-item" data-action="remove-combatant"><i class="fas fa-trash-alt"></i> Remove Combatant</div>
+    </div>
+
+    <div class="hp-overlay" id="hp-adjustment-overlay">
+        </div>
+    <div class="conditions-overlay" id="conditions-selection-overlay">
+        </div>
+
+    <input type="file" id="file-input" accept=".json" style="display: none;">
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- UI Element References ---
+            const nextTurnBtn = document.getElementById('next-turn-btn');
+            const undoTurnBtn = document.getElementById('undo-turn-btn');
+            const resetTrackerBtn = document.getElementById('reset-tracker-btn');
+            const beginCombatBtn = document.getElementById('begin-combat-btn');
+            const initiativeListContainer = document.querySelector('.initiative-list-container');
+            const initiativeList = document.getElementById('initiative-list');
+            const trackerInfoSpan = document.getElementById('tracker-info');
+            const encounterTitleDisplay = document.getElementById('encounter-title-display');
+            
+            // Modal elements
+            const customConfirmModal = document.getElementById('custom-confirm-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalMessage = document.getElementById('modal-message');
+            const confirmYesBtn = document.getElementById('confirm-yes');
+            const confirmNoBtn = document.getElementById('confirm-no');
+
+            // Add Combatant Modal elements
+            const addCombatantModal = document.getElementById('add-combatant-modal');
+            const headerAddBtn = document.getElementById('header-add-combatant-btn');
+            const initialAddBtn = document.getElementById('initial-add-btn');
+            const modalCancelBtn = document.getElementById('modal-cancel-btn');
+            const modalConfirmAddBtn = document.getElementById('modal-confirm-add-btn');
+            const initialAddPrompt = document.getElementById('initial-add-prompt');
+            
+            // Add from Party Modal elements
+            const addFromPartyModal = document.getElementById('add-from-party-modal');
+            const addFromPartyBtn = document.getElementById('add-from-party-btn');
+            const savedPartyList = document.getElementById('saved-party-list');
+            const partyModalCancelBtn = document.getElementById('party-modal-cancel-btn');
+            const partyModalAddBtn = document.getElementById('party-modal-add-btn');
+
+            // Manage Party Modal elements
+            const managePartyModal = document.getElementById('manage-party-modal');
+            const managePartyBtn = document.getElementById('manage-party-btn');
+            const managePartyCancelBtn = document.getElementById('manage-party-cancel-btn');
+            const managePartyLoadBtn = document.getElementById('manage-party-load-btn');
+            const currentSavedPartyDiv = document.getElementById('current-saved-party');
+
+            // File Upload elements
+            const fileInput = document.getElementById('file-input');
+            const loadEncounterBtn = document.getElementById('load-encounter-btn');
+            let currentUploadType = null; // 'party' or 'encounter'
+
+            // Context Menu elements
+            const combatantContextMenu = document.getElementById('combatant-context-menu');
+            let activeCombatantIdForMenu = null;
+
+            // Kebab menu
+            const kebabBtn = document.getElementById('kebab-btn');
+            const kebabDropdown = document.getElementById('kebab-dropdown');
+
+            // Shared Overlay elements
+            const hpOverlay = document.getElementById('hp-adjustment-overlay');
+            const conditionsOverlay = document.getElementById('conditions-selection-overlay');
+            let activeOverlayCombatantId = null;
+
+            let combatants = [];
+            let currentTurnIndex = -1;
+            let currentRound = 1;
+            let turnHistory = [];
+            let confirmCallback = null;
+            let isCombatActive = false;
+            let nextId = Date.now(); // Unique ID counter
+
+            const PARTY_STORAGE_KEY = 'dnd_tracker_saved_party';
+            const STORAGE_KEY = 'dnd_initiative_tracker_combatants';
+            const TURN_STATE_STORAGE_KEY = 'dnd_initiative_tracker_turn_state';
+
+            // Common D&D Conditions (using Font Awesome for now)
+            const DND_CONDITIONS = [
+                'Blinded', 'Charmed', 'Deafened', 'Exhaustion', 'Frightened',
+                'Grappled', 'Incapacitated', 'Invisible', 'Paralyzed', 'Petrified',
+                'Poisoned', 'Prone', 'Restrained', 'Stunned', 'Unconscious'
+            ];
+
+            // Combatant Class
+            class Combatant {
+                constructor(id, name, initiative = null, currentHp = null, maxHp = null, ac = null, tempHp = 0, hideHp = false, conditions = []) {
+                    this.id = id || nextId++;
+                    this.name = name;
+                    this.initiative = initiative !== null ? parseInt(initiative) : null;
+                    this.currentHp = currentHp !== null ? parseInt(currentHp) : null;
+                    this.maxHp = maxHp !== null ? parseInt(maxHp) : null;
+                    this.ac = ac !== null ? parseInt(ac) : null;
+                    this.tempHp = parseInt(tempHp) || 0;
+                    this.hideHp = hideHp;
+                    this.conditions = conditions || [];
+                }
+
+                rollInitiative(initMod = 0) {
+                    this.initiative = Math.floor(Math.random() * 20) + 1 + initMod;
+                }
+            }
+
+            // --- Custom Confirmation Modal Functions ---
+            function showCustomConfirm(message, onConfirm, onCancel = null, title = "Confirm Action", alertMode = false) {
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+
+                if (alertMode) {
+                    confirmYesBtn.textContent = "OK";
+                    confirmNoBtn.style.display = 'none';
+                } else {
+                    confirmYesBtn.textContent = "Yes";
+                    confirmNoBtn.style.display = 'inline-block';
+                }
+
+                customConfirmModal.classList.add('visible');
+
+                confirmCallback = (result) => {
+                    customConfirmModal.classList.remove('visible');
+                    if (result && onConfirm) {
+                        onConfirm();
+                    } else if (!result && onCancel) {
+                        onCancel();
                     }
-                } 
-                // Handle Innate Spellcasting
-                else if (typeof trait.desc === 'object' && trait.desc.intro && trait.desc.spells_by_frequency) {
-                    contentHtml += `${trait.desc.intro}<br><br>`;
-                    trait.desc.spells_by_frequency.forEach(freqBlock => {
-                        contentHtml += `<strong>${freqBlock.frequency}</strong>`;
+                    confirmCallback = null;
+                };
+            }
+
+            confirmYesBtn.addEventListener('click', () => {
+                if (confirmCallback) {
+                    confirmCallback(true);
+                }
+            });
+
+            confirmNoBtn.addEventListener('click', () => {
+                if (confirmCallback) {
+                    confirmCallback(false);
+                }
+            });
+
+            // --- Persistence Functions ---
+            function saveCombatants() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(combatants));
+                saveTurnState();
+            }
+
+            function saveTurnState() {
+                const turnState = {
+                    currentTurnIndex: currentTurnIndex,
+                    currentRound: currentRound,
+                    turnHistory: turnHistory,
+                    isCombatActive: isCombatActive // Save combat state
+                };
+                localStorage.setItem(TURN_STATE_STORAGE_KEY, JSON.stringify(turnState));
+            }
+
+            function loadCombatants() {
+                const savedCombatantsData = localStorage.getItem(STORAGE_KEY);
+                if (savedCombatantsData) {
+                    const loadedCombatants = JSON.parse(savedCombatantsData);
+                    combatants = loadedCombatants.map(data => {
+                        const initiativeValue = data.initiative !== undefined ? data.initiative : (data.initMod !== undefined ? data.initMod : null);
                         
-                        // Check if the frequency string indicates "per spell" uses (e.g., "X/day each")
-                        const isPerSpellTracking = freqBlock.frequency.toLowerCase().includes('each');
-
-                        if (!isPerSpellTracking && freqBlock.track_slots) {
-                            // If it's a shared slot pool, add trackers for the block
-                            const idPrefix = `spell-slots-${freqBlock.frequency.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
-                            contentHtml += createResourceTrackers(idPrefix, freqBlock.track_slots, 'spell');
+                        let hideHp = data.hideHp || false;
+                        if (data.isPC || data.isLairAction) {
+                            hideHp = true;
                         }
-                        contentHtml += `: `; // Always add colon after frequency
 
-                        const spellsHtml = freqBlock.spells.map(spell => {
-                            const spellUrl = spellUrlMap.get(spell.name.toLowerCase()) || `https://www.dndbeyond.com/spells/${spell.url_suffix}`;
-                            let spellEntry = `<a class="tooltip-hover spell-tooltip" href="${spellUrl}">${spell.name}</a>${spell.notes}`;
-
-                            // If it's "per spell" tracking, add trackers after each spell
-                            if (isPerSpellTracking && freqBlock.track_slots) {
-                                const spellIdPrefix = `spell-uses-${freqBlock.frequency.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${spell.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
-                                spellEntry += createResourceTrackers(spellIdPrefix, freqBlock.track_slots, 'spell');
-                            }
-                            return spellEntry;
-                        }).join(', ');
-                        contentHtml += `${spellsHtml}<br>`;
+                        return new Combatant(
+                            data.id, data.name,
+                            initiativeValue,
+                            data.currentHp, data.maxHp,
+                            data.ac, data.tempHp,
+                            hideHp,
+                            data.conditions || []
+                        );
                     });
                 }
-                // Handle other general traits
-                else if (typeof trait.desc === 'string') {
-                    let formattedDesc = formatDescriptionWithSpellLinks(trait.desc, spellUrlMap);
-                    contentHtml += formattedDesc;
-                    if (trait.track_uses) { // For any other trait that might have track_uses
-                        contentHtml += createResourceTrackers(trait.name.toLowerCase().replace(/[^a-z0-9]/g, '-'), trait.track_uses);
+
+                renderCombatants();
+                const savedTurnStateData = localStorage.getItem(TURN_STATE_STORAGE_KEY);
+                if (savedTurnStateData) {
+                    const loadedTurnState = JSON.parse(savedTurnStateData);
+                    currentTurnIndex = loadedTurnState.currentTurnIndex;
+                    currentRound = loadedTurnState.currentRound;
+                    turnHistory = loadedTurnState.turnHistory;
+                    isCombatActive = loadedTurnState.isCombatActive;
+                    toggleCombatControls(isCombatActive);
+                    highlightCurrentTurn();
+                    updateTrackerInfo();
+                }
+                updateTrackerInfo();
+                
+                // Check for a saved party and enable the button if it exists
+                if (localStorage.getItem(PARTY_STORAGE_KEY)) {
+                    addFromPartyBtn.disabled = false;
+                }
+            }
+
+            // --- Rendering Functions ---
+            function renderCombatants() {
+                initiativeList.innerHTML = '';
+
+                if (combatants.length === 0) {
+                    initialAddPrompt.style.display = 'flex';
+                } else {
+                    initialAddPrompt.style.display = 'none';
+                }
+
+                // Only sort if combat is active
+                if (isCombatActive) {
+                    combatants.sort((a, b) => {
+                        const aHasInit = a.initiative !== null;
+                        const bHasInit = b.initiative !== null;
+
+                        if (aHasInit && bHasInit) {
+                            return b.initiative - a.initiative;
+                        } else if (aHasInit) {
+                            return -1;
+                        } else if (bHasInit) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                }
+
+                combatants.forEach((combatant) => {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('combatant'); // Use the new class name
+                    listItem.dataset.id = combatant.id;
+
+                    listItem.addEventListener('contextmenu', handleCombatantContextMenu); // Add right-click listener
+
+                    // Render initiative as an input field, blank if null
+                    const initiativeInputHtml = `<input type="number" class="enter-initiative-order" value="${combatant.initiative !== null ? combatant.initiative : ''}" data-id="${combatant.id}">`;
+
+                    const currentHpVal = combatant.currentHp !== null ? combatant.currentHp : '';
+                    const maxHpDisplay = combatant.maxHp !== null ? combatant.maxHp : '—'; // Display '—' if maxHp is null
+
+                    const activeConditionsHtml = combatant.conditions.length > 0
+                        ? `<div class="active-conditions-display">${combatant.conditions.map(c => `<span class="condition-item" data-condition="${c}">${c} <i class="fas fa-times remove-condition-btn"></i></span>`).join('')}</div>`
+                        : '';
+                    
+                    const tempHpHtml = combatant.tempHp > 0 
+                        ? `<span class="temp-hp-display" title="Temp HP">+${combatant.tempHp}</span>`
+                        : '';
+
+                    let hpClass = '';
+                    if (combatant.maxHp > 0) {
+                        const hpPercentage = (combatant.currentHp / combatant.maxHp) * 100;
+                        if (hpPercentage <= 10) {
+                            hpClass = 'hp-critical';
+                        } else if (hpPercentage <= 50) {
+                            hpClass = 'hp-low';
+                        }
+                    }
+
+                    // UPDATED: Added divider and max HP elements
+                    listItem.innerHTML = `
+                        <div class="initiative-order">
+                            <div class="number-wrapper">
+                                ${initiativeInputHtml}
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="name">${combatant.name}</div>
+                            <div class="ac-and-conditions">
+                                <div class="armor-class"><strong>AC</strong> ${combatant.ac !== null ? combatant.ac : '—'}</div>
+                                <div class="condition">
+                                    ${activeConditionsHtml}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hp ${combatant.hideHp ? 'hidden' : ''}" data-id="${combatant.id}">
+                            <div class="hp-number-wrapper">
+                                <input type="number" class="current ${hpClass}" value="${currentHpVal}" data-id="${combatant.id}" readonly>
+                            </div>
+                            <div class="divider">/</div>
+                            <div class="hp-max-section">
+                                <span class="max">${maxHpDisplay}</span>
+                                ${tempHpHtml}
+                            </div>
+                        </div>
+                    `;
+                    initiativeList.appendChild(listItem);
+                });
+
+                highlightCurrentTurn();
+                updateTrackerInfo();
+                saveCombatants();
+            }
+
+            function highlightCurrentTurn() {
+                document.querySelectorAll('.combatant').forEach(item => {
+                    item.classList.remove('active-turn');
+                });
+
+                if (currentTurnIndex !== -1 && combatants.length > 0) {
+                    const activeCombatantId = combatants[currentTurnIndex].id;
+                    const activeElement = initiativeList.querySelector(`[data-id="${activeCombatantId}"]`);
+                    if (activeElement) {
+                        activeElement.classList.add('active-turn');
+                        activeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     }
                 }
-                contentHtml += `</div>`;
-            });
-        }
-
-        // Render Actions
-        if (monsterData.actions && monsterData.actions.length > 0) {
-            contentHtml += `<div class="section-title">Actions</div>`;
-            monsterData.actions.forEach(action => {
-                contentHtml += `<div class="action"><span class="action-title italic">${action.name}.</span> `;
-                let formattedDesc = formatDescriptionWithSpellLinks(action.desc, spellUrlMap);
-                formattedDesc = formattedDesc.replace(/(Melee Weapon Attack:|Ranged Weapon Attack:|Hit:|Failure:)/g, '<em>$1</em>');
-                contentHtml += `${formattedDesc}`;
-                if (action.track_uses && !action.name.includes('(Recharge')) {
-                    contentHtml += createResourceTrackers(action.name.toLowerCase().replace(/[^a-z0-9]/g, '-'), action.track_uses);
-                }
-                contentHtml += `</div>`;
-            });
-        }
-
-        // Render Bonus Actions
-        if (monsterData.bonus_actions && monsterData.bonus_actions.length > 0) {
-            contentHtml += `<div class="section-title">Bonus Actions</div>`;
-            monsterData.bonus_actions.forEach(bonusAction => {
-                contentHtml += `<div class="bonus-action"><span class="bonus-action-title italic">${bonusAction.name}.</span> `;
-                let formattedDesc = formatDescriptionWithSpellLinks(bonusAction.desc, spellUrlMap);
-                formattedDesc = formattedDesc.replace(/(Melee Weapon Attack:|Ranged Weapon Attack:|Hit:|Failure:)/g, '<em>$1</em>');
-                contentHtml += `${formattedDesc}`;
-                if (bonusAction.track_uses) {
-                    contentHtml += createResourceTrackers(bonusAction.name.toLowerCase().replace(/[^a-z0-9]/g, '-'), bonusAction.track_uses);
-                }
-                contentHtml += `</div>`;
-            });
-        }
-
-        // Render Reactions
-        if (monsterData.reactions && monsterData.reactions.length > 0) {
-            contentHtml += `<div class="section-title">Reactions</div>`;
-            monsterData.reactions.forEach(reaction => {
-                contentHtml += `<div class="reaction"><span class="reaction-title italic">${reaction.name}.</span> `;
-                let formattedDesc = formatDescriptionWithSpellLinks(reaction.desc, spellUrlMap);
-                formattedDesc = formattedDesc.replace(/(Melee Weapon Attack:|Ranged Weapon Attack:|Hit:|Failure:)/g, '<em>$1</em>');
-                contentHtml += `${formattedDesc}`;
-                if (reaction.track_uses) {
-                    contentHtml += createResourceTrackers(reaction.name.toLowerCase().replace(/[^a-z0-9]/g, '-'), reaction.track_uses);
-                }
-                contentHtml += `</div>`;
-            });
-        }
-
-        contentHtml += `</div>`; // Close the single monster-col div
-
-        statblockContainer.innerHTML = contentHtml;
-
-        // Re-attach event listeners after HTML is rendered
-        document.querySelectorAll('a[href^="http"]').forEach(function(link) {
-            link.setAttribute('target', '_blank');
-            link.setAttribute('rel', 'noopener noreferrer');
-        });
-
-        // Re-attach persistence listeners to newly created checkboxes
-        document.querySelectorAll('.resource-tracker input[type="checkbox"]').forEach(function(checkbox) {
-            checkbox.addEventListener('change', function() {
-                saveCheckboxState(this);
-            });
-        });
-
-        // Re-attach event listener to the reset icon
-        const resetIcon = document.getElementById('reset-resources-icon');
-        const trackers = statblockContainer.querySelectorAll('.resource-tracker'); // Find all trackers in the rendered content
-
-        if (resetIcon) {
-            if (trackers.length === 0) {
-                resetIcon.style.display = 'none'; // Hide if no trackers
-            } else {
-                resetIcon.style.display = ''; // Ensure visible if trackers exist
-            }
-            resetIcon.addEventListener('click', resetCheckboxes);
-        }
-
-        // Load states for the newly rendered checkboxes
-        loadCheckboxState();
-    }
-
-    let spellUrlMap = new Map(); // Declare spellUrlMap here
-
-    // --- Main execution ---
-    // Fetch monster data and render the statblock
-    async function initStatblock() {
-        try {
-            // Fetch the spell URLs JSON first
-            const spellUrlsResponse = await fetch('2024-spell-urls.json'); // Direct fetch to filename
-            const spellUrlsData = await spellUrlsResponse.json();
-
-            // Populate the spellUrlMap for quick lookups, converting spell names to lowercase
-            spellUrlsData.forEach(spell => {
-                spellUrlMap.set(spell["spell-name"].toLowerCase(), spell.url);
-            });
-
-            // Get the monster JSON file path from the data-monster-src attribute
-            const statblockContainer = document.getElementById('monster-statblock-container');
-            const monsterJsonPath = statblockContainer.dataset.monsterSrc; // Use data-monster-src
-
-            if (!monsterJsonPath) {
-                console.error('No data-monster-src attribute found on #monster-statblock-container. Cannot load monster data.');
-                statblockContainer.innerHTML = '<p style="color: var(--red);">Error: Monster data source not specified.</p>';
-                return;
+                saveTurnState();
             }
 
-            const monsterResponse = await fetch(monsterJsonPath); // Direct fetch to filename
-            const monsterData = await monsterResponse.json();
+            function updateTrackerInfo() {
+                if (combatants.length > 0 && isCombatActive) {
+                    const turnNumber = currentTurnIndex === -1 ? 1 : currentTurnIndex + 1;
+                    trackerInfoSpan.textContent = `(Round ${currentRound}, Turn ${turnNumber})`;
+                } else if (combatants.length > 0) {
+                    trackerInfoSpan.textContent = `(${combatants.length} Combatants)`;
+                } else {
+                    trackerInfoSpan.textContent = `(No Combat in Progress)`;
+                    encounterTitleDisplay.textContent = 'Combat Tracker';
+                }
+            }
 
-            await renderStatblock(monsterData, spellUrlMap); // Pass spellUrlMap to renderStatblock
-        } catch (error) {
-            console.error('Error loading or rendering monster data:', error);
-            const statblockContainer = document.getElementById('monster-statblock-container');
-            statblockContainer.innerHTML = '<p style="color: var(--red);">Error loading monster data. Please check the JSON file and console for details.</p>';
-        }
-    }
+            function toggleCombatControls(isCombat) {
+                if(isCombat) {
+                    beginCombatBtn.style.display = 'none';
+                    nextTurnBtn.style.display = 'inline-block';
+                    undoTurnBtn.style.display = 'inline-block';
+                } else {
+                    beginCombatBtn.style.display = 'inline-block';
+                    nextTurnBtn.style.display = 'none';
+                    undoTurnBtn.style.display = 'none';
+                }
+            }
 
-    // Initialize the statblock rendering
-    initStatblock();
-});
+            // --- Event Handlers ---
+            function handleAddCombatant() {
+                const nameInput = document.getElementById('modal-combatant-name');
+                const hpInput = document.getElementById('modal-current-hp');
+                const acInput = document.getElementById('modal-ac-input');
+                const initInput = document.getElementById('modal-rolled-initiative');
+                const quantityInput = document.getElementById('modal-quantity');
+
+                const name = nameInput.value.trim();
+                if (!name) {
+                    showCustomConfirm("Please enter a combatant name.", null, null, "Missing Name", true);
+                    return;
+                }
+
+                const quantity = parseInt(quantityInput.value) || 1;
+                const baseHp = hpInput.value.trim() === '' ? null : parseInt(hpInput.value);
+                const baseAc = acInput.value.trim() === '' ? null : parseInt(acInput.value);
+                const baseInit = initInput.value.trim() === '' ? null : parseInt(initInput.value);
+
+                for (let i = 0; i < quantity; i++) {
+                    const newName = quantity > 1 ? `${name} ${i + 1}` : name;
+                    const newCombatant = new Combatant(
+                        null, newName, baseInit, baseHp, baseHp, baseAc, 0, false, []
+                    );
+                    combatants.push(newCombatant);
+                }
+                
+                renderCombatants();
+                addCombatantModal.classList.remove('visible');
+            }
+
+            headerAddBtn.addEventListener('click', () => addCombatantModal.classList.add('visible'));
+            initialAddBtn.addEventListener('click', () => addCombatantModal.classList.add('visible'));
+            modalCancelBtn.addEventListener('click', () => addCombatantModal.classList.remove('visible'));
+            modalConfirmAddBtn.addEventListener('click', handleAddCombatant);
+
+            beginCombatBtn.addEventListener('click', () => {
+                if (combatants.length === 0) {
+                    showCustomConfirm("Add some combatants before starting combat.", null, null, "Empty Battlefield", true);
+                    return;
+                }
+                isCombatActive = true;
+                currentTurnIndex = 0;
+                currentRound = 1;
+                turnHistory = [];
+                toggleCombatControls(true);
+                renderCombatants(); // This will now sort the list
+                updateTrackerInfo(); // Update info after starting
+            });
+
+            nextTurnBtn.addEventListener('click', function() {
+                if (combatants.length === 0) return;
+
+                turnHistory.push({
+                    index: currentTurnIndex,
+                    round: currentRound,
+                    combatantsState: JSON.parse(JSON.stringify(combatants))
+                });
+
+                currentTurnIndex++;
+                if (currentTurnIndex >= combatants.length) {
+                    currentTurnIndex = 0;
+                    currentRound++;
+                }
+                highlightCurrentTurn();
+                updateTrackerInfo();
+                saveCombatants();
+            });
+
+            undoTurnBtn.addEventListener('click', function() {
+                if (turnHistory.length > 0) {
+                    const prevState = turnHistory.pop();
+                    currentTurnIndex = prevState.index;
+                    currentRound = prevState.round;
+                    combatants = prevState.combatantsState.map(data => new Combatant(
+                        data.id, data.name,
+                        data.initiative,
+                        data.currentHp, data.maxHp,
+                        data.ac, data.tempHp,
+                        data.hideHp,
+                        data.conditions
+                    ));
+                    renderCombatants();
+                    updateTrackerInfo();
+                    saveCombatants();
+                } else {
+                    showCustomConfirm("No previous turns to undo.", null, null, "Cannot Undo", true);
+                }
+            });
+
+            resetTrackerBtn.addEventListener('click', function() {
+                showCustomConfirm(
+                    'Are you sure you want to reset the entire initiative tracker? This cannot be undone.',
+                    () => { // onConfirm
+                        combatants = [];
+                        currentTurnIndex = -1;
+                        currentRound = 1;
+                        turnHistory = [];
+                        isCombatActive = false;
+                        toggleCombatControls(false);
+                        renderCombatants();
+                        updateTrackerInfo();
+                        localStorage.removeItem(STORAGE_KEY);
+                        localStorage.removeItem(TURN_STATE_STORAGE_KEY);
+                        setTimeout(() => {
+                           showCustomConfirm("Initiative tracker has been reset!", null, null, "Tracker Reset", true);
+                        }, 10);
+                    },
+                    null,
+                    "Reset Tracker"
+                );
+            });
+            
+            // --- Consolidated Click Handler for the Initiative List ---
+            initiativeList.addEventListener('click', function(event) {
+                const target = event.target;
+                const listItem = target.closest('.combatant');
+                if (!listItem) return;
+
+                const combatantId = parseInt(listItem.dataset.id);
+                const combatant = combatants.find(c => c.id === combatantId);
+                if (!combatant) return;
+
+                // --- 1. Handle Condition Removal Clicks ---
+                if (target.closest('.condition-item')) {
+                    const conditionItem = target.closest('.condition-item');
+                    const rect = conditionItem.getBoundingClientRect();
+                    const clickX = event.clientX - rect.left;
+                    const threshold = rect.width * (2/3);
+
+                    if (clickX >= threshold) {
+                        const conditionToRemove = conditionItem.dataset.condition;
+                        if (conditionToRemove) {
+                            combatant.conditions = combatant.conditions.filter(c => c !== conditionToRemove);
+                            saveCombatants();
+                            const activeConditionsDisplay = listItem.querySelector('.active-conditions-display');
+                            if (activeConditionsDisplay) {
+                                const currentConditionsHtml = combatant.conditions.map(c => `<span class="condition-item" data-condition="${c}">${c} <i class="fas fa-times remove-condition-btn"></i></span>`).join('');
+                                activeConditionsDisplay.innerHTML = currentConditionsHtml;
+                                if (combatant.conditions.length === 0) {
+                                    activeConditionsDisplay.remove();
+                                }
+                            }
+                            // UPDATED: Uncheck the corresponding checkbox
+                            const checkbox = document.querySelector(`#conditions-selection-overlay input[data-condition="${conditionToRemove}"]`);
+                            if (checkbox) {
+                                checkbox.checked = false;
+                            }
+                        }
+                    }
+                    return; // Stop further processing
+                }
+
+                // --- 2. Handle Opening the HP Overlay ---
+                if (target.closest('.hp')) {
+                    if (combatant.hideHp) return;
+                    
+                    const isAlreadyVisible = hpOverlay.classList.contains('visible') && activeOverlayCombatantId === combatant.id;
+                    
+                    hideAllOverlaysAndMenus();
+
+                    if (!isAlreadyVisible) {
+                        activeOverlayCombatantId = combatant.id;
+                        hpOverlay.innerHTML = `
+                            <div class="hp-controls-group">
+                                <button class="hp-action-btn-overlay heal-btn disabled-btn" data-action="heal">Heal</button>
+                                <input type="number" class="hp-input-overlay" placeholder="0" data-type="amount">
+                                <button class="hp-action-btn-overlay damage-btn disabled-btn" data-action="damage">Damage</button>
+                            </div>
+                            <div class="hp-controls-group">
+                                <span class="temp-hp-label">Temp HP</span>
+                                <input type="number" class="hp-input-overlay" placeholder="—" value="${combatant.tempHp}" data-type="temp">
+                            </div>
+                            <div class="hp-controls-group">
+                                <span class="temp-hp-label">Max HP</span>
+                                <input type="number" class="hp-input-overlay" placeholder="—" value="${combatant.maxHp !== null ? combatant.maxHp : ''}" data-type="max">
+                            </div>`;
+                        
+                        const hpRect = target.closest('.hp').getBoundingClientRect();
+                        hpOverlay.style.top = `${hpRect.top}px`;
+                        hpOverlay.style.left = `${hpRect.left - 150 - 10}px`; // 150 is overlay width, 10 is gap
+                        hpOverlay.classList.add('visible');
+                        target.closest('.hp').classList.add('active');
+                    }
+                    return; 
+                }
+                
+                // --- 3. Handle Selecting a Combatant as Active Turn ---
+                if (isCombatActive) {
+                    const newIndex = combatants.findIndex(c => c.id === combatantId);
+                    if (newIndex !== -1 && newIndex !== currentTurnIndex) {
+                        if (currentTurnIndex !== -1) {
+                            turnHistory.push({
+                                index: currentTurnIndex,
+                                round: currentRound,
+                                combatantsState: JSON.parse(JSON.stringify(combatants))
+                            });
+                        }
+                        currentTurnIndex = newIndex;
+                        highlightCurrentTurn();
+                        updateTrackerInfo();
+                        saveCombatants();
+                    }
+                }
+            });
+
+
+            // --- Consolidated Change/Input Handler for the document body ---
+            document.body.addEventListener('input', function(event) {
+                const target = event.target;
+
+                // Handle enabling/disabling HP adjustment buttons
+                if (target.matches('#hp-adjustment-overlay .hp-input-overlay[data-type="amount"]')) {
+                    const healBtn = hpOverlay.querySelector('.heal-btn');
+                    const damageBtn = hpOverlay.querySelector('.damage-btn');
+                    const value = target.value.trim();
+
+                    if (value && parseInt(value) > 0) {
+                        healBtn.classList.remove('disabled-btn');
+                        damageBtn.classList.remove('disabled-btn');
+                    } else {
+                        healBtn.classList.add('disabled-btn');
+                        damageBtn.classList.add('disabled-btn');
+                    }
+                }
+            });
+
+            document.body.addEventListener('change', function(event) {
+                const target = event.target;
+                const combatant = combatants.find(c => c.id === activeOverlayCombatantId);
+                if(!combatant) return;
+
+                // Handle Temp HP and Max HP changes in the overlay
+                if (target.matches('#hp-adjustment-overlay .hp-input-overlay[data-type="temp"]')) {
+                    let value = parseInt(target.value);
+                    if (isNaN(value) || value < 0) value = 0;
+                    combatant.tempHp = value;
+                    renderCombatants();
+                } else if (target.matches('#hp-adjustment-overlay .hp-input-overlay[data-type="max"]')) {
+                    let value = parseInt(target.value);
+                    if (isNaN(value) || value <= 0) value = null;
+                    combatant.maxHp = value;
+                    if (combatant.maxHp !== null) {
+                        if (combatant.currentHp === null) combatant.currentHp = combatant.maxHp;
+                        else if (combatant.currentHp > combatant.maxHp) combatant.currentHp = combatant.maxHp;
+                    }
+                    renderCombatants();
+                } else if (target.matches('#conditions-selection-overlay input[type="checkbox"]')) {
+                    const condition = target.dataset.condition;
+                    if (target.checked) {
+                        if (!combatant.conditions.includes(condition)) combatant.conditions.push(condition);
+                    } else {
+                        combatant.conditions = combatant.conditions.filter(c => c !== condition);
+                    }
+                    saveCombatants();
+                    // Re-render to show the tag
+                    renderCombatants();
+                }
+            });
+
+            initiativeList.addEventListener('change', function(event) {
+                const target = event.target;
+                const listItem = target.closest('.combatant');
+                if (!listItem) return;
+                const combatantId = parseInt(listItem.dataset.id);
+                const combatant = combatants.find(c => c.id === combatantId);
+                if(!combatant) return;
+
+                // Handle Initiative
+                if (target.matches('.enter-initiative-order')) {
+                    let newInit = parseInt(target.value);
+                    if (isNaN(newInit)) newInit = 0;
+                    combatant.initiative = newInit;
+                    // Do not re-render here to prevent sorting during setup
+                    saveCombatants();
+                }
+            });
+
+            // --- Context Menu Logic ---
+            function hideAllOverlaysAndMenus() {
+                hpOverlay.classList.remove('visible');
+                conditionsOverlay.classList.remove('visible');
+                addFromPartyModal.classList.remove('visible');
+                managePartyModal.classList.remove('visible');
+                kebabDropdown.classList.remove('visible');
+                document.querySelectorAll('.hp.active').forEach(el => el.classList.remove('active'));
+                combatantContextMenu.style.display = 'none';
+                activeOverlayCombatantId = null;
+            }
+
+            handleCombatantContextMenu = (event) => {
+                event.preventDefault(); 
+                const combatantItem = event.target.closest('.combatant');
+                if (!combatantItem) return;
+
+                activeCombatantIdForMenu = parseInt(combatantItem.dataset.id);
+                hideAllOverlaysAndMenus();
+
+                combatantContextMenu.style.left = `${event.clientX}px`;
+                combatantContextMenu.style.top = `${event.clientY}px`;
+                combatantContextMenu.style.display = 'flex';
+            }
+
+            // Attach click listener to context menu items
+            combatantContextMenu.addEventListener('click', function(event) {
+                const menuItem = event.target.closest('.context-menu-item');
+                if (!menuItem || !activeCombatantIdForMenu) return;
+
+                const action = menuItem.dataset.action;
+                const combatant = combatants.find(c => c.id === activeCombatantIdForMenu);
+                const combatantElement = initiativeList.querySelector(`[data-id="${activeCombatantIdForMenu}"]`);
+
+                if (!combatantElement || !combatant) {
+                    hideAllOverlaysAndMenus(); 
+                    return;
+                }
+
+                combatantContextMenu.style.display = 'none';
+
+                switch (action) {
+                    case 'adjust-hp':
+                        const hpSection = combatantElement.querySelector('.hp');
+                        if (hpSection) {
+                            hpSection.click();
+                        }
+                        break;
+                    case 'add-condition':
+                        activeOverlayCombatantId = combatant.id;
+                        conditionsOverlay.innerHTML = DND_CONDITIONS.map(cond => `
+                            <label class="condition-checkbox-group">
+                                <input type="checkbox" data-condition="${cond}" ${combatant.conditions.includes(cond) ? 'checked' : ''}>
+                                ${cond}
+                            </label>
+                        `).join('');
+                        const infoRect = combatantElement.querySelector('.info').getBoundingClientRect();
+                        conditionsOverlay.style.top = `${infoRect.bottom + 10}px`;
+                        conditionsOverlay.style.left = `${infoRect.left}px`;
+                        conditionsOverlay.classList.add('visible');
+                        break;
+                    case 'duplicate-combatant':
+                        const baseName = combatant.name.replace(/ [A-Z]$/, '').replace(/ \d+$/, '');
+                        const existingCopies = combatants.filter(c => c.name.startsWith(baseName));
+                        
+                        if (existingCopies.length === 1 && !/ [A-Z]$/.test(combatant.name) && !/ \d+$/.test(combatant.name)) {
+                            combatant.name = `${baseName} A`;
+                        }
+
+                        const highestCharCode = existingCopies.reduce((maxCode, c) => {
+                            const match = c.name.match(/ [A-Z]$/);
+                            if (match) {
+                                return Math.max(maxCode, match[0].trim().charCodeAt(0));
+                            }
+                            return maxCode;
+                        }, 'A'.charCodeAt(0) - 1);
+
+                        const newLetter = String.fromCharCode(highestCharCode + 1);
+                        const newName = `${baseName} ${newLetter}`;
+
+                        const newCombatant = new Combatant(
+                            null, // New ID
+                            newName,
+                            combatant.initiative,
+                            combatant.maxHp, // Full HP
+                            combatant.maxHp,
+                            combatant.ac,
+                            0, // No temp HP
+                            combatant.hideHp,
+                            [] // No conditions
+                        );
+                        combatants.push(newCombatant);
+                        renderCombatants();
+                        break;
+                    case 'remove-combatant':
+                        showCustomConfirm(
+                            `Are you sure you want to remove ${combatant.name}?`,
+                            () => {
+                                const indexToRemove = combatants.findIndex(c => c.id === activeCombatantIdForMenu);
+                                if (indexToRemove > -1) {
+                                    combatants.splice(indexToRemove, 1);
+
+                                    if (combatants.length === 0) {
+                                        currentTurnIndex = -1;
+                                        currentRound = 1;
+                                        turnHistory = [];
+                                    } else if (currentTurnIndex === indexToRemove) {
+                                        currentTurnIndex = currentTurnIndex % combatants.length;
+                                    } else if (currentTurnIndex > indexToRemove) {
+                                        currentTurnIndex--;
+                                    }
+                                }
+                                renderCombatants();
+                                updateTrackerInfo();
+                            },
+                            null,
+                            "Remove Combatant"
+                        );
+                        break;
+                }
+            });
+
+            // Global click listener to close overlays and context menu
+            document.body.addEventListener('click', function(event) {
+                const target = event.target;
+
+                // Handle HP Adjustment Button Clicks
+                if (target.matches('#hp-adjustment-overlay .hp-action-btn-overlay')) {
+                    if (target.classList.contains('disabled-btn')) {
+                        return;
+                    }
+                    const combatant = combatants.find(c => c.id === activeOverlayCombatantId);
+                    if (!combatant || combatant.hideHp) {
+                        return;
+                    }
+                    
+                    const action = target.dataset.action;
+                    const amountInput = hpOverlay.querySelector('.hp-input-overlay[data-type="amount"]');
+                    const amount = parseInt(amountInput.value);
+
+                    if (isNaN(amount) || amount <= 0) {
+                        showCustomConfirm("Please enter a valid positive number for HP adjustment.", null, null, "Invalid Input", true);
+                        return;
+                    }
+
+                    if (action === 'heal') {
+                        const maxHpLimit = combatant.maxHp !== null && !isNaN(combatant.maxHp) ? combatant.maxHp : Infinity;
+                        combatant.currentHp = Math.min(combatant.currentHp + amount, maxHpLimit);
+                    } else if (action === 'damage') {
+                        if (combatant.tempHp > 0) {
+                            const remainingDamage = amount - combatant.tempHp;
+                            combatant.tempHp = Math.max(0, combatant.tempHp - amount);
+                            if (remainingDamage > 0) {
+                                combatant.currentHp = Math.max(0, combatant.currentHp - remainingDamage);
+                            }
+                        } else {
+                            combatant.currentHp = Math.max(0, combatant.currentHp - amount);
+                        }
+                    }
+                    amountInput.value = '';
+                    hpOverlay.querySelector('.heal-btn').classList.add('disabled-btn');
+                    hpOverlay.querySelector('.damage-btn').classList.add('disabled-btn');
+                    renderCombatants();
+                    hideAllOverlaysAndMenus();
+                }
+
+                const clickedInsideModal = event.target.closest('.modal-content') || 
+                                          event.target.closest('.header-btn') || 
+                                          event.target.closest('.control-btn') ||
+                                          event.target.closest('.kebab-menu');
+
+                const clickedInsideOverlayFeature = event.target.closest('.conditions-overlay') ||
+                                                    event.target.closest('.hp-overlay') ||
+                                                    event.target.closest('.hp') ||
+                                                    event.target.closest('.condition-item') ||
+                                                    event.target.closest('.context-menu');
+
+                if (!clickedInsideModal && !clickedInsideOverlayFeature) {
+                    hideAllOverlaysAndMenus();
+                }
+            });
+
+            // Close overlays on scroll
+            initiativeListContainer.addEventListener('scroll', hideAllOverlaysAndMenus);
+
+            // --- File Upload Logic ---
+            loadEncounterBtn.addEventListener('click', () => {
+                currentUploadType = 'encounter';
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        let newCombatantsData = [];
+                        let encounterTitle = null;
+
+                        if (Array.isArray(data)) { 
+                            newCombatantsData = data;
+                        } else if (data.combatants && Array.isArray(data.combatants)) {
+                            newCombatantsData = data.combatants;
+                            encounterTitle = data.title;
+                        } else {
+                            throw new Error("Invalid JSON structure.");
+                        }
+
+                        if (currentUploadType === 'encounter') {
+                            combatants = []; 
+                            if (encounterTitle) {
+                                encounterTitleDisplay.textContent = encounterTitle;
+                            }
+                        } else if (currentUploadType === 'party') {
+                            localStorage.setItem(PARTY_STORAGE_KEY, JSON.stringify(newCombatantsData));
+                            addFromPartyBtn.disabled = false;
+                            showCustomConfirm("Party file saved successfully!", null, null, "Success", true);
+                            managePartyModal.classList.remove('visible');
+                            return; // Don't add to combat, just save
+                        }
+
+                        newCombatantsData.forEach(c => {
+                            const quantity = c.quantity || 1;
+                            for (let i = 0; i < quantity; i++) {
+                                const name = quantity > 1 ? `${c.name} ${i + 1}` : c.name;
+                                combatants.push(new Combatant(null, name, c.initiative, c.hp, c.hp, c.ac));
+                            }
+                        });
+
+                        renderCombatants();
+
+                    } catch (error) {
+                        showCustomConfirm("Failed to load file. Please ensure it is a valid JSON file.", null, null, "Error", true);
+                        console.error("Error parsing JSON file:", error);
+                    }
+                };
+                reader.readAsText(file);
+                fileInput.value = ''; // Reset file input
+            });
+            
+            // --- Party Management Logic ---
+            managePartyBtn.addEventListener('click', () => {
+                const savedParty = JSON.parse(localStorage.getItem(PARTY_STORAGE_KEY));
+                if (savedParty) {
+                    currentSavedPartyDiv.innerHTML = '<h4>Current Party:</h4>' + savedParty.map(p => p.name).join(', ');
+                } else {
+                    currentSavedPartyDiv.innerHTML = '<p>No party is currently saved.</p>';
+                }
+                managePartyModal.classList.add('visible');
+            });
+            managePartyCancelBtn.addEventListener('click', () => managePartyModal.classList.remove('visible'));
+            managePartyLoadBtn.addEventListener('click', () => {
+                currentUploadType = 'party';
+                fileInput.click();
+            });
+
+            // --- Add from Party Modal Logic ---
+            addFromPartyBtn.addEventListener('click', () => {
+                const savedParty = JSON.parse(localStorage.getItem(PARTY_STORAGE_KEY));
+                if (!savedParty) return;
+
+                savedPartyList.innerHTML = savedParty.map(pc => `
+                    <div>
+                        <label>
+                            <input type="checkbox" data-pc-name="${pc.name}" checked>
+                            ${pc.name}
+                        </label>
+                    </div>
+                `).join('');
+                addFromPartyModal.classList.add('visible');
+            });
+
+            partyModalCancelBtn.addEventListener('click', () => {
+                addFromPartyModal.classList.remove('visible');
+            });
+
+            partyModalAddBtn.addEventListener('click', () => {
+                const savedParty = JSON.parse(localStorage.getItem(PARTY_STORAGE_KEY));
+                const selectedCheckboxes = savedPartyList.querySelectorAll('input[type="checkbox"]:checked');
+                
+                selectedCheckboxes.forEach(checkbox => {
+                    const pcName = checkbox.dataset.pcName;
+                    const pcData = savedParty.find(p => p.name === pcName);
+                    if (pcData) {
+                        combatants.push(new Combatant(null, pcData.name, pcData.initiative, pcData.hp, pcData.hp, pcData.ac));
+                    }
+                });
+
+                renderCombatants();
+                addFromPartyModal.classList.remove('visible');
+            });
+
+            // --- Kebab Menu Logic ---
+            kebabBtn.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent the global click listener from immediately closing it
+                kebabDropdown.classList.toggle('visible');
+            });
+
+
+            // Initial load
+            loadCombatants();
+        });
+    </script>
+</body>
+</html>

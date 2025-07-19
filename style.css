@@ -1,29 +1,69 @@
 body {
     font-family: "ff-scala-sans-pro", sans-serif;
+    font-variant-numeric: lining-nums;
     margin: 0;
     padding: 1rem;
     font-size: 15px;
     line-height: 18px;
-    font-variant-numeric: lining-nums;
+    
 }
 
 :root {
     --red: #5b160c;
     --black: #000000;
+    --statblock-bg: rgb(245, 243, 238);
+    --statblock-border: rgb(212, 208, 206);
+    --monster-meta: rgb(104, 116, 123);
+    --status-underline: rgb(71, 209, 140);
+    --spell-underline: rgb(112, 76, 217);
+    --legendary-intro: rgb(105, 102, 101);
+
+
+    --red: #1B1F4C;
+    --black: #3a3d42;
+    --statblock-bg: #ffffff;
+    --statblock-border:#D8E1E8;
+
+    --body-bg: #f5f5f5;
+    --grey: #D8E1E8;
+    --light-grey: #D8E1E8; /* Keeping this consistent with --grey for now */
+    --mid-grey: #647079;
+    --white: #FFFFFF;
+    /* Existing dark theme colors */
+    --dark-bg: #1e2024;
+    --dark-panel-bg: #2a2d32;
+    --dark-border: #3a3d42;
+    --light-text: #e0e0e0;
+    --subtle-text: #a0a0a0;
+    --active-orange: #ff9800;
+    --blue-primary: #1B9AF0;
+    --blue-primary-hover: #0F8DE3;
+    --green-heal: #04C797;
+    --green-heal-hover: #34E1B8;
+    --red-damage: #BC0F0E;
+    --red-damage-hover: #D54F4F;
+    --grey-button: #6c757d;
+    --grey-button-hover: #5a6268;
 }
+
+body {
+    background: #EBF1F5;
+}
+
 .statblock {
     display: grid;
     grid-template-columns: 1fr; /* Changed to a single column */
     grid-template-rows: auto auto;
     column-gap: 0; /* Removed column gap */
     row-gap: 0;
-    background: rgb(245, 243, 238);
-    border: 1px solid rgb(212, 208, 206);
+    background: var(--statblock-bg);
+    border: 1px solid var(--statblock-border);
     border-radius: 6px;
     padding: 1rem;
     color: var(--red);
 }
-.monster-title {
+.monster-title,
+.statblock-name {
     font-size: 2.2rem;
     margin: 0 0 0.2em 0;
     border-bottom: .5px solid var(--red);
@@ -39,8 +79,8 @@ body {
 
 /* Style for the reset icon */
 .reset-icon {
-    font-size: 1.2em;
-    color: rgb(104, 116, 123);
+    font-size: 1em;
+    color: var(--monster-meta);
     cursor: pointer;
     margin-left: 10px;
     transition: color 0.2s ease-in-out;
@@ -50,11 +90,16 @@ body {
     color: var(--red);
 }
 
-.monster-meta {
+.monster-meta,
+.statblock-meta {
     font-style: italic;
-    color: rgb(104, 116, 123);
+    color: var(--monster-meta);
     font-size: 15px;
     /* grid-column: span 2; Removed as it's now a single column */
+}
+
+.statblock-meta {
+    margin-bottom: 1rem;
 }
 
 .monster-col {
@@ -70,9 +115,6 @@ body {
         margin: 0;
     }
     /* Removed specific media query rules for monster-title, monster-meta as they are now single column by default */
-    .monster-title {
-        justify-content: flex-start;
-    }
     .reset-icon {
         margin-left: auto;
         font-size: 0.5rem;
@@ -82,11 +124,11 @@ body {
 
 .statblock a {
     color: inherit;
-    text-decoration-color: rgb(71, 209, 140);
+    text-decoration-color: var(--status-underline);
 }
 
 .statblock a.spell-tooltip {
-    text-decoration-color: rgb(112, 76, 217);
+    text-decoration-color: var(--spell-underline);
 }
 
 
@@ -151,7 +193,7 @@ body {
 }
 
 .ability-header {
-    color: rgb(104, 116, 123);
+    color: var(--monster-meta);
     font-weight: bold;
     text-align: center;
     font-size: 8.9375px;
@@ -159,19 +201,23 @@ body {
 }
 
 .str, .str-score, .dex, .dex-score, .con, .con-score {
-    background: rgb(237, 230, 217)
+    /* background: rgb(237, 230, 217) */
+    background: #EBF1F5;
 }
 
 .int, .int-score, .wis, .wis-score, .cha, .cha-score{
-    background: rgb(216, 218, 209);
+    /* background: rgb(216, 218, 209); */
+    background: #EBF1F5;
 }
 
 .str-mod, .str-save, .dex-mod, .dex-save, .con-mod, .con-save {
-   background: rgb(222, 212, 204);
+   /* background: rgb(222, 212, 204); */
+   background: #D7E3E5;
 }
 
 .int-mod, .int-save, .wis-mod, .wis-save, .cha-mod, .cha-save {
-    background: rgb(208, 202, 202);
+    /* background: rgb(208, 202, 202); */
+    background: #CFCAD0;
 }
 
 .str { grid-area: str; }
@@ -200,13 +246,28 @@ body {
 .cha-save { grid-area: cha-save; }
 
 
-.section-title {
+.section-title, .statblock-trait-name {
     text-transform: small-caps;
     font-variant-caps: small-caps;
     border-bottom: 0.5px solid var(--red);
     margin-bottom: 13px;
     margin-top: 25px;
     font-size: 17px;
+}
+
+.trait ul {
+    margin: 10px 0 0 0;
+    padding: 0;
+}
+
+.trait li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.statblock-section i.reset-icon {
+    margin-left: 0;
 }
 
 .trait, .action, .legendary, .bonus-action, .reaction {
@@ -224,11 +285,11 @@ body {
 }
 
 .legendary-intro {
-    color: rgb(105, 102, 101);
+    color: var(--legendary-intro);
 }
 
 .trait-title, .action-title, .legendary-title, .bonus-action-title, .reaction-title {
-    font-weight: bold;
+    font-weight: 700;
     color: var(--black);
 }
 .skills, .resistances, .immunities, .senses, .languages, .challenge, .gear {
@@ -263,7 +324,7 @@ body {
     display: inline-block;
     position: relative;
     vertical-align: middle;
-    background-color: rgb(237, 230, 217); /* Light background */
+    background-color: var(--statblock-bg); /* Light background */
     transition: background-color 0.2s, border-color 0.2s;
     flex-shrink: 0; /* Prevent shrinking in flex container */
     margin: 0 2px;
@@ -300,7 +361,7 @@ body {
 /* Style for the reset icon */
 .reset-icon {
     font-size: 0.75em; /* Adjust size relative to title */
-    color: rgb(104, 116, 123); /* A subtle color */
+    color: var(--monster-meta); /* A subtle color */
     cursor: pointer;
     margin-left: 10px; /* Space from the title text */
     transition: color 0.2s ease-in-out;
@@ -308,4 +369,82 @@ body {
 
 .reset-icon:hover {
     color: var(--red); /* Highlight on hover */
+}
+
+/* Custom Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none; /* Changed from flex to none by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0; /* Still use for transition */
+    transition: opacity 0.3s ease; /* Only transition opacity */
+}
+
+.modal-overlay.visible {
+    display: flex; /* Only display when visible */
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    color: var(--dark-bg);
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    font-size: 1.5em;
+    color: var(--orange); /* Orange for headings */
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.modal-buttons button {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    font-family: "ff-scala-sans-pro", sans-serif;
+}
+
+.modal-buttons .confirm-yes {
+    background-color: var(--blue-primary); /* Red for Yes */
+    color: white;
+}
+
+.modal-buttons .confirm-yes:hover {
+    background-color: var(--blue-primary-hover);
+}
+
+.modal-buttons .confirm-no {
+    background-color: var(--grey);
+    color: var(--dark-bg);
+}
+
+.modal-buttons .confirm-no:hover {
+    background-color: #cdd6dc;
 }

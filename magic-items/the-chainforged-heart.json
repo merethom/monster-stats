@@ -1,0 +1,79 @@
+{
+    "name": "Rhazaans Mech: The Chainforged Heart",
+    "meta": "Wondrous Item (Legendary), requires attunement by an heir to the Iron Throne",
+    "traits": [
+      {
+        "name": "Armor",
+        "desc": "While attuned to and wearing The Chainforged Heart, your AC is 19."
+      },
+      {
+        "name": "Hit Points",
+        "desc": "The mech has 115 hit points. Any damage dealt to you while wearing the mech is applied to the mech's hit points first. If the mech is reduced to 0 hit points, it becomes inert, losing all its special properties, and any excess damage carries over to you. The mech regains all its hit points after a long rest. The mending cantrip can restore 1d8 hit points + the spellcasting modifier of the caster, and the mech can only benefit from 1 cast of mending per hour."
+      },
+      {
+        "name": "Damage Threshold 15",
+        "desc": "If the mech takes an amount of damage that is less than 15, that damage is considered superficial and doesn't reduce the mech’s hit points. If the damage is 15 or more, it takes damage as normal. This threshold does not apply if the creature wearing the mech is targeted by an attack roll that targets a single creature and deals psychic or necrotic damage, in which case the creature wearing the mech takes all of the damage."
+      },
+      {
+        "name": "Immunities & Resistances",
+        "desc": "The mech is immune to poison and psychic damage. It is also immune to the blinded, charmed, deafened, exhaustion, frightened, incapacitated, paralyzed, petrified, poisoned, stunned, and unconscious conditions."
+      },
+      {
+        "name": "Spellcasting",
+        "desc": {
+          "intro": "The mech has its own arcane core, allowing it to cast spells independently of its pilot. Its spellcasting ability is Charisma (spell save DC 16, +8 to hit with spell attacks). The mech has 19 charges. To cast a spell, the mech expends a number of charges equal to the spell's level. For example, casting a 1st-level spell costs 1 charge, a 2nd-level spell costs 2 charges, and so on. The mech regains 1d6 expended charges daily at dawn.",
+          "spells_by_frequency": [
+            {
+              "frequency": "1st level",
+              "spells": [
+                { "name": "compelled duel", "url_suffix": "compelled-duel", "notes": "" },
+                { "name": "bless", "url_suffix": "bless", "notes": "" },
+                { "name": "shield of faith", "url_suffix": "shield-of-faith", "notes": "" },
+                { "name": "divine smite", "url_suffix": "divine-smite", "notes": "" },
+                { "name": "heroism", "url_suffix": "heroism", "notes": "" }
+              ],
+              "track_slots": 19
+            },
+            {
+              "frequency": "2nd level",
+              "spells": [
+                { "name": "warding bond", "url_suffix": "warding-bond", "notes": "" }
+              ]
+            },
+            {
+              "frequency": "3rd level",
+              "spells": [
+                { "name": "spirit shroud", "url_suffix": "spirit-shroud", "notes": "" }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "Mech Concentration",
+        "desc": "The mech can concentrate on its own spells. When the mech takes damage while concentrating on a spell, it must make a Constitution saving throw to maintain concentration. The DC equals 10 or half the damage the mech takes, whichever number is higher. On a failed save, the spell ends. The mech's Constitution saving throw bonus for this purpose is +3. If the mech fails the save, it can spend charges equal to the spell’s level to maintain its Concentration instead."
+      },
+      {
+        "name": "Chainforged Gauntlets",
+        "desc": "While wearing the mech, your melee weapon attacks deal an additional 1d8 force damage."
+      }
+    ],
+    "actions": [],
+    "bonus_actions": [
+      {
+        "name": "Echoing Roar (2/Short Rest)",
+        "desc": "As a bonus action, the mech emits a guttural roar. Each hostile creature within 30 feet that can hear the roar must make a DC 14 Wisdom saving throw or have disadvantage on attack rolls against targets other than the mech until the end of its next turn."
+      },
+      {
+        "name": "Protective Surge (2/Long Rest)",
+        "desc": "As a bonus action, the mech can generate a surge of protective energy. The mech or one creature it can see within 30 feet gains 40 temporary hit points. These temporary hit points last for 1 minute."
+      }
+    ],
+    "reactions": [
+      {
+        "name": "Unstoppable Momentum (1/Short Rest)",
+        "desc": "When you take damage while raging, the mech can use its reaction to reduce the damage by 1d12 + your Constitution modifier."
+      }
+    ]
+  }
+  

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&D Combat Tracker V2.4</title>
+    <title>D&D Combat Tracker V2.8</title>
     <link rel="stylesheet" href="https://use.typekit.net/dck6bem.css">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -185,7 +185,7 @@
             border: solid 1px var(--grey);
             border-radius: 6px;
             display: flex;
-            align-items: start;
+            align-items: stretch; /* UPDATED */
             justify-content:space-between; 
             line-height: 1.1;
             height: 60px;
@@ -201,7 +201,9 @@
         input.enter-initiative-order:focus-visible,
         input.enter-initiative-order:focus,
         input.current:focus-visible,
-        input.current:focus {
+        input.current:focus,
+        input.ac-input:focus-visible,
+        input.ac-input:focus {
             border-color: var(--blue-primary);
             box-sizing: border-box;
             outline: none;
@@ -323,6 +325,7 @@
             padding: 0 12px;
             color: var(--dark-bg);
             height: 100%;
+            min-width: 0; /* ADDED: Prevents flexbox overflow */
         }
 
         .info .name {
@@ -331,13 +334,36 @@
             white-space: nowrap; /* Prevent wrapping */
             overflow: hidden; /* Hide overflow */
             text-overflow: ellipsis; /* Add ellipsis if text overflows */
-            margin-bottom: 5px; /* Space between name and AC/conditions */
         }
+        
+        .name-and-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-icons {
+            display: flex;
+            gap: 4px;
+            font-size: 12px;
+        }
+        
+        .action-icon {
+            cursor: pointer;
+            color: var(--mid-grey);
+            opacity: 0.5;
+        }
+
+        .action-icon.active {
+            color: var(--blue-primary);
+            opacity: 1;
+        }
+
 
         .info .ac-and-conditions {
             display: flex;
             align-items: center;
-            gap: 10px; /* Space between AC and conditions */
+            gap: 0; /* Space between AC and conditions */
             flex-wrap: wrap; /* Allow conditions to wrap if many */
         }
 
@@ -345,6 +371,35 @@
             font-size: 14px;
             color: var(--mid-grey);
             white-space: nowrap;
+        }
+
+        input.ac-input {
+            width: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            background-color: transparent;
+            font-weight: bold;
+            font-family: inherit;
+            font-size: inherit;
+            color: var(--mid-grey);
+            -moz-appearance: textfield;
+            text-align: left;
+            font-weight: 500;
+            font-variant-numeric: lining-nums;
+            padding-left: 0;
+        }
+    
+        .ac-input:focus {
+            background-color: #f6f8fa;
+        }
+        .ac-input::-webkit-outer-spin-button,
+        .ac-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .ac-input.modified {
+            color: var(--blue-primary);
+            font-weight: bold;
         }
 
         .info .condition {
@@ -362,28 +417,37 @@
         }
 
         .info .condition .active-conditions-display .condition-item {
-            background-color: var(--green-heal);
-            color: var(--white);
-            padding: 3px 6px 2px 6px; /* keep this padding for visual balance */
+            padding: 3px 6px 2px 6px;
             border-radius: 3px;
             font-weight: 700;
             white-space: nowrap;
-            display: inline-flex; /* To align text and 'x' */
+            display: inline-flex;
             align-items: center;
             gap: 3px;
-            cursor: pointer; /* Indicate clickable */
+            cursor: pointer;
+            border: solid 1px var(--grey);
+        }
+
+        .info .condition .active-conditions-display .status-buff {
+            color:  #D4B33D;
+            /* border: 1px solid #0F8DE3; */
+        }
+
+        .info .condition .active-conditions-display .status-debuff {
+            color: #775C9A;
+            /* border: 1px solid #775C9A; */
+        }
+
+        .info .condition .active-conditions-display .status-condition {
+            color: #0D7AC4;
+            /* border: 1px solid #D4B33D; */
         }
 
         .info .condition .active-conditions-display .remove-condition-btn {
-            color: var(--white); /* Color of the 'x' */
-            font-size: 0.9em;
-            margin-left: 2px;
-            transition: color 0.2s ease;
-            /* No direct cursor property here, as parent span handles click */
+            color: var(--mid-grey);
         }
-
         .info .condition .active-conditions-display .condition-item:hover .remove-condition-btn {
-            color: var(--dark-border);
+            color: var(--dark-bg);
         }
 
 
@@ -459,6 +523,20 @@
             width: 150px;
         }
 
+        /* NEW: Triangle pointer for HP Overlay */
+        .hp-overlay::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            right: -10px;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid #fff;
+        }
+
         .conditions-overlay {
             gap: 2px;
             position: fixed; /* UPDATED */
@@ -467,11 +545,25 @@
             grid-template-rows: repeat(5, auto);
             background-color: white;
             border-radius: 6px;
-            padding: 12px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             display: none;
             width: 300px;
+        }
+        
+        /* NEW: Triangle pointer for Conditions Overlay */
+       .conditions-overlay::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 10%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid white;
         }
     
         .hp-overlay.visible {
@@ -807,9 +899,18 @@
                 gap: 10px;
             }
 
+            .combat-tracker-panel {
+                padding: 10px;
+            }
+
             .combat-tracker-panel, .summary-panel {
                 min-width: unset;
                 max-width: unset;
+            }
+
+            .combatant {
+                height: auto;
+                min-height: 60px;
             }
 
             .input-section {
@@ -854,6 +955,7 @@
                             <div class="kebab-dropdown-item mobile-only" id="kebab-add-combatant-btn"><i class="fas fa-plus"></i> Add Combatant</div>
                             <div class="kebab-dropdown-item" id="manage-party-btn"><i class="fas fa-users-cog"></i> Manage Party</div>
                             <div class="kebab-dropdown-item" id="load-encounter-btn"><i class="fas fa-book"></i> Load Encounter</div>
+                            <div class="kebab-dropdown-item" id="export-combat-btn"><i class="fas fa-save"></i> Export Combat</div>
                             <div class="kebab-dropdown-item" id="reset-tracker-btn"><i class="fas fa-undo"></i> Reset Tracker</div>
                         </div>
                     </div>
@@ -949,7 +1051,7 @@
 
     <div id="combatant-context-menu" class="context-menu">
         <div class="context-menu-item" data-action="adjust-hp"><i class="fas fa-heart"></i> Adjust HP</div>
-        <div class="context-menu-item" data-action="add-condition"><i class="fas fa-plus-square"></i> Add Condition</div>
+        <div class="context-menu-item" data-action="add-condition"><i class="fas fa-plus-square"></i> Add Status Effect</div>
         <div class="context-menu-item" data-action="duplicate-combatant"><i class="fas fa-copy"></i> Duplicate</div>
         <div class="context-menu-item" data-action="remove-combatant"><i class="fas fa-trash-alt"></i> Remove Combatant</div>
     </div>
@@ -1006,6 +1108,7 @@
             // File Upload elements
             const fileInput = document.getElementById('file-input');
             const loadEncounterBtn = document.getElementById('load-encounter-btn');
+            const exportCombatBtn = document.getElementById('export-combat-btn');
             let currentUploadType = null; // 'party' or 'encounter'
 
             // Context Menu elements
@@ -1040,10 +1143,23 @@
                 'Grappled', 'Incapacitated', 'Invisible', 'Paralyzed', 'Petrified',
                 'Poisoned', 'Prone', 'Restrained', 'Stunned', 'Unconscious'
             ];
+            const DND_BUFFS = [
+                'Blessed', 'Hasted', 'Raging', 'Enlarged', 'Shield of Faith',
+                'Guidance', 'Sanctuary', 'Shield'
+            ];
+            const DND_DEBUFFS = [
+                'Baned', 'Hexed', "Hunter's Mark", 'Slowed', 'Cursed', 'Reduced', 'Faerie Fire'
+            ];
+            const ALL_STATUSES = [...DND_CONDITIONS, ...DND_BUFFS, ...DND_DEBUFFS].sort();
+            const AC_MODIFIERS = {
+                'Hasted': 2,
+                'Shield of Faith': 2,
+                'Shield': 5
+            };
 
             // Combatant Class
             class Combatant {
-                constructor(id, name, initiative = null, currentHp = null, maxHp = null, ac = null, tempHp = 0, hideHp = false, conditions = []) {
+                constructor(id, name, initiative = null, currentHp = null, maxHp = null, ac = null, tempHp = 0, hideHp = false, conditions = [], isConcentrating = false, hasUsedReaction = false, isHoldingAction = false) {
                     this.id = id || nextId++;
                     this.name = name;
                     this.initiative = initiative !== null ? parseInt(initiative) : null;
@@ -1053,6 +1169,9 @@
                     this.tempHp = parseInt(tempHp) || 0;
                     this.hideHp = hideHp;
                     this.conditions = conditions || [];
+                    this.isConcentrating = isConcentrating;
+                    this.hasUsedReaction = hasUsedReaction;
+                    this.isHoldingAction = isHoldingAction;
                 }
 
                 rollInitiative(initMod = 0) {
@@ -1132,7 +1251,10 @@
                             data.currentHp, data.maxHp,
                             data.ac, data.tempHp,
                             hideHp,
-                            data.conditions || []
+                            data.conditions || [],
+                            data.isConcentrating || false,
+                            data.hasUsedReaction || false,
+                            data.isHoldingAction || false
                         );
                     });
                 }
@@ -1158,7 +1280,24 @@
             }
 
             // --- Rendering Functions ---
-            function renderCombatants() {
+            function getEffectiveAC(combatant) {
+                let effectiveAC = combatant.ac;
+                if (combatant.conditions.length > 0) {
+                    combatant.conditions.forEach(condition => {
+                        if (AC_MODIFIERS[condition]) {
+                            effectiveAC += AC_MODIFIERS[condition];
+                        }
+                    });
+                }
+                return effectiveAC;
+            }
+
+            function renderCombatants(preserveActiveTurn = false) {
+                 let activeId = null;
+                if (preserveActiveTurn && currentTurnIndex !== -1 && combatants[currentTurnIndex]) {
+                    activeId = combatants[currentTurnIndex].id;
+                }
+
                 initiativeList.innerHTML = '';
 
                 if (combatants.length === 0) {
@@ -1183,6 +1322,11 @@
                         return 0;
                     });
                 }
+                
+                if (preserveActiveTurn && activeId !== null) {
+                    currentTurnIndex = combatants.findIndex(c => c.id === activeId);
+                }
+
 
                 combatants.forEach((combatant) => {
                     const listItem = document.createElement('li');
@@ -1198,7 +1342,15 @@
                     const maxHpDisplay = combatant.maxHp !== null ? combatant.maxHp : '—'; // Display '—' if maxHp is null
 
                     const activeConditionsHtml = combatant.conditions.length > 0
-                        ? `<div class="active-conditions-display">${combatant.conditions.map(c => `<span class="condition-item" data-condition="${c}">${c} <i class="fas fa-times remove-condition-btn"></i></span>`).join('')}</div>`
+                        ? `<div class="active-conditions-display">${combatant.conditions.map(c => {
+                            let statusClass = 'status-condition';
+                            if (DND_BUFFS.includes(c)) {
+                                statusClass = 'status-buff';
+                            } else if (DND_DEBUFFS.includes(c)) {
+                                statusClass = 'status-debuff';
+                            }
+                            return `<span class="condition-item ${statusClass}" data-condition="${c}">${c} <i class="fas fa-times remove-condition-btn"></i></span>`
+                        }).join('')}</div>`
                         : '';
                     
                     const tempHpHtml = combatant.tempHp > 0 
@@ -1214,6 +1366,9 @@
                             hpClass = 'hp-low';
                         }
                     }
+                    
+                    const effectiveAC = getEffectiveAC(combatant);
+                    const acClass = effectiveAC !== combatant.ac ? 'ac-input modified' : 'ac-input';
 
                     // UPDATED: Added divider and max HP elements
                     listItem.innerHTML = `
@@ -1223,9 +1378,16 @@
                             </div>
                         </div>
                         <div class="info">
-                            <div class="name">${combatant.name}</div>
+                            <div class="name-and-actions">
+                                <div class="name">${combatant.name}</div>
+                                <div class="action-icons">
+                                    <i class="fas fa-eye action-icon ${combatant.isConcentrating ? 'active' : ''}" title="Concentration" data-action="toggle-concentration"></i>
+                                    <i class="fas fa-reply action-icon ${combatant.hasUsedReaction ? 'active' : ''}" title="Reaction Used" data-action="toggle-reaction"></i>
+                                    <i class="fas fa-hand-paper action-icon ${combatant.isHoldingAction ? 'active' : ''}" title="Held Action" data-action="toggle-hold-action"></i>
+                                </div>
+                            </div>
                             <div class="ac-and-conditions">
-                                <div class="armor-class"><strong>AC</strong> ${combatant.ac !== null ? combatant.ac : '—'}</div>
+                                <div class="armor-class"><strong>AC</strong> <input type="number" class="${acClass}" value="${effectiveAC !== null ? effectiveAC : ''}" data-id="${combatant.id}"></div>
                                 <div class="condition">
                                     ${activeConditionsHtml}
                                 </div>
@@ -1354,9 +1516,13 @@
                     currentTurnIndex = 0;
                     currentRound++;
                 }
-                highlightCurrentTurn();
-                updateTrackerInfo();
-                saveCombatants();
+                
+                // Reset reaction for the new current turn
+                if (combatants[currentTurnIndex]) {
+                    combatants[currentTurnIndex].hasUsedReaction = false;
+                }
+
+                renderCombatants(true);
             });
 
             undoTurnBtn.addEventListener('click', function() {
@@ -1370,7 +1536,10 @@
                         data.currentHp, data.maxHp,
                         data.ac, data.tempHp,
                         data.hideHp,
-                        data.conditions
+                        data.conditions,
+                        data.isConcentrating,
+                        data.hasUsedReaction,
+                        data.isHoldingAction
                     ));
                     renderCombatants();
                     updateTrackerInfo();
@@ -1424,20 +1593,7 @@
                         const conditionToRemove = conditionItem.dataset.condition;
                         if (conditionToRemove) {
                             combatant.conditions = combatant.conditions.filter(c => c !== conditionToRemove);
-                            saveCombatants();
-                            const activeConditionsDisplay = listItem.querySelector('.active-conditions-display');
-                            if (activeConditionsDisplay) {
-                                const currentConditionsHtml = combatant.conditions.map(c => `<span class="condition-item" data-condition="${c}">${c} <i class="fas fa-times remove-condition-btn"></i></span>`).join('');
-                                activeConditionsDisplay.innerHTML = currentConditionsHtml;
-                                if (combatant.conditions.length === 0) {
-                                    activeConditionsDisplay.remove();
-                                }
-                            }
-                            // UPDATED: Uncheck the corresponding checkbox
-                            const checkbox = document.querySelector(`#conditions-selection-overlay input[data-condition="${conditionToRemove}"]`);
-                            if (checkbox) {
-                                checkbox.checked = false;
-                            }
+                            renderCombatants();
                         }
                     }
                     return; // Stop further processing
@@ -1477,7 +1633,21 @@
                     return; 
                 }
                 
-                // --- 3. Handle Selecting a Combatant as Active Turn ---
+                // --- 3. Handle Action Icon Toggles ---
+                if (target.matches('.action-icon')) {
+                    const action = target.dataset.action;
+                    if (action === 'toggle-concentration') {
+                        combatant.isConcentrating = !combatant.isConcentrating;
+                    } else if (action === 'toggle-reaction') {
+                        combatant.hasUsedReaction = !combatant.hasUsedReaction;
+                    } else if (action === 'toggle-hold-action') {
+                        combatant.isHoldingAction = !combatant.isHoldingAction;
+                    }
+                    renderCombatants(true);
+                    return;
+                }
+
+                // --- 4. Handle Selecting a Combatant as Active Turn ---
                 if (isCombatActive) {
                     const newIndex = combatants.findIndex(c => c.id === combatantId);
                     if (newIndex !== -1 && newIndex !== currentTurnIndex) {
@@ -1563,7 +1733,15 @@
                     let newInit = parseInt(target.value);
                     if (isNaN(newInit)) newInit = 0;
                     combatant.initiative = newInit;
-                    // Do not re-render here to prevent sorting during setup
+                    if (isCombatActive) {
+                        renderCombatants(true); // Re-sort and preserve turn
+                    } else {
+                        saveCombatants();
+                    }
+                } else if (target.matches('.ac-input')) {
+                    let newAc = parseInt(target.value);
+                    if (isNaN(newAc)) newAc = null;
+                    combatant.ac = newAc;
                     saveCombatants();
                 }
             });
@@ -1634,7 +1812,7 @@
                         break;
                     case 'add-condition':
                         activeOverlayCombatantId = combatant.id;
-                        conditionsOverlay.innerHTML = DND_CONDITIONS.map(cond => `
+                        conditionsOverlay.innerHTML = ALL_STATUSES.map(cond => `
                             <label class="condition-checkbox-group">
                                 <input type="checkbox" data-condition="${cond}" ${combatant.conditions.includes(cond) ? 'checked' : ''}>
                                 ${cond}
@@ -1783,39 +1961,42 @@
                 reader.onload = (e) => {
                     try {
                         const data = JSON.parse(e.target.result);
-                        let newCombatantsData = [];
-                        let encounterTitle = null;
-
-                        if (Array.isArray(data)) { 
-                            newCombatantsData = data;
-                        } else if (data.combatants && Array.isArray(data.combatants)) {
-                            newCombatantsData = data.combatants;
-                            encounterTitle = data.title;
-                        } else {
-                            throw new Error("Invalid JSON structure.");
-                        }
-
-                        if (currentUploadType === 'encounter') {
-                            combatants = []; 
-                            if (encounterTitle) {
-                                encounterTitleDisplay.textContent = encounterTitle;
-                            }
-                        } else if (currentUploadType === 'party') {
-                            localStorage.setItem(PARTY_STORAGE_KEY, JSON.stringify(newCombatantsData));
+                        
+                        if (currentUploadType === 'party') {
+                            const partyData = Array.isArray(data) ? data : data.combatants;
+                            if (!partyData) throw new Error("Invalid Party JSON structure.");
+                            localStorage.setItem(PARTY_STORAGE_KEY, JSON.stringify(partyData));
                             addFromPartyBtn.disabled = false;
                             showCustomConfirm("Party file saved successfully!", null, null, "Success", true);
                             managePartyModal.classList.remove('visible');
-                            return; // Don't add to combat, just save
+                            return;
                         }
-
-                        newCombatantsData.forEach(c => {
-                            const quantity = c.quantity || 1;
-                            for (let i = 0; i < quantity; i++) {
-                                const name = quantity > 1 ? `${c.name} ${i + 1}` : c.name;
-                                combatants.push(new Combatant(null, name, c.initiative, c.hp, c.hp, c.ac));
+                        
+                        if (currentUploadType === 'encounter') {
+                            if (data.hasOwnProperty('isCombatActive')) { // Full save file
+                                combatants = data.combatants.map(c => new Combatant(c.id, c.name, c.initiative, c.currentHp, c.maxHp, c.ac, c.tempHp, c.hideHp, c.conditions, c.isConcentrating, c.hasUsedReaction, c.isHoldingAction));
+                                currentRound = data.currentRound;
+                                currentTurnIndex = data.currentTurnIndex;
+                                isCombatActive = data.isCombatActive;
+                                encounterTitleDisplay.textContent = data.title || 'Combat Tracker';
+                                toggleCombatControls(isCombatActive);
+                            } else { // Simple template
+                                let newCombatantsData = Array.isArray(data) ? data : data.combatants;
+                                let encounterTitle = data.title;
+                                combatants = []; 
+                                if (encounterTitle) {
+                                    encounterTitleDisplay.textContent = encounterTitle;
+                                }
+                                newCombatantsData.forEach(c => {
+                                    const quantity = c.quantity || 1;
+                                    for (let i = 0; i < quantity; i++) {
+                                        const name = quantity > 1 ? `${c.name} ${i + 1}` : c.name;
+                                        combatants.push(new Combatant(null, name, c.initiative, c.hp, c.hp, c.ac));
+                                    }
+                                });
                             }
-                        });
-
+                        }
+                        
                         renderCombatants();
 
                     } catch (error) {
@@ -1888,6 +2069,38 @@
             kebabAddCombatantBtn.addEventListener('click', () => {
                 addCombatantModal.classList.add('visible');
                 kebabDropdown.classList.remove('visible');
+            });
+            
+            exportCombatBtn.addEventListener('click', () => {
+                const date = new Date().toISOString().slice(0, 10);
+                const title = encounterTitleDisplay.textContent.replace(/\s*\(.*\)\s*$/, '').trim();
+                const filename = `${title} - ${date}.json`;
+
+                const saveData = {
+                    title: title,
+                    combatants: combatants,
+                    currentRound: currentRound,
+                    currentTurnIndex: currentTurnIndex,
+                    isCombatActive: isCombatActive
+                };
+
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(saveData, null, 2));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href",     dataStr);
+                downloadAnchorNode.setAttribute("download", filename);
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+                kebabDropdown.classList.remove('visible');
+            });
+
+            // --- Auto-select text on focus ---
+            document.body.addEventListener('focusin', (event) => {
+                if (event.target.matches('.enter-initiative-order') || 
+                    event.target.matches('.ac-input') ||
+                    event.target.matches('.hp-input-overlay[data-type="temp"]')) {
+                    event.target.select();
+                }
             });
 
 
